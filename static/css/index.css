@@ -70,13 +70,14 @@ body {
 
 }
 
-/* 푸터 */
-#footer {
-  background-color: yellow;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  max-width: 720px;
-  border-top: 1px solid lightgray;
+#firmname {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
+  margin-top: 20%;
 }
+
+
+/* 푸터 */
