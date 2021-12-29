@@ -26,11 +26,12 @@ import hashlib
 ##############################
 
 # TEST 계정 생성 코드
-# id = 'test@gukbab.com'
-# pw = '1234'
-# nick = 'test'
-# pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
-# db.user.insert_one({'id': id, 'pw': pw_hash, 'nick': nick})
+id = 'test'
+pw = '1234'
+nick = 'test'
+em = 'test@gukbab.com'
+pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+db.users.insert_one({'id': id, 'pw': pw_hash, 'nick': nick, 'em': em})
 
 
 #################################
