@@ -26,16 +26,16 @@ import hashlib
 ##############################
 
 # TEST 계정 생성 코드
-# id = 'test2'
+# id = 'test1'
 # pw = '1234'
-# nick = 'test2'
-# em = 'test2@gukbab.com'
+# nick = 'test1'
+# em = 'test1@gukbab.com'
 # pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
 # date_now = datetime.datetime.now()
-# db.users.insert_one({'id': id, 'pw': pw_hash, 'nick': nick, 'em': em, 'date': date_now})
-#
-print(db.users.find_one({'id': 'test'}))
-print(db.users.find_one({'id': 'test2'}))
+# db.users.insert_one({'userid': id, 'password': pw_hash, 'nickname': nick, 'email': em, 'date': date_now})
+
+print(db.users.find_one({'userid': 'test1'}))
+print(db.users.find_one({'userid': 'test2'}))
 
 ################################
 #  HTML을 주는 부분            ##
@@ -47,7 +47,7 @@ def home():
     try:
 # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.user.find_one({"id": payload['id']})
+        user_info = db.user.find_one({'userid': payload['userid']})
         return render_template('index.html', nickname=user_info["nick"])
 # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
     except jwt.ExpiredSignatureError:
@@ -83,7 +83,7 @@ def api_login():
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
     # id, 암호화된pw을 가지고 해당 유저를 찾습니다.
-    result = db.user.find_one({'id': id_receive, 'pw': pw_hash})
+    result = db.user.find_one({'userid': id_receive, 'password': pw_hash})
 
     # 찾으면 JWT 토큰을 만들어 발급합니다.
     if result is not None:
@@ -92,7 +92,7 @@ def api_login():
         # 아래에선 id와 exp를 담았습니다. 즉, JWT 토큰을 풀면 유저ID 값을 알 수 있습니다.
         # exp에는 만료시간을 넣어줍니다. 만료시간이 지나면, 시크릿키로 토큰을 풀 때 만료되었다고 에러가 납니다.
         payload = {
-            'id': id_receive,
+            'userid': id_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=3600)
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -123,8 +123,8 @@ def api_valid():
 
         # payload 안에 id가 들어있습니다. 이 id로 유저정보를 찾습니다.
         # 여기에선 그 예로 닉네임을 보내주겠습니다.
-        userinfo = db.user.find_one({'id': payload['id']}, {'_id': 0})
-        return jsonify({'result': 'success', 'nickname': userinfo['nick']})
+        userinfo = db.user.find_one({'userid': payload['userid']}, {'_id': 0})
+        return jsonify({'result': 'success', 'nickname': userinfo['nickname']})
     except jwt.ExpiredSignatureError:
         # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
         return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
@@ -144,12 +144,12 @@ def api_signup():
 
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    db.users.insert_one({'id': id_receive, 'pw': pw_hash, 'nick': nick_receive, 'em': em_receive, 'date': date_now})
+    db.users.insert_one({'userid': id_receive, 'password': pw_hash, 'nickname': nick_receive, 'email': em_receive, 'date': date_now})
 
 # 회원가입하여 계정 생성 시 프로필 테이블 생성(기본값 입력)
     basic_introduce = '안녕하세요'
 
-    db.profiles.insert_one({'id': id_receive, 'introduce': basic_introduce}) # 기본 프로필 사진 추가 구현해야됨!!!
+    db.profiles.insert_one({'userid': id_receive, 'introduce': basic_introduce, 'pf_image': ''}) # 기본 프로필 사진 추가 구현해야됨!!!
 
     return jsonify({'result': 'success'})
 
@@ -161,7 +161,7 @@ def api_signup():
 def id_check_dup():
     # ID 중복확인
     id_receive = request.form['id_give']
-    exists = bool(db.users.find_one({'id': id_receive}))
+    exists = bool(db.users.find_one({'userid': id_receive}))
     # 중복 되면 True 중복 아니면 False
     return jsonify({'result': 'success', 'exists': exists})
 
@@ -172,7 +172,7 @@ def id_check_dup():
 def nick_check_dup():
     # nick 중복확인
     nick_receive = request.form['nick_give']
-    exists = bool(db.users.find_one({'nick': nick_receive}))
+    exists = bool(db.users.find_one({'nickname': nick_receive}))
     # 중복 되면 True 중복 아니면 False
     return jsonify({'result': 'success', 'exists': exists})
 
