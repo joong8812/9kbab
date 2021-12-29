@@ -65,7 +65,7 @@ def home():
 
 @app.route('/signup')
 def signup():
-    return render_template('signup.html') # 회원가입 html 파일 생성시 주소 추가
+    return render_template('test.html') # 회원가입 html 파일 생성시 주소 추가
 
 
 #################################
