@@ -22,3 +22,6 @@ function selectAll(selectAll)  {
     checkbox.checked = selectAll.checked
   })
 }
+
+document.getElementById('btn').style.backgroundColor='white';
+
