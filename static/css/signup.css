@@ -1,13 +1,21 @@
 body{
-    background-color: lightyellow;
     max-width: 720px;
     margin: auto;
 }
 #backbtn{
-    width: 20%;
-    height: 20%;
+    width: 8%;
+    display:flex;
+    position: fixed;
+    margin: 3%;
+}
+#backbtn img{
+    width: 100%;
+    object-fit: cover;
+    opacity:35%;
 }
 #input-wrap{
+    width: 60%;
+    max-width: 720px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -17,7 +25,11 @@ body{
     top: 50%;
     transform: translate(-50%, -50%);
 }
+.box{
+    width:100%;
+}
 .input_box{
+    width: 100%;
     background-color: transparent;
     border:0;
     border-bottom: solid 1px lightgray;
@@ -25,15 +37,32 @@ body{
     font-size: 12px;
 }
 #term-wrap{
+    width: 100%;
     border: solid 1px lightgray;
     font-size: 12px;
     display: flex;
     flex-direction: column;
     margin-top: 10%;
+    padding: 5%;
 }
-#btn{
+.btn{
+    width: 100%;
+}
+#btn {
+    width: 100%;
     margin-top: 10%;
+    padding: 5% 0%;
+    background-color: transparent;
+    border: solid 2px lightgray;
+    font-size: 12px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+#btn:active{
+    background-color: white;
+    color: white;
 }
 label {
     display: block;
 }
+

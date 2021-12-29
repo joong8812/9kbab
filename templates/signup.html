@@ -17,14 +17,13 @@
 
 </head>
 <body>
-    <img id="background_img" src=""/>
-    <div id="backbtn"></div>
+    <div id="backbtn"><img src="../static/images/close.png"></div>
     <div id="input-wrap">
         <div class="box"><input class="input_box" id="userid" type="text" placeholder="아이디"/></div>
         <div class="box"><input class="input_box" id="useremail" type="email" placeholder="이메일"/></div>
         <div class="box"><input class="input_box" id="username" type="text" placeholder="닉네임"/></div>
         <div class="box"><input class="input_box" id="pw" type="password" placeholder="비밀번호 입력"/></div>
-        <div class="box"><input class="input_box" id="pw-check" type="password" placeholder="비밀번호 확인"/></div>
+        <div class="box"><input class="input_box" id="pw-check" type="password" placeholder="비밀번호 재입력"/></div>
         <div id="term-wrap">
             <label for="agree_all">
                 <input onclick="selectAll(this)" type="checkbox" name="selectall"/>
@@ -43,7 +42,7 @@
                 <span>개인정보 수집 및 이용 동의</span>
             </label>
         </div>
-        <div class="box"><input id="btn" type="button" value="동의하고 회원가입"></div>
+        <div class="btn"><input id="btn" type="button" value="동의하고 회원가입"></div>
     </div>
 </body>
 </html>
