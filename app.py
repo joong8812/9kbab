@@ -33,10 +33,8 @@ import hashlib
 # pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
 # date_now = datetime.datetime.now()
 # db.users.insert_one({'userid': id, 'password': pw_hash, 'nickname': nick, 'email': em, 'date': date_now})
-
-print(db.users.find_one({'userid': 'test1'}))
-print(db.users.find_one({'userid': 'test2'}))
-
+# print(db.users.find_one({'userid': 'test1'}))
+# print(db.users.find_one({'userid': 'test2'}))
 ################################
 #  HTML을 주는 부분            ##
 ################################
@@ -48,24 +46,30 @@ def home():
 # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'userid': payload['userid']})
-        return render_template('main.html', nickname=user_info['nickname'])
+        return redirect(url_for('main'))
 # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("index", msg="로그인 시간이 만료되었습니다."))
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
 # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
-        return redirect(url_for("index", msg="로그인 정보가 존재하지 않습니다."))
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
 
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
-    return render_template('index.html', msg=msg) # 로그인 html 파일 생성시 주소 추가
+    return render_template('index.html', msg=msg)
 
 
 @app.route('/signup')
 def signup():
-    return render_template('signup.html') # 회원가입 html 파일 생성시 주소 추가
+    return render_template('signup.html')
+
+@app.route('/home')
+def main():
+    posts = list(db.posts.find())
+    comments = list(db.comments.find())
+    return render_template('home.html', posts=posts, comments=comments) # 메인페이지 파일 생성 시 html 주소 수정
 
 #################################
 ##  로그인을 위한 API            ##
