@@ -25,34 +25,34 @@ import hashlib
 ##          TEST            ##
 ##############################
 
-# TEST 계정 생성 코드
-id = 'test'
-pw = '1234'
-nick = 'test'
-em = 'test@gukbab.com'
-pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
-db.users.insert_one({'id': id, 'pw': pw_hash, 'nick': nick, 'em': em})
+# # TEST 계정 생성 코드
+# id = 'test'
+# pw = '1234'
+# nick = 'test'
+# em = 'test@gukbab.com'
+# pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+# db.users.insert_one({'id': id, 'pw': pw_hash, 'nick': nick, 'em': em})
 
 
 #################################
 ##  HTML을 주는 부분             ##
 #################################
-# @app.route('/')
-# def home():
-# # 현재 이용자의 컴퓨터에 저장된 cookie 에서 mytoken 을 가져옵니다.
-#     token_receive = request.cookies.get('mytoken')
-#     try:
-# # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         user_info = db.user.find_one({"id": payload['id']})
-#         return render_template('index.html', nickname=user_info["nick"])
-# # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
-#     except jwt.ExpiredSignatureError:
-#         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
-#     except jwt.exceptions.DecodeError:
-# # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
-#         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-#
+@app.route('/')
+def home():
+# 현재 이용자의 컴퓨터에 저장된 cookie 에서 mytoken 을 가져옵니다.
+    token_receive = request.cookies.get('mytoken')
+    try:
+# 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.user.find_one({"id": payload['id']})
+        return render_template('index.html', nickname=user_info["nick"])
+# 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+# 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+        return redirect(url_for("test", msg="로그인 정보가 존재하지 않습니다."))
+
 
 # @app.route('/login')
 # def login():
@@ -125,7 +125,6 @@ def api_valid():
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
-```
 
 # #################################
 # ##  로그인을 위한 API            ##
@@ -207,5 +206,5 @@ if __name__ == '__main__':
 #         return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 #
 #
-# if __name__ == '__main__':
-#     app.run('0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':
+    app.run('0.0.0.0', port=5000, debug=True)
