@@ -12,28 +12,60 @@
             crossorigin="anonymous"></script>
 
     <title>9k밥</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
     <script>
-        {#$(document).ready(function () {#}
-        {#    confirm_dbconnection() // 테스트용 클론-db 연결 확인 후 삭제#}
-        {#    });#}
+            {#$(document).ready(function () {#}
+            {#    confirm_dbconnection() // 테스트용 클론-db 연결 확인 후 삭제#}
+            {#    });#}
 
-        // 테스트용 클론->db 연결 확인 후 삭제
-        {#function confirm_dbconnection() {#}
-        {#    $.ajax({#}
-        {#        type: "GET",#}
-        {#        url: "/connection",#}
-        {#        data: {},#}
-        {#        success: function (response) {#}
-        {#            alert(response['people'][0]['name'])#}
-        {#        }#}
-        {#    })#}
-        {# } #}
+            // 테스트용 클론->db 연결 확인 후 삭제
+            {#function confirm_dbconnection() {#}
+            {#    $.ajax({#}
+            {#        type: "GET",#}
+            {#        url: "/connection",#}
+            {#        data: {},#}
+            {#        success: function (response) {#}
+            {#            alert(response['people'][0]['name'])#}
+            {#        }#}
+            {#    })#}
+            {# } #}
     </script>
+
 </head>
 
 <body>
-    <h1>9k밥 - 9velopment</h1>
-</body>
+    <div id="main">
+        <div id ="header">
 
+        </div>
+        <div id ="container">
+            <img id="logo" src="../static/images/logo_9kbob.png">
+            <div class="form-floating">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">ID</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button class="btn btn-primary" type="button">Log in</button>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li>Not registred yet?&nbsp</li>
+                    <li class="breadcrumb-item"><a href="#">Sign in</a></li>
+                </ol>
+            </nav>
+            <div>
+                <p id="firmname">9velopment</p>
+            </div>
+
+        </div>
+        <div id ="footer">
+
+        </div>
+    </div>
+</body>
 </html>
