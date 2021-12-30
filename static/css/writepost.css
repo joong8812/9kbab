@@ -41,3 +41,7 @@ body {
 #container #buttons > button {
     margin-left: 15px;
 }
+
+#photo-preview {
+    margin-bottom: 20px;
+}
