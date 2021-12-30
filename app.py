@@ -2,8 +2,10 @@ from flask import Flask, render_template, jsonify, request, session, redirect, u
 app = Flask(__name__)
 
 from pymongo import MongoClient
+import certifi
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.bfqfr.mongodb.net/Cluster0?retryWrites=true&w=majority')
+ca = certifi.where()
+client = MongoClient('mongodb+srv://test:sparta@cluster0.bfqfr.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.gukbob
 
 # JWT 토큰을 만들 때 필요한 비밀문자열입니다. 아무거나 입력해도 괜찮습니다.
@@ -20,6 +22,10 @@ import datetime
 # 그렇지 않으면, 개발자(=나)가 회원들의 비밀번호를 볼 수 있으니까요.^^;
 import hashlib
 
+import os
+from util import allowed_file, get_file_extension
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 ##############################
 ##          TEST            ##
@@ -33,10 +39,8 @@ import hashlib
 # pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
 # date_now = datetime.datetime.now()
 # db.users.insert_one({'userid': id, 'password': pw_hash, 'nickname': nick, 'email': em, 'date': date_now})
-
-print(db.users.find_one({'userid': 'test1'}))
-print(db.users.find_one({'userid': 'test2'}))
-
+# print(db.users.find_one({'userid': 'test1'}))
+# print(db.users.find_one({'userid': 'test2'}))
 ################################
 #  HTML을 주는 부분            ##
 ################################
@@ -48,24 +52,45 @@ def home():
 # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'userid': payload['userid']})
-        return render_template('main.html', nickname=user_info['nickname'])
+        return redirect(url_for('main'))
 # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("index", msg="로그인 시간이 만료되었습니다."))
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
 # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
-        return redirect(url_for("index", msg="로그인 정보가 존재하지 않습니다."))
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
 
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
-    return render_template('index.html', msg=msg) # 로그인 html 파일 생성시 주소 추가
+    return render_template('index.html', msg=msg)
 
 
 @app.route('/signup')
 def signup():
-    return render_template('signup.html') # 회원가입 html 파일 생성시 주소 추가
+    return render_template('signup.html')
+
+@app.route('/home')
+def main():
+    posts = list(db.posts.find())
+    comments = list(db.comments.find())
+    return render_template('home.html', posts=posts, comments=comments) # 메인페이지 파일 생성 시 html 주소 수정
+
+@app.route('/writepost')
+def writepost():
+    try:
+        token_receive = request.cookies.get('mytoken')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        return render_template('writepost.html')  # 회원가입 html 파일 생성시 주소 추가
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+
+    except jwt.exceptions.DecodeError:
+    # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 #################################
 ##  로그인을 위한 API            ##
@@ -144,6 +169,59 @@ def nick_check_dup():
     exists = bool(db.users.find_one({'nickname': nick_receive}))
     # 중복 되면 True 중복 아니면 False
     return jsonify({'result': 'success', 'exists': exists})
+
+
+
+###############################
+##      글 작성하기       ##
+###############################
+@app.route('/api/writepost', methods=['POST'])
+def api_writepost():
+    msg = "글 작성 성공"
+    result = "fail"
+    try:
+        token_receive = request.cookies.get('mytoken')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_id = payload['userid']
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+    try:
+        now = datetime.datetime.now()
+        f = request.files['photo_give']
+
+        if f and allowed_file(f.filename):
+            ext = get_file_extension(f.filename)
+            filename = f"file_{now.strftime('%Y%m%d%H%M%S')}.{ext}"
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        photo_receive = filename
+        writing_receive = request.form['writing_give']
+        tag_receive = request.form['tag_give']
+        location_receive = request.form['location_give']
+
+        doc = {
+            'userid': user_id,
+            'photo': photo_receive,
+            'writing': writing_receive,
+            'tag': tag_receive,
+            'location': location_receive,
+            'post_date': now,
+            'like_cnt': [],
+        }
+        insert_result = db.posts.insert_one(doc)
+
+        if insert_result is not None:
+            result = "success"
+    except Exception as e:
+        print(e)
+        msg = "글 작성 실패"
+
+    return jsonify({'result': result, 'msg': msg})
 
 '''
 마이페이지 접속 시 유저정보 확인하여 해당 유저 정보 찾기 (아직 미확인)
