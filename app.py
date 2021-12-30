@@ -162,7 +162,7 @@ def id_check_dup():
 ###############################
 ##      닉네임 중복 체크       ##
 ###############################
-@app.route('/sign_up/nick_check', methods=['POST'])
+@app.route('/signup/nick_check', methods=['POST'])
 def nick_check_dup():
     # nick 중복확인
     nick_receive = request.form['nick_give']
