@@ -182,7 +182,9 @@ def api_writepost():
     try:
         token_receive = request.cookies.get('mytoken')
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_id = payload['userid']
+        user_info = db.users.find_one({'userid': payload['userid']})
+        user_id = user_info['userid']
+        nickname = user_info['nickname']
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -206,6 +208,7 @@ def api_writepost():
 
         doc = {
             'userid': user_id,
+            'nickname': nickname,
             'photo': photo_receive,
             'writing': writing_receive,
             'tag': tag_receive,
