@@ -18,25 +18,30 @@
 </head>
 <body>
     <div id="backbtn" onclick='window.location.href="/login"'>
-        <img src="../static/images/close.png">
+        <img src="../static/images/back(y).png">
     </div>
     <div id="input-wrap">
         <div class="box">
             <input class="input_box" id="userid" type="text" placeholder="아이디">
             <input onclick="checkid();" class="check_btn" id="check_id" type="button" value="중복체크">
         </div>
-        <div class="box"><p class="help" id="help_id">아이디는 영문/숫자/특수문자(._-)가능. 2-10자로 입력하세요.</p></div>
+        <div class="box">
+            <p class="help" id="help_id">영문/숫자/특수문자(._-)가능. 2-10자 입력</p>
+        </div>
+
         <div class="box">
             <input class="input_box" id="useremail" type="email" placeholder="이메일">
         </div>
-        <div class="box"><p class="help" id="help_email">이메일을 입력하세요.</p></div>
+        <div class="box">
+            <p class="help" id="help_email">이메일을 입력하세요.</p>
+        </div>
         <div class="box">
             <input class="input_box" id="nickname" type="text" placeholder="닉네임">
             <input onclick="checknick();" class="check_btn" id="check_name" type="button" value="중복체크">
         </div>
-        <div class="box"><p class="help" id="help_nick">닉네임은 한글/영문/숫자/특수문자(._-)가능. 2-10자로 입력하세요.</p></div>
+        <div class="box"><p class="help" id="help_nick">한글/영문/숫자/특수문자(._-)가능. 2-10자 입력</p></div>
         <div class="box"><input class="input_box" id="pw" type="password" placeholder="비밀번호"></div>
-        <div class="box"><p class="help" id="help_pw1">영문/숫자를 혼합하여 4-20자로 입력하세요.</p></div>
+        <div class="box"><p class="help" id="help_pw1">영문/숫자를 혼합하여 4-20자 입력</p></div>
         <div class="box"><input class="input_box" id="pw-check" type="password" placeholder="비밀번호확인"></div>
         <div class="box"><p class="help" id="help_pw2">재확인 비밀번호를 입력하세요.</p></div>
         <div id="term-wrap">
