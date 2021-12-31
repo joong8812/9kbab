@@ -1,3 +1,6 @@
+* {
+    font-family: 'Gowun Dodum', sans-serif;
+}
 body {
     max-width: 720px;
 }
@@ -30,11 +33,16 @@ body {
     cursor: pointer;
 }
 
-#header > h1 {
-  margin: 1% 3%;
-  width: 15%;
+#header-title {
+    margin: 2% 3%;
+    width: 15%;
+    text-align: center;
+}
+#header #header-title {
+    font-size: 16px;
 }
 
+/* 본문 */
 #container {
     width: 70%;
     margin-top: 15%
