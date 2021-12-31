@@ -30,7 +30,7 @@ function is_id(asValue) {
   return regid.test(asValue);}
 
 function is_pw(asValue) {
-  var regpw = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{6,20}$/;
+  var regpw = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{4,20}$/;
   return regpw.test(asValue);}
 
 function is_email(asValue) {
@@ -43,11 +43,13 @@ function checkid() {
   console.log(userid)
   if (userid == "") {
     alert('아이디를 입력하세요.')
+    $('#check_id').val('중복체크').css({'color':'gray'})
     $('#userid').focus()
     return true;
   }
   if (!is_id(userid)) {
     alert('아이디 형식을 확인하세요.')
+    $('#check_id').val('중복체크').css({'color':'gray'})
     $('#userid').focus()
     return true;
   }
@@ -76,7 +78,8 @@ function checknick() {
   console.log(nickname)
 
   if (nickname == ""){
-    alert('닉네임을 입력해주세요.')
+    alert('닉네임을 입력하세요.')
+    $('#check_name').val('중복체크').css({'color':'gray'})
     $('#nickname').focus()
     return true;
   }
@@ -109,19 +112,14 @@ function signup(){
   let pw2 = $('#pw-check').val()
   console.log(userid, nickname, email, pw1, pw2)
 
-  if ($('#check_all').is(':checked') == false){
-    alert('약관에 동의해주세요.')
-    $('#check_all').focus()
-    return;
-  }
+  //아이디입력조건 함수
+  checkid()
+
+  //닉네임입력조건 함수
+  checknick()
 
   if (!is_email(email)){
     alert('이메일 형식을 입력하세요')
-    $('#useremail').focus()
-    return;
-  }
-  else if(email == ""){
-    alert('이메일을 입력하세요.')
     $('#useremail').focus()
     return;
   }
@@ -132,19 +130,24 @@ function signup(){
     return;
   }
   else if (!is_pw(pw1)) {
-    alert('비밀번호의 형식을 확인해주세요. 영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자')
+    alert('비밀번호의 형식을 확인해주세요. 영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 4-20자')
     $('#pw').focus()
     return;
   }
-
   if (pw2 == "") {
-    alert('비밀번호를 입력하세요.')
+    alert('재확인 비밀번호를 입력하세요.')
     $('#pw-check').focus()
     return;
   }
   else if (pw2 != pw1) {
     alert('비밀번호가 일치하지 않습니다.')
     $('#pw-check').focus()
+    return;
+  }
+
+  if ($('#check_all').is(':checked') == false){
+    alert('약관에 동의해주세요.')
+    $('#check_all').focus()
     return;
   }
 
