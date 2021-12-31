@@ -10,7 +10,7 @@ body img{
     max-width: 30px;
     display:flex;
     position: fixed;
-    margin: 3%;
+    margin: 2%;
     top:0;
     left:0;
     cursor:pointer;
@@ -22,7 +22,7 @@ body img{
 }
 #input-wrap{
     width: 60%;
-    max-width: 720px;
+    max-width: 360px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -36,14 +36,20 @@ body img{
     width:100%;
     display: flex;
     flex-direction: row;
-    margin-top: 10%;
+}
+.help{
+    font-size: 10px;
+    color: lightgray;
+    text-align: left;
+    margin-bottom: 3%;
 }
 .check_btn{
     font-size: 10px;
     color: gray;
     display: absolute;
     border: solid 1px gray;
-    background-color:
+    border-radius: 50px;
+    background-color: transparent;
 }
 .check_btn:active {
     background-color: white;
@@ -62,11 +68,12 @@ body img{
     font-size: 12px;
     display: flex;
     flex-direction: column;
-    margin-top: 10%;
+    margin-top: 3%;
     padding: 5%;
 }
 .btn{
     width: 100%;
+    max-width: 300px;
 }
 #btn {
     width: 100%;
@@ -85,3 +92,4 @@ body img{
 label {
     display: block;
 }
+
