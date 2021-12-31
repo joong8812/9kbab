@@ -16,8 +16,9 @@
 <body>
     <div id="main">
         <div id="header">
-            <img id="logo" src="../static/images/9kbob_v01.png"/>
+            <img id="img-close" src="../static/images/close.png" onclick="doCancel()">
             <h1>새 글</h1>
+            <img id="img-pencil" src="../static/images/pencil.png" onclick="doPost()">
         </div>
         <div id="container">
             <form id="file_form" method="post" enctype="multipart/form-data" action="">
@@ -40,10 +41,6 @@
                 <div class="mb-3">
                     <label for="post-location" class="form-label">장소 등록하기</label>
                     <input type="text" class="form-control" id="post-location">
-                </div>
-                <div id="buttons">
-                    <button type="button" class="btn btn-primary" onclick="doPost()">등록하기</button>
-                    <button type="button" class="btn btn-secondary" onclick="doCancel()">취소하기</button>
                 </div>
             </form>
         </div>
