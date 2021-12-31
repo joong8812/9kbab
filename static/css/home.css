@@ -26,6 +26,7 @@ body {
 #header #header-icon{
   margin: 1% 3%;
   width: 7%;
+  cursor: pointer;
 }
 /* 컨테이너 */
 #container {
@@ -165,5 +166,6 @@ body {
 }
 #footer #icon-wrapper img {
   width: 5%;
+  cursor: pointer;
 }
 

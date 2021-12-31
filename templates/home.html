@@ -15,12 +15,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
     <script>
-        function goWrite(){
-            window.location.href="/writepost"
+        /*
+        $(document).ready(function () {
+            postComment();
+        });
+*/
+        function goWrite() {
+            window.location.href = "/writepost"
         }
 
+        /*
+        function postComment() {
+            $('#post-comment').empty()
+            $.ajax({
+                type: "GET",
+                url: "/home",
+                data: {},
+                success: function (response) {
+                    let rows = response['comments']
+                    for (let i = 0; i < rows.length; i++) {
+                        let nickname = rows[i]['nickname']
+                        let comment = rows[i]['comment']
 
+                        let temp_html = ``
+                        if ( `post._id` == ``) {
+                            temp_html = `<li>
+                                             <h> ${nickname}</h>
+                                             <h> ${comment}</h>
+                                         </li>`
+                        } else {
+                            break
+                        }
+                        $('#post-comment').append(temp_html)
+                    }
+                }
+            });
+        }
 
+*/
     </script>
 
 </head>
@@ -34,11 +66,11 @@
     <div id="container">
         <div id="post-container">
             {% for post in posts %}
-                <div class="post-wrapper">
+                <div id="{{ post._id }}" class="post-wrapper">
                     <div class="post-header">
                         <div class="left-wrapper">
                             <img class="profile-img" src="../static/images/1_cookie.jpg"/>
-                            <div class = "profile-txt">
+                            <div class="profile-txt">
                                 <p>{{ post.userid }}</p>
                                 <p>{{ post.location }}</p>
                             </div>
@@ -75,9 +107,12 @@
                             {% for comment in comments %}
                                 {% set var1 = post._id %}
                                 {% set var2 = comment.post_id %}
+                                {{ var1 }} --- {{ var2 }}
                                 {% if var1 == var2 %}
-                                    <p>{{comment.userid}}: {{comment.comment}}</p>
+                                    pass
+{#                                    {{ comment.userid }}: {{ comment.comment }}#}
                                 {% endif %}
+                                <br>
                             {% endfor %}
 
                         </div>
@@ -88,7 +123,7 @@
                 </div>
             {% endfor %}
 
-            </div>
+        </div>
     </div>
     <div id="footer">
         <div id="icon-wrapper">
