@@ -136,17 +136,37 @@ def api_signup():
     nick_receive = request.form['nick_give']
     em_receive = request.form['em_give']
     date_now = datetime.datetime.now()
+    result = ''
+    msg = ''
+    if id_receive == '' or pw_receive == '' or nick_receive == '' or em_receive == '':
+        result = 'fail'
+        msg = '회원가입 정보가 정확하지 않습니다.'
 
-    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+    else:
+        pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
-    db.users.insert_one({'userid': id_receive, 'password': pw_hash, 'nickname': nick_receive, 'email': em_receive, 'date': date_now})
+        db.users.insert_one({
+            'userid': id_receive,
+            'password': pw_hash,
+            'nickname': nick_receive,
+            'email': em_receive,
+            'date': date_now
+        })
 
 # 회원가입하여 계정 생성 시 프로필 테이블 생성(기본값 입력)
-    basic_introduce = '안녕하세요'
+        basic_introduce = '안녕하세요'
+        pf_image = 'basic.jfif'
 
-    db.profiles.insert_one({'userid': id_receive, 'introduce': basic_introduce, 'pf_image': ''}) # 기본 프로필 사진 추가 구현해야됨!!!
+        db.profiles.insert_one({
+            'userid': id_receive,
+            'introduce': basic_introduce,
+            'pf_image': pf_image
+        }) # 기본 프로필 사진 추가 구현해야됨!!!
 
-    return jsonify({'result': 'success'})
+        result = 'success'
+        msg = '회원가입 성공! 밥먹으로 가자!'
+
+    return jsonify({'result': result, 'msg': msg})
 
 ###############################
 ##      아이디 중복 체크       ##
