@@ -18,6 +18,9 @@
         function goWrite(){
             window.location.href="/writepost"
         }
+
+
+
     </script>
 
 </head>
@@ -30,18 +33,23 @@
     </div>
     <div id="container">
         <div id="post-container">
+            {% for post in posts %}
                 <div class="post-wrapper">
                     <div class="post-header">
                         <div class="left-wrapper">
-                            <img class="profileimg" src="../static/images/1_cookie.jpg"/>
-                            <p>쿠키</p>
+                            <img class="profile-img" src="../static/images/1_cookie.jpg"/>
+                            <div class = "profile-txt">
+                                <p>{{ post.userid }}</p>
+                                <p>{{ post.location }}</p>
+                            </div>
                         </div>
                         <div class="right-wrapper">
                             <img src="../static/images/more.png">
                         </div>
                     </div>
                     <div class="post-body">
-                        <img src="../static/images/1_cookie.jpg">
+
+                        <img src="/static/image_test/{{ post.photo }}">
                         <div class="post-icons-wrapper">
                             <div class="left-wrapper">
                                 <!-- 아이콘 크기가 달라서 부득이 하게 이렇게 만들었으나, 클래스 없이 img로 처리하는게 맞습니다! -->
@@ -57,49 +65,29 @@
                             <p><strong>쿠키</strong>님 <strong>외 1,234명</strong>이 좋아합니다</p>
                         </div>
                         <div class="post-content-wrapper">
-                            <p class="post-author">쿠키</p>
-                            <p class="post-content">안녕하세요</p>
+                            <p class="post-author">{{ post.userid }}</p>
+                            <p class="post-content">{{ post.writing }}</p>
+                        </div>
+                        <div class="post-content-tag">
+                            <p class="post-tag">{{ post.tag }}</p>
+                        </div>
+                        <div class="post-comment">
+                            {% for comment in comments %}
+                                {% set var1 = post._id %}
+                                {% set var2 = comment.post_id %}
+                                {% if var1 == var2 %}
+                                    <p>{{comment.userid}}: {{comment.comment}}</p>
+                                {% endif %}
+                            {% endfor %}
+
                         </div>
                         <p class="post-time">
                             1시간 전
                         </p>
                     </div>
                 </div>
-                <div class="post-wrapper">
-                    <div class="post-header">
-                        <div class="left-wrapper">
-                            <img src="../static/images/1_meat.jpg"/>
-                            <p>국밥</p>
-                        </div>
-                        <div class="right-wrapper">
-                            <img src="../static/images/more.png">
-                        </div>
-                    </div>
-                    <div class="post-body">
-                        <img src="../static/images/1_meat.jpg">
-                        <div class="post-icons-wrapper">
-                            <div class="left-wrapper">
-                                <!-- 아이콘 크기가 달라서 부득이 하게 이렇게 만들었으나, 클래스 없이 img로 처리하는게 맞습니다! -->
-                                <img class="post-icon" src="../static/images/like.png">
-                                <img class="post-icon-2" src="../static/images/comment.png">
+            {% endfor %}
 
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="post-footer">
-                        <div class="post-like-wrapper">
-                            <p><strong>국밥</strong>님 <strong>외 1,000명</strong>이 좋아합니다</p>
-                        </div>
-                        <div class="post-content-wrapper">
-                            <p class="post-author">국밥</p>
-                            <p class="post-content">⭐⭐가성비 맛집 추천⭐⭐</p>
-                        </div>
-                        <p class="post-time">
-                            10시간 전
-                        </p>
-                    </div>
-                </div>
             </div>
     </div>
     <div id="footer">
@@ -109,5 +97,6 @@
             <img src="../static/images/trending.png" onclick="goWrite()">
         </div>
     </div>
+</div>
 </body>
 </html>

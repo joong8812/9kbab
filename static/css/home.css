@@ -40,12 +40,18 @@ body {
   align-items: center;
   width: 100%;
 }
-/*.right-wrapper {*/
-/*  width: 100%;*/
-/*  display: flex;*/
-/*  justify-content: right;*/
-/*  margin-right: 3%;*/
-/*}*/
+
+.profile-txt {
+  flex-direction: column;
+}
+
+
+.right-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  margin-right: 3%;
+}
 
 /* 포스트 - 헤더 */
 .post-header {
@@ -125,10 +131,14 @@ body {
 .post-footer .post-content-wrapper .post-author {
   margin: 0% 2% 0% 2%;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
 }
 .post-footer .post-content-wrapper .post-content {
   margin: 0%;
+  font-size: 14px;
+}
+.post-footer .post-comment {
+  margin: 0% 2% 0% 2%;
   font-size: 14px;
 }
 .post-footer .post-time {
