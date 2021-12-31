@@ -10,72 +10,8 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='css/writepost.css')}}">
+    <script src="{{url_for('static', filename='js/writepost.js')}}"></script>
     <title>Title</title>
-
-    <script>
-        function doPost(){
-            const form = $('#file_form')[0];
-            let formData = new FormData(form);
-            const post_photo = $('#post-photo')[0].files[0];
-            const post_writing = $('#post-writing').val();
-            const post_tag = $('#post-tag').val();
-            const post_location = $('#post-location').val();
-
-            formData.append('photo_give', post_photo);
-            formData.append('writing_give', post_writing)
-            formData.append('tag_give', post_tag)
-            formData.append('location_give', post_location)
-
-            $.ajax({
-                type: 'POST',
-                url: '/api/writepost',
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        alert(response['msg'])
-                        window.location.href = '/'
-                    } else {
-                        alert(response['msg'])
-                        window.location.reload()
-                    }
-                },
-                error: function (err) {
-                    console.log('error:' + err)
-                }
-            })
-        }
-        function doCancel() {
-            window.location.href = '/'
-        }
-
-        function setThumbnail(event) {
-            let reader = new FileReader();
-            reader.onload = function (event) {
-                let img = document.createElement("img");
-                img.setAttribute("src", event.target.result);
-                img.setAttribute("class", "preview");
-
-                if (document.querySelector("div#photo-preview img") != null) {
-                    $(".preview").remove();
-                }
-                document.querySelector("div#photo-preview").appendChild(img);
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
-    <style>
-        #photo-preview {
-            background-color: yellow;
-            width: 100%;
-        }
-
-        #photo-preview > img {
-            width:100%;
-            border: 3px solid rgb(199, 206, 212);
-        }
-    </style>
 </head>
 <body>
     <div id="main">

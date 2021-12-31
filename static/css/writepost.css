@@ -43,5 +43,12 @@ body {
 }
 
 #photo-preview {
+    background-color: yellow;
+    width: 100%;
     margin-bottom: 20px;
+}
+
+#photo-preview > img {
+    width:100%;
+    border: 3px solid rgb(199, 206, 212);
 }
