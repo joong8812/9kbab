@@ -67,7 +67,20 @@ body {
   align-items: center;
 
   margin-top: 1%;
+}
 
+.warning-sign {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    color: #F7741E;
+    font-weight: 300;
+    font-size: 0.875rem;
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 #firmname {
