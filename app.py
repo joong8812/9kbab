@@ -98,7 +98,7 @@ def mypage():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'userid': payload['userid']})
         # user_info 는 db users 에서 userid를 조회한 값
-        id = user_info['users']
+        id = user_info['userid']
         nick = user_info['nickname']
         # profiles 에서 토큰 id 값으로 검색
         profile = db.profiles.find_one({'userid': id})
@@ -119,6 +119,37 @@ def mypage():
         print(mypage_info)
 
         return render_template('mypage.html', mypage_info=mypage_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/myfeed')
+def myfeed():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        # user_info 의 id, pw 값을 변수에 저장
+        id = user_info['userid']
+        nick = user_info['nickname']
+        # posts 콜렉션 에서 토큰 id 값으로 검색한 결과 변수에 저장
+        posts = list(db.posts.find({'userid': id}))
+        post_comment = []
+        # posts 의 _id 값을 이용해 comments 의 post_id와 일치한 댓글 찾기
+        for post in posts:
+            post_id = str(post['_id'])
+            comments = list(db.comments.find({'post_id': post_id}))
+            # 딕셔너리변수에 post_id 를 key 로하는 comments 리스트를 저장
+            p_c = {post_id: comments}
+            # p_c변수를 리스트에 추가
+            post_comment.append(p_c)
+
+        myfeed_info = [{
+            'userid': id,
+            'nickname': nick,
+        }]
+        return render_template('main_test.html', myfeed_info=myfeed_info, posts=posts, post_comment=post_comment)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
