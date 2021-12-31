@@ -98,7 +98,7 @@ def mypage():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'userid': payload['userid']})
         # user_info 는 db users 에서 userid를 조회한 값
-        id = user_info['users']
+        id = user_info['userid']
         nick = user_info['nickname']
         # profiles 에서 토큰 id 값으로 검색
         profile = db.profiles.find_one({'userid': id})
