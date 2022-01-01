@@ -64,8 +64,9 @@
                    </div>
                </div>
             </div>
+
             <div id="container-content">
-                {% for post in mypage_info[0].post%}
+                {% for post in mypage_info[0].post|sort(reverse=true, attribute="post_date") %}
                     {% if loop.index % 3 == 1 %}
                         <div class="one-row">
                     {% endif %}
