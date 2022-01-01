@@ -10,17 +10,24 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='css/mypage.css')}}">
-    <script src="{{url_for('static', filename='js/mypage.js')}}"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
     <title>마이페이지</title>
 
     <script>
+        function goHome() {
+            window.location.href = "/"
+        }
         function goWrite() {
             window.location.href = "/writepost"
         }
         function goMyfeed(){
             window.location.href = "/myfeed"
+        }
+        function doLogout(){
+            $.removeCookie('mytoken', {path: '/'});
+            window.location.href = '/';
         }
     </script>
 </head>
@@ -36,7 +43,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="/profile">프로필 변경</a></li>
-                    <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="doLogout(); return false;">로그아웃</a></li>
                 </ul>
             </div>
         </div>
@@ -74,7 +81,7 @@
         </div>
         <div id="footer">
             <div id="icon-wrapper">
-                <img src="{{url_for('static', filename='images/home.png')}}">
+                <img src="{{url_for('static', filename='images/home.png')}}" onclick="goHome()">
                 <img src="{{url_for('static', filename='images/search.png')}}">
                 <img src="{{url_for('static', filename='images/trending.png')}}" onclick="goWrite()">
             </div>
