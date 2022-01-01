@@ -155,6 +155,35 @@ def myfeed():
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/profile')
+def profile():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        # user_info 의 id, nick 값을 변수에 저장
+        id = user_info['userid']
+        nick = user_info['nickname']
+        # db profiles 데이터 추출
+        profiles = db.profiles.find_one({'userid': id})
+        profile_image = profiles['pf_image']
+        profile_introduce = profiles['introduce']
+
+        profiles_info = {
+            'userid': id,
+            'nickname': nick,
+            'pf_image': profile_image,
+            'introduce': profile_introduce
+        }
+
+        return render_template('profile.html', profiles_info=profiles_info)
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
 #################################
 ##  로그인을 위한 API            ##
 #################################
