@@ -227,7 +227,7 @@ def api_signup():
         }) # 기본 프로필 사진 추가 구현해야됨!!!
 
         result = 'success'
-        msg = '회원가입 성공! 밥먹으로 가자!'
+        msg = '회원가입 성공! 로그인을 해주세요!'
 
     return jsonify({'result': result, 'msg': msg})
 
