@@ -46,15 +46,15 @@ function checkid() {
   let userid = $('#userid').val()
 
   if (userid == "") {
-    $('#help_id').text('아이디는 영문, 숫자, 특수문자(._-) 사용가능. 2-10자로 입력하세요.')
-    $('#check_id').val('중복체크').css({'color':'gray'})
+    $('#help_id').text('영문/숫자/특수문자(._-)가능. 2-10자 입력')
+    $('#check_id').val('중복체크').css({'color':'#67BAB2'})
     $('#userid').focus()
     return true;
   }
 
   if (!is_id(userid)) {
-    $('#help_id').text('아이디는 영문, 숫자, 특수문자(._-) 사용가능. 2-10자로 입력하세요.')
-    $('#check_id').val('중복체크').css({'color':'gray'})
+    $('#help_id').text('영문/숫자/특수문자(._-)가능. 2-10자 입력')
+    $('#check_id').val('중복체크').css({'color':'#67BAB2'})
     $('#userid').focus()
     return true;
   }
@@ -66,13 +66,13 @@ function checkid() {
     success: function(response){
       if (response['exists']){
         $('#help_id').text('이미 존재하는 아이디입니다.')
-        $('#check_id').val('중복체크').css({'color':'gray'})
+        $('#check_id').val('중복체크').css({'color':'#67BAB2'})
         $('#userid').focus()
         return true;
       }
       else {
         $('#help_id').text('　')
-        $('#check_id').val('사용가능').css({'color':'green'})
+        $('#check_id').val('사용가능').css({'color':'white','background-color':'#67BAB2'})
         return false;
       }
     }
@@ -86,13 +86,13 @@ function checknick() {
 
   if (nickname == ""){
     $('#help_nick').text('닉네임을 입력하세요.')
-    $('#check_name').val('중복체크').css({'color':'gray'})
+    $('#check_name').val('중복체크').css({'color':'#67BAB2'})
     $('#nickname').focus()
     return true;
   }
   if (!is_nick(nickname)){
-    $('#help_nick').text('닉네임은 한글/영문/숫자/특수문자(._-)가능. 2-10자로 입력하세요.')
-    $('#check_name').val('중복체크').css({'color':'gray'})
+    $('#help_nick').text('한글/영문/숫자/특수문자(._-)가능. 2-10자내')
+    $('#check_name').val('중복체크').css({'color':'#67BAB2'})
     $('#nickname').focus()
     return true;
   }
@@ -104,13 +104,13 @@ function checknick() {
     success: function(response){
       if (response["exists"]){
         $('#help_nick').text('이미 존재하는 닉네임입니다.')
-        $('#check_name').val('중복체크').css({'color':'gray'})
+        $('#check_name').val('중복체크').css({'color':'#67BAB2'})
         $('#nickname').focus()
         return true;
       }
       else {
         $('#help_nick').text('　')
-        $('#check_name').val('사용가능').css({'color':'green'})
+        $('#check_name').val('사용가능').css({'color':'white','background-color':'#67BAB2'})
         return false;
       }
     }
@@ -154,7 +154,7 @@ function signup(){
     return;
   }
   else if (!is_pw(pw1)) {
-    $('#help_pw1').text('비밀번호는 영문/숫자를 혼합하여 4-20자로 입력하세요.')
+    $('#help_pw1').text('영문/숫자 혼합, 4-20자로 입력')
     $('#pw').focus()
     return;
   }

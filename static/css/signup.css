@@ -18,7 +18,6 @@ body img{
 #backbtn img{
     width: 100%;
     object-fit: cover;
-    opacity:35%;
 }
 #input-wrap{
     width: 60%;
@@ -45,14 +44,15 @@ body img{
 }
 .check_btn{
     font-size: 10px;
-    color: gray;
+    color: #67BAB2;
     display: absolute;
-    border: solid 1px gray;
+    border: solid 1px #67BAB2;
     border-radius: 50px;
     background-color: transparent;
+    transition-duration: .3s;
 }
 .check_btn:active {
-    background-color: white;
+    background-color: #67BAB2;
     color: white;
 }
 .input_box{
@@ -70,7 +70,24 @@ body img{
     flex-direction: column;
     margin-top: 3%;
     padding: 5%;
+    color: #757575;
 }
+#term-wrap input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    background-color: transparent;
+    -webkit-appearance: none;
+    border-radius: 50px;
+    border: 2px solid gray;
+    outline: none;
+    position: relative;
+    transition-duration: .3s;
+}
+#term-wrap input:checked[type="checkbox"] {
+    background-color: #F9C428;
+    border-color: #F9C428;
+}
+
 .btn{
     width: 100%;
     max-width: 300px;
@@ -79,17 +96,20 @@ body img{
     width: 100%;
     margin-top: 10%;
     padding: 5% 0%;
-    background-color: transparent;
-    border: solid 2px lightgray;
+    background-color: #F9C428;
+    border: solid 0px;
     font-size: 12px;
     border-radius: 50px;
     font-weight: bold;
+    color: white;
+    transition-duration: .2s;
 }
 #btn:active{
-    background-color: white;
-    color: white;
+    background-color: #F9C428;
+    color: #F9C428;
 }
 label {
     display: block;
 }
+
 
