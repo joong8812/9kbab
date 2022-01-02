@@ -23,6 +23,9 @@
         function goWrite() {
             window.location.href = "/writepost"
         }
+        function goMypage(){
+            window.location.href="/mypage"
+        }
 
         /*
         function postComment() {
@@ -61,7 +64,7 @@
 <div id="main">
     <div id="header">
         <img id="logo" src="../static/images/9kbob_v01.png"/>
-        <img id="header-icon" src="../static/images/1_rice.png"/>
+        <img id="header-icon" src="../static/images/1_rice.png" onclick="goMypage()"/>
     </div>
     <div id="container">
         <div id="post-container">

@@ -11,13 +11,18 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='css/writepost.css')}}">
     <script src="{{url_for('static', filename='js/writepost.js')}}"></script>
-    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <title>새 글 작성하기</title>
+
 </head>
 <body>
     <div id="main">
         <div id="header">
             <img id="img-close" src="../static/images/close.png" onclick="doCancel()">
-            <h1>새 글</h1>
+            <div id="header-title">
+                <span>새 글</span>
+            </div>
             <img id="img-pencil" src="../static/images/pencil.png" onclick="doPost()">
         </div>
         <div id="container">

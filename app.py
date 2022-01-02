@@ -91,6 +91,98 @@ def writepost():
     # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/mypage')
+def mypage():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        # user_info 는 db users 에서 userid를 조회한 값
+        id = user_info['userid']
+        nick = user_info['nickname']
+        # profiles 에서 토큰 id 값으로 검색
+        profile = db.profiles.find_one({'userid': id})
+        pf_image = profile['pf_image']
+        introduce = profile['introduce']
+        # posts 에서 토큰 id 값으로 검색
+        post = list(db.posts.find({'userid': id}))
+        post_cnt = len(post)
+
+        mypage_info = [{
+            'userid': id,
+            'nickname': nick,
+            'pf_image': pf_image,
+            'introduce': introduce,
+            'post': post,
+            'post_cnt': post_cnt
+        }]
+        print(mypage_info)
+
+        return render_template('mypage.html', mypage_info=mypage_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/myfeed')
+def myfeed():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        # user_info 의 id, pw 값을 변수에 저장
+        id = user_info['userid']
+        nick = user_info['nickname']
+        # posts 콜렉션 에서 토큰 id 값으로 검색한 결과 변수에 저장
+        posts = list(db.posts.find({'userid': id}))
+        post_comment = []
+        # posts 의 _id 값을 이용해 comments 의 post_id와 일치한 댓글 찾기
+        for post in posts:
+            post_id = str(post['_id'])
+            comments = list(db.comments.find({'post_id': post_id}))
+            # 딕셔너리변수에 post_id 를 key 로하는 comments 리스트를 저장
+            p_c = {post_id: comments}
+            # p_c변수를 리스트에 추가
+            post_comment.append(p_c)
+
+        myfeed_info = [{
+            'userid': id,
+            'nickname': nick,
+        }]
+        return render_template('main_test.html', myfeed_info=myfeed_info, posts=posts, post_comment=post_comment)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/profile')
+def profile():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        # user_info 의 id, nick 값을 변수에 저장
+        id = user_info['userid']
+        nick = user_info['nickname']
+        # db profiles 데이터 추출
+        profiles = db.profiles.find_one({'userid': id})
+        profile_image = profiles['pf_image']
+        profile_introduce = profiles['introduce']
+
+        profiles_info = {
+            'userid': id,
+            'nickname': nick,
+            'pf_image': profile_image,
+            'introduce': profile_introduce
+        }
+
+        return render_template('profile.html', profiles_info=profiles_info)
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
 #################################
 ##  로그인을 위한 API            ##
@@ -164,7 +256,7 @@ def api_signup():
         }) # 기본 프로필 사진 추가 구현해야됨!!!
 
         result = 'success'
-        msg = '회원가입 성공! 밥먹으로 가자!'
+        msg = '회원가입 성공! 로그인을 해주세요!'
 
     return jsonify({'result': result, 'msg': msg})
 
