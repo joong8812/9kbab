@@ -34,7 +34,7 @@
                     data: {post_id: post_id},
                     success: function (response) {
                         if (response['result'] == 'success') {
-                            window.location.reload();
+                            window.location.href="/mypage";
                         } else {
                             alert(response['msg'])
                             window.location.reload()
@@ -47,7 +47,6 @@
             }
         }
     </script>
-
 </head>
 
 <body>
