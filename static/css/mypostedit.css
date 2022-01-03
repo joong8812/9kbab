@@ -1,0 +1,60 @@
+* {
+    font-family: 'Gowun Dodum', sans-serif;
+}
+body {
+    max-width: 720px;
+}
+
+#main {
+    display: flex;
+    justify-content: center;
+}
+
+/* 헤더 */
+#header {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    max-width: 720px;
+    /*border-bottom: 1px solid lightgray;*/
+}
+#header #img-close {
+    width: 6%;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+#header #img-pencil {
+    width: 6%;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+#header-title {
+    margin: 2% 3%;
+    width: 15%;
+    text-align: center;
+}
+#header #header-title {
+    font-size: 16px;
+}
+
+/* 본문 */
+#container {
+    width: 70%;
+    margin-top: 15%
+}
+
+#photo-preview {
+    background-color: lightgoldenrodyellow;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#photo-preview > img {
+    width:100%;
+    border: 3px solid rgb(199, 206, 212);
+}
