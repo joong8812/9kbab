@@ -47,14 +47,14 @@ function checkid() {
 
   if (userid == "") {
     $('#help_id').text('영문/숫자/특수문자(._-)가능. 2-10자 입력')
-    $('#check_id').val('중복체크').css({'color':'#67BAB2'})
+    $('#check_id').val('중복체크').css({'color':'#67BAB2','background-color':'white'})
     $('#userid').focus()
     return true;
   }
 
   if (!is_id(userid)) {
     $('#help_id').text('영문/숫자/특수문자(._-)가능. 2-10자 입력')
-    $('#check_id').val('중복체크').css({'color':'#67BAB2'})
+    $('#check_id').val('중복체크').css({'color':'#67BAB2','background-color':'white'})
     $('#userid').focus()
     return true;
   }
@@ -66,8 +66,9 @@ function checkid() {
     success: function(response){
       if (response['exists']){
         $('#help_id').text('이미 존재하는 아이디입니다.')
-        $('#check_id').val('중복체크').css({'color':'#67BAB2'})
+        $('#check_id').val('중복체크').css({'color':'#67BAB2','background-color':'white'})
         $('#userid').focus()
+        $('#userid').val(null)
         return true;
       }
       else {
@@ -86,14 +87,15 @@ function checknick() {
 
   if (nickname == ""){
     $('#help_nick').text('닉네임을 입력하세요.')
-    $('#check_name').val('중복체크').css({'color':'#67BAB2'})
+    $('#check_name').val('중복체크').css({'color':'#67BAB2','background-color':'white'})
     $('#nickname').focus()
     return true;
   }
   if (!is_nick(nickname)){
-    $('#help_nick').text('한글/영문/숫자/특수문자(._-)가능. 2-10자내')
-    $('#check_name').val('중복체크').css({'color':'#67BAB2'})
+    $('#help_nick').text('잘못된 형식입니다. 한글/영문/숫자/특수문자(._-)가능. 2-10자내')
+    $('#check_name').val('중복체크').css({'color':'#67BAB2','background-color':'white'})
     $('#nickname').focus()
+    $('#nickname').val(null)
     return true;
   }
 
@@ -104,8 +106,9 @@ function checknick() {
     success: function(response){
       if (response["exists"]){
         $('#help_nick').text('이미 존재하는 닉네임입니다.')
-        $('#check_name').val('중복체크').css({'color':'#67BAB2'})
+        $('#check_name').val('중복체크').css({'color':'#67BAB2','background-color':'white'})
         $('#nickname').focus()
+        $('#nickname').val(null)
         return true;
       }
       else {
@@ -142,6 +145,7 @@ function signup(){
   if (!is_email(email)){
     $('#help_email').text('이메일 형식을 입력하세요')
     $('#useremail').focus()
+    $('#useremail').val(null)
     return;
   }
   else{
@@ -154,8 +158,9 @@ function signup(){
     return;
   }
   else if (!is_pw(pw1)) {
-    $('#help_pw1').text('영문/숫자 혼합, 4-20자로 입력')
+    $('#help_pw1').text('잘못된 형식입니다. 영문/숫자 혼합, 4-20자로 입력')
     $('#pw').focus()
+    $('#pw').val(null)
     return;
   }
   else{
@@ -170,6 +175,7 @@ function signup(){
   else if (pw2 != pw1) {
     $('#help_pw2').text('비밀번호가 일치하지 않습니다.')
     $('#pw-check').focus()
+    $('#pw-check').val(null)
     return;
   }
   else{
