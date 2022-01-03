@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/profile.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../static/js/profile.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <title>9k밥</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}">
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        <div id="backbtn" onclick='window.location.href="/mypage"'>
+            <img src="../static/images/back(y).png">
+            <p id="title"><strong>프로필편집</strong></p>
+        </div>
+
+        <div id="editbtn">
+            <img onclick="profile_edit('{{profiles_info.pf_image}}')" src="../static/images/check(B).png">
+        </div>
+    </div>
+
+    <div id="info_container">
+        <form id="profile_form" method="POST" enctype="multipart/formdata">
+            <div id="profile_wrap">
+                <div id="preview">
+                    <img id="default_img" src="../static/profile/{{profiles_info.pf_image}}">
+                </div>
+                <label for=upload>프로필 사진 변경</label>
+                <input onchange="Thumbnail(event);" accept="image/*" type="file" id="upload">
+            </div>
+            <div id="info_wrap">
+                <div class="userinfo" id="userid">
+                    <label>사용자 아이디:</label>
+                    <p id="myid">{{profiles_info.userid}}</p>
+                    <div></div>
+                </div>
+                <div class="userinfo" id="userid">
+                    <label>사용자 닉네임:</label>
+                    <p id="mynick">{{profiles_info.nickname}}</p>
+                </div>
+                <div class="userinfo" id="userintro">
+                    <label>소개글:</label>
+                    <p><textarea id="myintro">{{profiles_info.introduce}}</textarea></p>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

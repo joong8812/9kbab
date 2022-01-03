@@ -13,6 +13,7 @@
 
     <title>9k밥</title>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}">
 
     <script>
         /*
@@ -92,7 +93,11 @@
                 <div id="{{ post._id }}" class="post-wrapper">
                     <div class="post-header">
                         <div class="left-wrapper">
-                            <img class="profile-img" src="../static/images/1_cookie.jpg"/>
+                            {% for profile in profiles %}
+                                {% if profile.userid == post.userid%}
+                                <img class="profile-img" src="../static/profile/{{profile.pf_image}}"/>
+                                {% endif %}
+                            {% endfor %}
                             <div class="profile-txt">
                                 {{ post.userid }}
                                 <br>

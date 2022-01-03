@@ -13,17 +13,19 @@
     <script src="{{url_for('static', filename='js/writepost.js')}}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
-    <title>새 글 작성하기</title>
-
+    <title>9k밥</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}">
 </head>
 <body>
     <div id="main">
         <div id="header">
-            <img id="img-close" src="{{url_for('static', filename='images/back(y).png')}}" onclick="doCancel()">
-            <div id="header-title">
-                <span>새 글</span>
+            <div id="header-left">
+                <img id="img-close" src="{{url_for('static', filename='images/back(y).png')}}" onclick="doCancel()">
+                <p id="title"><strong>새 글</strong></p>
             </div>
-            <img id="img-pencil" src="{{url_for('static', filename='images/check(B).png')}}" onclick="doPost()">
+            <div id="header-right">
+                <img id="img-pencil" src="{{url_for('static', filename='images/check(B).png')}}" onclick="doPost()">
+            </div>
         </div>
         <div id="container">
             <form id="file_form" method="post" enctype="multipart/form-data" action="">

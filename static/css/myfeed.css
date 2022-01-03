@@ -177,5 +177,7 @@ body {
 #footer #icon-wrapper img {
   width: 5%;
   cursor: pointer;
+  margin-left : 15%;
+  margin-right : 15%;
 }
 

@@ -1,23 +1,39 @@
-body{
-    max-width: 720px;
-    margin: auto;
+*{
+    font-family: 'Gowun Dodum', sans-serif;
 }
-body img{
-    object-fit: cover;
+@media(max-width: 720px;){
+    #container{
+        width: auto;
+    }
+    #header{
+        float: none;
+        width: auto;
+    }
+    #info_container{
+        float: none;
+        width: auto;
+    }
+}
+#container {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+}
+#header{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 #backbtn{
-    width: 8%;
-    max-width: 30px;
+    width: 40%;
     display:flex;
-    position: fixed;
-    margin: 2%;
-    top:0;
-    left:0;
-    cursor:pointer;
+    flex-direction: row;
+    align-content: center;
 }
 #backbtn img{
-    width: 100%;
-    object-fit: cover;
+    width: 30%;
+    max-width: 50px;
+    float: left;
 }
 #input-wrap{
     width: 60%;
@@ -37,13 +53,13 @@ body img{
     flex-direction: row;
 }
 .help{
-    font-size: 10px;
+    font-size: 11px;
     color: lightgray;
     text-align: left;
     margin-bottom: 3%;
 }
 .check_btn{
-    font-size: 10px;
+    font-size: 11px;
     color: #67BAB2;
     display: absolute;
     border: solid 1px #67BAB2;
@@ -94,10 +110,11 @@ body img{
 }
 #btn {
     width: 100%;
+    max-width: 300px;
     margin-top: 10%;
-    padding: 5% 0%;
+    padding: 5% 0;
     background-color: #F9C428;
-    border: solid 0px;
+    border: solid 0;
     font-size: 12px;
     border-radius: 50px;
     font-weight: bold;
