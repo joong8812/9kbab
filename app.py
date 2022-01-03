@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request, session, redirect, u
 app = Flask(__name__)
 
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 import certifi
 
 ca = certifi.where()
@@ -335,6 +336,18 @@ def api_writepost():
     except Exception as e:
         print(e)
         msg = "글 작성 실패"
+
+    return jsonify({'result': result, 'msg': msg})
+
+
+#########################
+##      게시글 삭제       ##
+#########################
+@app.route('/api/myfeed/delete', methods=['POST'])
+def delete_myfeed():
+    post_id = ObjectId(request.form['post_id'])
+    result = 'success' if db.posts.delete_one({'_id': post_id}).deleted_count == 1 else "fail"
+    msg = "삭제 성공" if result == 'success' else "삭제 실패"
 
     return jsonify({'result': result, 'msg': msg})
 
