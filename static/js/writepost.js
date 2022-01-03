@@ -44,7 +44,7 @@ function doPost() {
 }
 
 function doCancel() {
-    window.location.href = '/'
+    window.history.back();
 }
 
 function setThumbnail(event) {

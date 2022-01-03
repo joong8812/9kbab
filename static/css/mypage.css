@@ -35,9 +35,17 @@ body {
     opacity: 0.0;
 }
 
+#header .dropdown {
+    text-align: right;
+}
+
 #header .dropdown .dropdown-img {
-    margin-right: 20px;
+    margin-right: 10px;
     width: 70%;
+}
+
+#header .dropdown .dropdown-img > img{
+    width: 30%;
 }
 
 /* 컨테이너 */

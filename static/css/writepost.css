@@ -14,12 +14,13 @@ body {
 #header {
     display: flex;
     justify-content: space-between;
-    background-color: lightgoldenrodyellow;
+    background-color: white;
     align-items: center;
     width: 100%;
     position: fixed;
     max-width: 720px;
-    border-bottom: 1px solid lightgray;
+    /*border-bottom: 1px solid lightgray;*/
+    z-index: 2;
 }
 #header #img-close {
     width: 6%;
@@ -45,7 +46,8 @@ body {
 /* 본문 */
 #container {
     width: 70%;
-    margin-top: 15%
+    margin-top: 15%;
+    z-index: 1;
 }
 
 #photo-preview {
