@@ -172,9 +172,13 @@ def myfeed():
             # p_c변수를 리스트에 추가
             post_comment.append(p_c)
 
+        profiles = db.profiles.find_one({'userid': id})
+        pf_image = profiles['pf_image']
+
         myfeed_info = [{
             'userid': id,
             'nickname': nick,
+            'pf_image': pf_image
         }]
         return render_template('myfeed.html', myfeed_info=myfeed_info, posts=posts, post_comment=post_comment)
     except jwt.ExpiredSignatureError:
