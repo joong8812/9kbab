@@ -24,7 +24,7 @@ import datetime
 import hashlib
 
 import os
-from util import allowed_file, get_file_extension
+from util import allowed_file, get_file_extension, elapsedTime
 UPLOAD_FOLDER = 'static/uploads'
 profile_save_path = 'static/profile'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -86,7 +86,16 @@ def main():
     posts = list(db.posts.find())
     comments = list(db.comments.find())
     profiles = list(db.profiles.find())
-    return render_template('home.html', posts=posts, comments=comments, profiles=profiles)
+
+    posts_add_elapsedTime = []
+    for post in posts:
+        post_time = post['post_date']
+        elapsed_time = elapsedTime(post_time)
+
+        post['elapsed_time'] = elapsed_time
+        posts_add_elapsedTime.append(post)
+    print(posts_add_elapsedTime)
+    return render_template('home.html', posts=posts, comments=comments, profiles=profiles, posts_add_elapsedTime=posts_add_elapsedTime)
 
 @app.route('/writepost')
 def writepost():
