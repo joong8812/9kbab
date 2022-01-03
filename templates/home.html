@@ -13,6 +13,7 @@
 
     <title>9k밥</title>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}">
 
     <script>
         /*
@@ -39,25 +40,34 @@
             const today = new Date();
             {#console.log(today);#}
             const timeValue = new Date(date);
-            console.log(timeValue);
+            {#console.log(timeValue);#}
 
             const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+            const betweenTimeHour = Math.floor(betweenTime / 60);
+            const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+
             if (betweenTime < 1) return '방금전';
-            if (betweenTime < 60) {
+
+            else if (betweenTime < 60) {
+                console.log(`${betweenTime}분전`);
                 return `${betweenTime}분전`;
             }
 
-            const betweenTimeHour = Math.floor(betweenTime / 60);
-            if (betweenTimeHour < 24) {
+            else if (betweenTime < 60*24) {
+                console.log(`${betweenTimeHour}시간전`);
                 return `${betweenTimeHour}시간전`;
+
             }
 
-            const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-            if (betweenTimeDay < 365) {
+            else if (betweenTime < 60*24*365) {
+                console.log(`${betweenTimeDay}일전`);
                 return `${betweenTimeDay}일전`;
             }
+            else {
+                console.log(`${Math.floor(betweenTimeDay / 365)}년전`);
+                return `${Math.floor(betweenTimeDay / 365)}년전`;
+            }
 
-            return `${Math.floor(betweenTimeDay / 365)}년전`;
 
             const cal_date = '123';
             value.parent.innerText = cal_date;
@@ -89,7 +99,7 @@
                                 {% endif %}
                             {% endfor %}
                             <div class="profile-txt">
-                                {{ post.userid }}
+                                {{ post.nickname }}
                                 <br>
                                 {{ post.location }}
                             </div>
@@ -141,12 +151,12 @@
                             {% endfor %}
                         </div>
                         <p class="post-time" >
-{#                        <p id="post_date">{{ post.post_date }}</p>#}
-                            <script>
-                                 timeForToday(document.currentScript);
-                            </script>
+                        <p id="post_date">{{ post.elapsed_time }}</p>
+{#                            <script>#}
+{#                                 timeForToday(document.currentScript);#}
+{#                            </script>#}
 
-                                                        1시간 전
+{#                                                        1시간 전#}
 
 
                         </p>
