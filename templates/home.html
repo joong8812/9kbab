@@ -23,39 +23,50 @@
         function goWrite() {
             window.location.href = "/writepost"
         }
-        function goMypage(){
-            window.location.href="/mypage"
+
+        function goMypage() {
+            window.location.href = "/mypage"
         }
 
-        /*
-        function postComment() {
-            $('#post-comment').empty()
-            $.ajax({
-                type: "GET",
-                url: "/home",
-                data: {},
-                success: function (response) {
-                    let rows = response['comments']
-                    for (let i = 0; i < rows.length; i++) {
-                        let nickname = rows[i]['nickname']
-                        let comment = rows[i]['comment']
-
-                        let temp_html = ``
-                        if ( `post._id` == ``) {
-                            temp_html = `<li>
-                                             <h> ${nickname}</h>
-                                             <h> ${comment}</h>
-                                         </li>`
-                        } else {
-                            break
-                        }
-                        $('#post-comment').append(temp_html)
-                    }
-                }
-            });
+        function reRoad() {
+            window.location.reload()
         }
 
-*/
+        function timeForToday(value) {
+
+            const date = value.previousElementSibling.innerText
+
+            const today = new Date();
+            {#console.log(today);#}
+            const timeValue = new Date(date);
+            console.log(timeValue);
+
+            const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+            if (betweenTime < 1) return '방금전';
+            if (betweenTime < 60) {
+                return `${betweenTime}분전`;
+            }
+
+            const betweenTimeHour = Math.floor(betweenTime / 60);
+            if (betweenTimeHour < 24) {
+                return `${betweenTimeHour}시간전`;
+            }
+
+            const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+            if (betweenTimeDay < 365) {
+                return `${betweenTimeDay}일전`;
+            }
+
+            return `${Math.floor(betweenTimeDay / 365)}년전`;
+
+            const cal_date = '123';
+            value.parent.innerText = cal_date;
+        }
+
+
+
+
+
     </script>
 
 </head>
@@ -68,7 +79,7 @@
     </div>
     <div id="container">
         <div id="post-container">
-            {% for post in posts %}
+            {% for post in posts|sort(reverse=true, attribute="post_date") %}
                 <div id="{{ post._id }}" class="post-wrapper">
                     <div class="post-header">
                         <div class="left-wrapper">
@@ -83,9 +94,9 @@
                             <img src="../static/images/more.png">
                         </div>
                     </div>
-                        <div class="post-body">
+                    <div class="post-body">
 
-                        <img src="/static/image_test/{{ post.photo }}">
+                        <img src="/static/uploads/{{ post.photo }}">
                         <div class="post-icons-wrapper">
                             <div class="left-wrapper">
                                 <!-- 아이콘 크기가 달라서 부득이 하게 이렇게 만들었으나, 클래스 없이 img로 처리하는게 맞습니다! -->
@@ -118,15 +129,22 @@
                                     {% set count.value = count.value + 1 %}
                                 {% endif %}
                             {% endfor %}
-{#                            {{ commentzip[count.value - 1] }}#}
+                            {#                            {{ commentzip[count.value - 1] }}#}
                             {% for key, value in commentzip.items() %}
                                 {% if loop.index == loop.length %}
-                                <li>{{ value["id"] }} - {{ value["msg"] }}</li>
+                                    <li>{{ value["id"] }} - {{ value["msg"] }}</li>
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <p class="post-time">
-                            1시간 전
+                        <p class="post-time" >
+{#                        <p id="post_date">{{ post.post_date }}</p>#}
+                            <script>
+                                 timeForToday(document.currentScript);
+                            </script>
+
+                                                        1시간 전
+
+
                         </p>
                     </div>
                 </div>
@@ -136,8 +154,8 @@
     </div>
     <div id="footer">
         <div id="icon-wrapper">
-            <img src="../static/images/home.png">
-            <img src="../static/images/search.png">
+            <img src="../static/images/home.png" onclick="reRoad()">
+{#             <img src="../static/images/search.png">#}
             <img src="../static/images/trending.png" onclick="goWrite()">
         </div>
     </div>
