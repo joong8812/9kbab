@@ -96,6 +96,11 @@ body {
     width: 100%;
 }
 
+#container-content #notice-wrapper {
+    margin-top: 100px;
+    text-align: center;
+}
+
 #container-content .one-row{
     display: flex;
     flex-direction: row;
