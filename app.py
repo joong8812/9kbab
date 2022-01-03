@@ -71,7 +71,15 @@ def login():
 
 @app.route('/signup')
 def signup():
-    return render_template('signup.html')
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        return redirect(url_for('mypage', msg='마이페이지로 이동합니다.'))
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return render_template('signup.html')
 
 @app.route('/home')
 def main():
