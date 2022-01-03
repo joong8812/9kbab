@@ -19,11 +19,13 @@
 <body>
     <div id="main">
         <div id="header">
-            <img id="img-close" src="{{url_for('static', filename='images/back(y).png')}}" onclick="doCancel()">
-            <div id="header-title">
-                <span>새 글</span>
+            <div id="header-left">
+                <img id="img-close" src="{{url_for('static', filename='images/back(y).png')}}" onclick="doCancel()">
+                <p id="title"><strong>새 글</strong></p>
             </div>
-            <img id="img-pencil" src="{{url_for('static', filename='images/check(B).png')}}" onclick="doPost()">
+            <div id="header-right">
+                <img id="img-pencil" src="{{url_for('static', filename='images/check(B).png')}}" onclick="doPost()">
+            </div>
         </div>
         <div id="container">
             <form id="file_form" method="post" enctype="multipart/form-data" action="">
