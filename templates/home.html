@@ -39,25 +39,34 @@
             const today = new Date();
             {#console.log(today);#}
             const timeValue = new Date(date);
-            console.log(timeValue);
+            {#console.log(timeValue);#}
 
             const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+            const betweenTimeHour = Math.floor(betweenTime / 60);
+            const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+
             if (betweenTime < 1) return '방금전';
-            if (betweenTime < 60) {
+
+            else if (betweenTime < 60) {
+                console.log(`${betweenTime}분전`);
                 return `${betweenTime}분전`;
             }
 
-            const betweenTimeHour = Math.floor(betweenTime / 60);
-            if (betweenTimeHour < 24) {
+            else if (betweenTime < 60*24) {
+                console.log(`${betweenTimeHour}시간전`);
                 return `${betweenTimeHour}시간전`;
+
             }
 
-            const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-            if (betweenTimeDay < 365) {
+            else if (betweenTime < 60*24*365) {
+                console.log(`${betweenTimeDay}일전`);
                 return `${betweenTimeDay}일전`;
             }
+            else {
+                console.log(`${Math.floor(betweenTimeDay / 365)}년전`);
+                return `${Math.floor(betweenTimeDay / 365)}년전`;
+            }
 
-            return `${Math.floor(betweenTimeDay / 365)}년전`;
 
             const cal_date = '123';
             value.parent.innerText = cal_date;
@@ -137,12 +146,12 @@
                             {% endfor %}
                         </div>
                         <p class="post-time" >
-{#                        <p id="post_date">{{ post.post_date }}</p>#}
+                        <p id="post_date" display="none"  >{{ post.post_date }}</p>
                             <script>
                                  timeForToday(document.currentScript);
                             </script>
 
-                                                        1시간 전
+{#                                                        1시간 전#}
 
 
                         </p>
