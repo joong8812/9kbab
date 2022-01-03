@@ -85,7 +85,8 @@ def signup():
 def main():
     posts = list(db.posts.find())
     comments = list(db.comments.find())
-    return render_template('home.html', posts=posts, comments=comments) # 메인페이지 파일 생성 시 html 주소 수정
+    profiles = list(db.profiles.find())
+    return render_template('home.html', posts=posts, comments=comments, profiles=profiles) # 메인페이지 파일 생성 시 html 주소 수정
 
 @app.route('/writepost')
 def writepost():
