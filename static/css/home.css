@@ -38,12 +38,14 @@ body {
 .left-wrapper {
   margin-left: 3%;
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  /*align-items: center;*/
   width: 100%;
 }
 
 .profile-txt {
   flex-direction: column;
+
 }
 
 
@@ -138,10 +140,16 @@ body {
   margin: 0%;
   font-size: 14px;
 }
-.post-footer .post-comment {
+.post-footer .post-tag {
   margin: 0% 2% 0% 2%;
+  font-size: 12px;
+}
+
+.post-footer .post-comment {
+  margin: 1% 2% 0% 2%;
   font-size: 14px;
 }
+
 .post-footer .post-time {
   color: gray;
   font-size: 10px;

@@ -16,9 +16,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
     <script>
-        function login(){
+        function login() {
             let id = $(`#floatingID`).val()
             let password = $(`#floatingPassword`).val()
+
+            if ((id == '') || (password == '')) {
+                $(`#valid_check_msg_uid`).show()
+            } else {
+                $(`#valid_check_msg_uid`).hide()
+
+            }
+
+
 
             $.ajax({
                 type: "POST",
@@ -41,38 +50,38 @@
 </head>
 
 <body>
-    <div id="main">
-        <div id ="header">
+<div id="main">
+    <div id="header">
 
-        </div>
-        <div id ="container">
-            <img id="logo" src="../static/images/logo_9kbob.png">
-            <div class="form-floating">
-                <input type="email" class="form-control" id="floatingID" placeholder="name@example.com">
-                <label for="floatingInput">ID</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <button onclick="login()" class="btn btn-primary" type="button">Log in</button>
-                <p class="warning-sign" id="valid_check_msg_uid" style="">로그인 정보를 입력해주세요.</p>
-            </div>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li>Not registred yet?&nbsp</li>
-                    <li class="breadcrumb-item"><a href="/signup">Sign up</a></li>
-                </ol>
-            </nav>
-            <div>
-                <p id="firmname">9velopment</p>
-            </div>
-
-        </div>
-        <div id ="footer">
-
-        </div>
     </div>
+    <div id="container">
+        <img id="logo" src="../static/images/logo_9kbob.png">
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingID" placeholder="name@example.com">
+            <label for="floatingInput">ID</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button onclick="login()" class="btn btn-primary" type="button">Log in</button>
+            <p class="warning-sign" id="valid_check_msg_uid" style="display:none">로그인 정보를 입력해주세요.</p>
+        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li>Not registred yet?&nbsp</li>
+                <li class="breadcrumb-item"><a href="/signup">Sign up</a></li>
+            </ol>
+        </nav>
+        <div>
+            <p id="firmname">9velopment</p>
+        </div>
+
+    </div>
+    <div id="footer">
+
+    </div>
+</div>
 </body>
 </html>

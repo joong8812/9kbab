@@ -74,15 +74,16 @@
                         <div class="left-wrapper">
                             <img class="profile-img" src="../static/images/1_cookie.jpg"/>
                             <div class="profile-txt">
-                                <p>{{ post.userid }}</p>
-                                <p>{{ post.location }}</p>
+                                {{ post.userid }}
+                                <br>
+                                {{ post.location }}
                             </div>
                         </div>
                         <div class="right-wrapper">
                             <img src="../static/images/more.png">
                         </div>
                     </div>
-                    <div class="post-body">
+                        <div class="post-body">
 
                         <img src="/static/image_test/{{ post.photo }}">
                         <div class="post-icons-wrapper">
@@ -107,17 +108,22 @@
                             <p class="post-tag">{{ post.tag }}</p>
                         </div>
                         <div class="post-comment">
+                            {% set commentzip = {} %}
+                            {% set count = namespace(value=0) %}
                             {% for comment in comments %}
-                                {% set var1 = post._id %}
+                                {% set var1 = post._id|string %}
                                 {% set var2 = comment.post_id %}
-                                {{ var1 }} --- {{ var2 }}
                                 {% if var1 == var2 %}
-                                    pass
-{#                                    {{ comment.userid }}: {{ comment.comment }}#}
+                                    {% set x=commentzip.__setitem__(count.value, {'id': comment.userid, 'msg': comment.comment}) %}
+                                    {% set count.value = count.value + 1 %}
                                 {% endif %}
-                                <br>
                             {% endfor %}
-
+{#                            {{ commentzip[count.value - 1] }}#}
+                            {% for key, value in commentzip.items() %}
+                                {% if loop.index == loop.length %}
+                                <li>{{ value["id"] }} - {{ value["msg"] }}</li>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                         <p class="post-time">
                             1시간 전

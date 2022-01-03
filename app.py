@@ -149,7 +149,7 @@ def myfeed():
             'userid': id,
             'nickname': nick,
         }]
-        return render_template('main_test.html', myfeed_info=myfeed_info, posts=posts, post_comment=post_comment)
+        return render_template('myfeed.html', myfeed_info=myfeed_info, posts=posts, post_comment=post_comment)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
