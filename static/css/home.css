@@ -156,6 +156,9 @@ body {
   margin-left: 2%;
   margin-top: 5%;
 }
+#post_date{
+  font-size: 11px;
+}
 
 /* 푸터 */
 #footer {

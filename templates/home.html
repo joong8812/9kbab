@@ -99,7 +99,7 @@
                                 {% endif %}
                             {% endfor %}
                             <div class="profile-txt">
-                                {{ post.userid }}
+                                {{ post.nickname }}
                                 <br>
                                 {{ post.location }}
                             </div>
@@ -151,10 +151,10 @@
                             {% endfor %}
                         </div>
                         <p class="post-time" >
-                        <p id="post_date" display="none"  >{{ post.post_date }}</p>
-                            <script>
-                                 timeForToday(document.currentScript);
-                            </script>
+                        <p id="post_date">{{ post.elapsed_time }}</p>
+{#                            <script>#}
+{#                                 timeForToday(document.currentScript);#}
+{#                            </script>#}
 
 {#                                                        1시간 전#}
 
