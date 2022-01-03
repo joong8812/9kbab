@@ -97,7 +97,6 @@ def main():
 
             post['elapsed_time'] = elapsed_time
             posts.append(post)
-        print(posts)
         return render_template('home.html', posts=posts, comments=comments, profiles=profiles)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
@@ -132,8 +131,16 @@ def mypage():
         pf_image = profile['pf_image']
         introduce = profile['introduce']
         # posts 에서 토큰 id 값으로 검색
-        post = list(db.posts.find({'userid': id}))
-        post_cnt = len(post)
+        posts = list(db.posts.find({'userid': id}))
+        post_cnt = len(posts)
+
+        post = []
+        for p in posts:
+            post_time = p['post_date']
+            elapsed_time = elapsedTime(post_time)
+
+            p['elapsed_time'] = elapsed_time
+            post.append(p)
 
         mypage_info = [{
             'userid': id,
@@ -143,7 +150,6 @@ def mypage():
             'post': post,
             'post_cnt': post_cnt
         }]
-        print(mypage_info)
 
         return render_template('mypage.html', mypage_info=mypage_info)
     except jwt.ExpiredSignatureError:
@@ -417,23 +423,16 @@ def profile_edit():
         id = user_info['userid']
         nick = user_info['nickname']
         if profile_receive == 'y':
-            print('profile_receive == y')
             pfile_receive = request.files['pfile_give']
             if pfile_receive and allowed_file(pfile_receive.filename):
-                print('1')
                 ext = get_file_extension(pfile_receive.filename)
                 filename = f"file_{now.strftime('%Y%m%d%H%M%S')}.{ext}"
                 pfile_receive.save(os.path.join(profile_save_path, filename))
-                print('2')
 
                 update_result = db.profiles.update_one({'userid': id}, {'$set': {'introduce': introduce_receive, 'pf_image': filename}})
-                print(update_result)
         elif profile_receive == 'n':
-            print('profile_receive == n')
             update_result = db.profiles.update_one({'userid': id},
                                                    {'$set': {'introduce': introduce_receive}})
-            print(update_result)
-        print(update_result)
         if update_result is not None:
             result = 'success'
             msg = '프로필 수정 성공.'
