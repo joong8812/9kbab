@@ -83,19 +83,26 @@ def signup():
 
 @app.route('/home')
 def main():
-    posts = list(db.posts.find())
-    comments = list(db.comments.find())
-    profiles = list(db.profiles.find())
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        posts = list(db.posts.find())
+        comments = list(db.comments.find())
+        profiles = list(db.profiles.find())
 
-    posts_add_elapsedTime = []
-    for post in posts:
-        post_time = post['post_date']
-        elapsed_time = elapsedTime(post_time)
+        posts_add_elapsedTime = []
+        for post in posts:
+            post_time = post['post_date']
+            elapsed_time = elapsedTime(post_time)
 
-        post['elapsed_time'] = elapsed_time
-        posts_add_elapsedTime.append(post)
-    print(posts_add_elapsedTime)
-    return render_template('home.html', posts=posts, comments=comments, profiles=profiles, posts_add_elapsedTime=posts_add_elapsedTime)
+            post['elapsed_time'] = elapsed_time
+            posts_add_elapsedTime.append(post)
+        print(posts_add_elapsedTime)
+        return render_template('home.html', posts=posts, comments=comments, profiles=profiles, posts_add_elapsedTime=posts_add_elapsedTime)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
 @app.route('/writepost')
 def writepost():
