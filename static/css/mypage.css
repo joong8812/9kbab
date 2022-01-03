@@ -96,6 +96,11 @@ body {
     width: 100%;
 }
 
+#container-content #notice-wrapper {
+    margin-top: 100px;
+    text-align: center;
+}
+
 #container-content .one-row{
     display: flex;
     flex-direction: row;
@@ -134,6 +139,8 @@ body {
 #footer #icon-wrapper img {
   width: 5%;
   cursor: pointer;
+  margin-left : 15%;
+  margin-right : 15%;
 }
 
 @media (min-width: 576px) {

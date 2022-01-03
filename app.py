@@ -195,6 +195,25 @@ def profile():
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
+
+@app.route('/mypostedit')
+def mypostedit_page():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        userid = payload['userid']
+        post_id = ObjectId(request.args.get("pi"))
+        post = list(db.posts.find({'_id': post_id, 'userid': userid}))
+
+        return render_template('mypostedit.html', post=post)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+    except Exception as e:
+        print(e)
+        return redirect(url_for('myfeed', msg="[오류] 글 수정 페이지를 열 수 없습니다."))
+
 #################################
 ##  로그인을 위한 API            ##
 #################################
@@ -410,6 +429,47 @@ def profile_edit():
 
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
+
+#########################
+##      게시글 수정       ##
+#########################
+@app.route('/api/mypostedit', methods=['POST'])
+def api_mypostedit():
+    msg = "게시글 수정 실패"
+    result = "fail"
+    try:
+        token_receive = request.cookies.get('mytoken')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_id = payload['userid']
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+    try:
+        post_id_receive = ObjectId(request.form['post_id_give'])
+        writing_receive = request.form['writing_give']
+        tag_receive = request.form['tag_give']
+        location_receive = request.form['location_give']
+
+        doc = {
+            'writing': writing_receive,
+            'tag': tag_receive,
+            'location': location_receive,
+        }
+        update_result = db.posts.update_one({'_id': post_id_receive, 'userid': user_id}, {'$set': doc})
+
+        if update_result.modified_count == 1:
+            result = "success"
+            msg = "게시글 수정 성공"
+
+    except Exception as e:
+        print(e)
+
+    return jsonify({'result': result, 'msg': msg})
 
 
 if __name__ == '__main__':

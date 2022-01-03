@@ -83,7 +83,11 @@
                 <div id="{{ post._id }}" class="post-wrapper">
                     <div class="post-header">
                         <div class="left-wrapper">
-                            <img class="profile-img" src="../static/images/1_cookie.jpg"/>
+                            {% for profile in profiles %}
+                                {% if profile.userid == post.userid%}
+                                <img class="profile-img" src="../static/profile/{{profile.pf_image}}"/>
+                                {% endif %}
+                            {% endfor %}
                             <div class="profile-txt">
                                 {{ post.userid }}
                                 <br>
