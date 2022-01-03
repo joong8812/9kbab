@@ -20,11 +20,13 @@
     {% set post = post[0] %}
     <div id="main">
         <div id="header">
-            <img id="img-close" src="{{url_for('static', filename='images/back(y).png')}}" onclick="doCancel()">
-            <div id="header-title">
-                <span>글 수정</span>
+           <div id="header-left">
+                <img id="img-close" src="{{url_for('static', filename='images/back(y).png')}}" onclick="doCancel()">
+                <p id="title"><strong>글 수정</strong></p>
             </div>
-            <img id="img-pencil" src="{{url_for('static', filename='images/check(B).png')}}" onclick="doEdit('{{post._id}}')">
+            <div id="header-right">
+                <img id="img-pencil" src="{{url_for('static', filename='images/check(B).png')}}" onclick="doPost()">
+            </div>
         </div>
         <div id="container">
             <div class="mb-3">
