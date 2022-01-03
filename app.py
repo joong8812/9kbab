@@ -86,19 +86,19 @@ def main():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        posts = list(db.posts.find())
+        dbposts = list(db.posts.find())
         comments = list(db.comments.find())
         profiles = list(db.profiles.find())
 
-        posts_add_elapsedTime = []
-        for post in posts:
+        posts = []
+        for post in dbposts:
             post_time = post['post_date']
             elapsed_time = elapsedTime(post_time)
 
             post['elapsed_time'] = elapsed_time
-            posts_add_elapsedTime.append(post)
-        print(posts_add_elapsedTime)
-        return render_template('home.html', posts=posts, comments=comments, profiles=profiles, posts_add_elapsedTime=posts_add_elapsedTime)
+            posts.append(post)
+        print(posts)
+        return render_template('home.html', posts=posts, comments=comments, profiles=profiles)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
