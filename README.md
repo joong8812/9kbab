@@ -1,18 +1,18 @@
 # 9k밥 (9kbab) 🍲
 
 ## 1. 설명
-9천원 이하의 가성비 맛집 정보를 공유하는 SNS   
+9천원 이하의 가성비 맛집 정보를 공유하는 SNS (모바일 최적화)   
 http://beloved-coder.shop/
 
 시연영상: https://youtu.be/sanaSKuFWZI
 
 
 ## 2. 팀 구성
-* 박다희: 프론트엔드, 디자인
-* 정유진: 프론트엔드, 디자인
-* 고희석: 백엔드, API설계
-* 정기홍: 백엔드, 테스트
-* 최중재: 팀장, EC2
+* 박다희: 프론트엔드, 디자인 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/Dahee0628)
+* 정유진: 프론트엔드, 디자인 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/Augustj88)
+* 고희석: 백엔드, API설계 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/GoHeeSeok00)
+* 정기홍: 백엔드, 테스트 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/ghj99)
+* 최중재: 팀장, EC2 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/joong8812)
 
 ## 3. 기술
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/></a>
@@ -22,7 +22,6 @@ http://beloved-coder.shop/
 <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Flask-000000?style=flat-square&logo=Flask&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=MongoDB&logoColor=white"/></a>
-<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=Amazon AWS&logoColor=white"/></a>
 
 ## 4. 와이어프레임
