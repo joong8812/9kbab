@@ -1,13 +1,35 @@
 # 9k밥 (9kbab) 🍲
 
 ## 1. 설명
-9천원 이하의 가성비 맛집 정보를 공유하는 SNS
+9천원 이하의 가성비 맛집 정보를 공유하는 SNS   
+http://beloved-coder.shop/
 
-## 2. 와이어프레임
+시연영상: https://youtu.be/sanaSKuFWZI
+
+
+## 2. 팀 구성
+* 박다희: 프론트엔드, 디자인
+* 정유진: 프론트엔드, 디자인
+* 고희석: 백엔드, API설계
+* 정기홍: 백엔드, 테스트
+* 최중재: 팀장, EC2
+
+## 3. 기술
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&logo=Javascript&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/JQuery-0769AD?style=flat-square&logo=JQuery&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Flask-000000?style=flat-square&logo=Flask&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=MongoDB&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=Amazon AWS&logoColor=white"/></a>
+
+## 4. 와이어프레임
 
 <img src="./attached/9kbab-wireframe.jpg" alt="wireframe">
 
-## 3. API 설계
+## 5. API 설계
 
 | 기능 | 세부 | Method | URL | request | response |
 | --- | --- | --- | --- | --- | --- |
