@@ -1,7 +1,7 @@
 *{
     font-family: 'Gowun Dodum', sans-serif;
 }
-@media(max-width: 720px;){
+@media(max-width: 720px){
     #container{
         width: auto;
     }

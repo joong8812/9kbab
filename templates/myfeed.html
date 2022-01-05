@@ -11,8 +11,9 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <title>9k밥 - 마이피드</title>
+    <title>9k밥</title>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}">
 
     <script>
         function goHome() {
@@ -34,7 +35,7 @@
                     data: {post_id: post_id},
                     success: function (response) {
                         if (response['result'] == 'success') {
-                            window.location.reload();
+                            window.location.href="/mypage";
                         } else {
                             alert(response['msg'])
                             window.location.reload()
@@ -47,7 +48,6 @@
             }
         }
     </script>
-
 </head>
 
 <body>
@@ -62,7 +62,7 @@
                 <div id="{{ post._id }}" class="post-wrapper">
                     <div class="post-header">
                         <div class="left-wrapper">
-                            <img class="profile-img" src="../static/images/1_cookie.jpg"/>
+                            <img class="profile-img" src="../static/profile/{{myfeed_info[0].pf_image}}"/>
                             <div class="profile-txt">
                                 {{ post.userid }}
                                 <br>
@@ -134,7 +134,6 @@
     <div id="footer">
         <div id="icon-wrapper">
             <img src="../static/images/home.png" onclick="goHome()">
-            <img src="../static/images/search.png">
             <img src="../static/images/trending.png" onclick="goWrite()">
         </div>
     </div>
