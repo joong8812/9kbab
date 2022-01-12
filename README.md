@@ -45,6 +45,15 @@ ___
 * 정기홍: 백엔드, 테스트 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/ghj99)
 * 최중재: 팀장, EC2 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/joong8812)
 
+## 기능
+* [로그인] (이메일, 비밀번호 + JWT)
+* [회원가입] (이메일, 닉네임, 패스워드, 패스워드 확인, 약관동의)
+* [메인페이지] 전체 사용자 피드 보여주기
+* [포스트(글쓰기)] 글쓰기
+* [마이페이지] 로그인 유저 정보 및 피드사진
+* [나의 피드] 나의 피드 보여주기
+* [프로필변경] 프로필 변경
+
 ## 기술
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white"/></a>
