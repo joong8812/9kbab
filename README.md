@@ -8,7 +8,7 @@ http://beloved-coder.shop/
 
 
 ## 2. 팀 구성
-* 박다희: 프론트엔드, 디자인 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/Dahee0628)
+* 박다희: 프론트엔드, 디자인 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/DaheePark-00)
 * 정유진: 프론트엔드, 디자인 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/Augustj88)
 * 고희석: 백엔드, API설계 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/GoHeeSeok00)
 * 정기홍: 백엔드, 테스트 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/ghj99)
