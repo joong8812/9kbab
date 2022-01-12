@@ -43,8 +43,7 @@ Figma link: https://www.figma.com/file/q3kTzFXhGVlEhR0g0sIMCe/Wireframing-in-Fig
 <img src="./attached/9kbab-ERD-v2.PNG" alt="wireframe">
 
 ## API 설계
-https://docs.google.com/spreadsheets/d
-/1Go6Q0_a_tThV-mW5M_AYbllUghzKKsB13raXD7XKKk4/edit#gid=0
+https://docs.google.com/spreadsheets/d/1Go6Q0_a_tThV-mW5M_AYbllUghzKKsB13raXD7XKKk4/edit#gid=0
 
 ## 개발 일정
 <img width="600" alt="개발일정" src="https://user-images.githubusercontent.com/18342765/149097236-965c25e9-a542-466d-b442-8d919c0f633d.png">
