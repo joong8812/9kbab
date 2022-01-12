@@ -34,6 +34,16 @@ ___
 <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=Amazon AWS&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/Google Colab-F9AB00?style=flat-square&logo=Google Colab&logoColor=white"/></a>
 <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=TensorFlow&logoColor=white"/></a>
+
+## 와이어프레임
+Figma link: https://www.figma.com/file/q3kTzFXhGVlEhR0g0sIMCe/Wireframing-in-Figma?node-id=0%3A1
+<img src="./attached/9kbab-wireframe-v2.png" alt="wireframe">
+
+## DB 구성 
+<img src="./attached/9kbab-ERD-v2.PNG" alt="wireframe">
+
+## API 설계
+https://docs.google.com/spreadsheets/d/1Go6Q0_a_tThV-mW5M_AYbllUghzKKsB13raXD7XKKk4/edit#gid=0
 ___
 # Version 1.0
 ## 기간
