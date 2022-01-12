@@ -12,7 +12,7 @@ ___
 
 ## 팀 구성
 * 정유진: 프론트엔드, 디자인 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/Augustj88)
-* 박다희: 백엔드, API설계 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/https://github.com/DaheePark-00)
+* 박다희: 백엔드, API설계 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/DaheePark-00)
 * 고희석: 데이터 분석, AI 모델 개발 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/GoHeeSeok00)
 * 최중재: 팀장 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/joong8812)
 
