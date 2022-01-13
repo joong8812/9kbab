@@ -35,9 +35,8 @@
                                 {% endif %}
                             {% endfor %}
                             <div class="profile-txt">
-                                {{ post.nickname }}
-                                <br>
-                                {{ post.location }}
+                                <span class="profile-nick">{{ post.nickname }}</span>
+                                <span class="post-location">{{ post.location }}</span>
                             </div>
                         </div>
                         <div class="right-wrapper">
@@ -102,9 +101,13 @@
                 <img src="{{url_for('static', filename='images/back(y).png')}}" onclick="closeModal()">
             </div>
             <div id="cmb-content">
-                <div id="cmb-post"></div>
-                <div id="cmb-comment">
-                    <div id="comment-wrapper"></div>
+                <div id="cmb-content-top-wrapper">
+                    <div id="cmb-post"></div>
+                </div>
+                <div id="cmb-content-bottom-wrapper">
+                    <div id="cmb-comment">
+                        <div id="comment-wrapper"></div>
+                    </div>
                 </div>
             </div>
             <div id="cmb-footer">

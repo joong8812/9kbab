@@ -43,14 +43,8 @@ body {
   width: 100%;
 }
 
-.profile-txt {
-  flex-direction: column;
-
-}
-
-
 .right-wrapper {
-  width: 100%;
+  width: 50%;
   display: flex;
   justify-content: right;
   margin-right: 3%;
@@ -75,6 +69,18 @@ body {
   margin-left: 2%;
   font-weight: bold;
   font-size: 14px;
+}
+
+.profile-txt {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile-txt .post-location{
+  font-size: 12px;
+
 }
 
 /* 포스트 - 바디 */
@@ -195,19 +201,23 @@ body {
   left: 0;
   display: none;
   height:100%;
+  padding: 5% 0;
 }
 
 #comment-modal #comment-modal-body{
-  width:80%; height:80%;
+  width:80%;
+  height: 100%;
   background:#fff;
   border-radius:10px;
   position:relative;
   box-sizing:border-box;
-  margin: 5% auto;
+  margin: auto;
+  overflow-y: initial !important;
 }
 
 #comment-modal-body #cmb-header {
   margin-left: 2vw;
+  height: 7%;
 }
 #comment-modal-body #cmb-header > img {
   width: 10%;
@@ -217,10 +227,23 @@ body {
 
 #comment-modal-body #cmb-content {
   width: 100%;
-  padding: 0 3vw;
+  height: 82%;
   margin-bottom: 2vw;
+  overflow-y: auto;
 }
-#comment-modal-body #cmb-content #cmb-comment #comment-wrapper {
+#cmb-content #cmb-content-top-wrapper {
+  width: 100%;
+  border-bottom: 1px solid #F9C428;
+}
+#cmb-content #cmb-content-top-wrapper #cmb-post {
+  width: 100%;
+  padding: 0 3vw;
+}
+#cmb-content #cmb-content-bottom-wrapper {
+  width: 100%;
+  padding: 0 3vw;
+}
+#cmb-content #cmb-content-bottom-wrapper #cmb-comment #comment-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -243,7 +266,9 @@ body {
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  height: 9%;
   padding: 0 1vw;
+  border-top: 1px solid #F9C428;
 }
 #cmb-footer #cmb-write{
   width: 100%;
@@ -277,8 +302,16 @@ body {
   #comment-modal #comment-modal-body{
     min-height: 620px;
   }
-  #comment-wrapper .comment-body {
+  #comment-wrapper .comment-body .comment-left{
     font-size: 12px;
+    font-weight: bold;
+  }
+  #comment-wrapper .comment-body .comment-right{
+    font-size: 11px;
+  }
+  #cmb-content-top-wrapper #cmb-post .post-content {
+    margin-top: 15px;
+    font-size: 14px;
   }
   #cmb-footer #cmb-write{
     margin-left: 2vw;
