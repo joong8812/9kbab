@@ -1,22 +1,20 @@
 * {
   font-family: 'Gowun Dodum', sans-serif;
 }
-
 body {
   max-width: 720px;
   margin: 0 auto;
 }
-
 /* 헤더 */
 #header {
   display: flex;
   justify-content: space-between;
-  background-color: lightgoldenrodyellow;
+  background-color: white;
   align-items: center;
   width: 100%;
   position: fixed;
   max-width: 720px;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid #F8C328;
   z-index: 2;
 }
 #header #logo {
@@ -47,9 +45,7 @@ body {
 
 .profile-txt {
   flex-direction: column;
-
 }
-
 
 .right-wrapper {
   width: 100%;
