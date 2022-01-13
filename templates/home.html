@@ -3,32 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/home.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/home.js')}}"></script>
 
     <title>9k밥</title>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}">
-
-    <script>
-        function goWrite() {
-            window.location.href = "/writepost"
-        }
-
-        function goMypage() {
-            window.location.href = "/mypage"
-        }
-
-        function reRoad() {
-            window.location.reload()
-        }
-    </script>
-
 </head>
 
 <body>
@@ -65,10 +51,8 @@
                             <div class="left-wrapper">
                                 <!-- 아이콘 크기가 달라서 부득이 하게 이렇게 만들었으나, 클래스 없이 img로 처리하는게 맞습니다! -->
                                 <img class="post-icon" src="../static/images/heart_empty.png">
-                                <img class="post-icon-2" src="../static/images/comment1.png">
-
+                                <img class="post-icon-2" src="../static/images/comment1.png" data-post="{{post._id}}">
                             </div>
-
                         </div>
                     </div>
                     <div class="post-footer">
@@ -89,13 +73,13 @@
                                 {% set var1 = post._id|string %}
                                 {% set var2 = comment.post_id %}
                                 {% if var1 == var2 %}
-                                    {% set x=commentzip.__setitem__(count.value, {'id': comment.userid, 'msg': comment.comment}) %}
+                                    {% set x=commentzip.__setitem__(count.value, {'nick': comment.nickname, 'msg': comment.comment}) %}
                                     {% set count.value = count.value + 1 %}
                                 {% endif %}
                             {% endfor %}
                             {% for key, value in commentzip.items() %}
                                 {% if loop.index == loop.length %}
-                                    <li>{{ value["id"] }} - {{ value["msg"] }}</li>
+                                    <li>{{ value["nick"] }} - {{ value["msg"] }}</li>
                                 {% endif %}
                             {% endfor %}
                         </div>
@@ -104,13 +88,31 @@
                     </div>
                 </div>
             {% endfor %}
-
         </div>
     </div>
     <div id="footer">
         <div id="icon-wrapper">
-            <img src="../static/images/home.png" onclick="reRoad()">
-            <img src="../static/images/trending.png" onclick="goWrite()">
+            <img src="{{url_for('static', filename='images/home.png')}}" onclick="reRoad()">
+            <img src="{{url_for('static', filename='images/trending.png')}}" onclick="goWrite()">
+        </div>
+    </div>
+    <div id="comment-modal">
+        <div id="comment-modal-body">
+            <div id="cmb-header">
+                <img src="{{url_for('static', filename='images/back(y).png')}}" onclick="closeModal()">
+            </div>
+            <div id="cmb-content">
+                <div id="cmb-post"></div>
+                <div id="cmb-comment">
+                    <div id="comment-wrapper"></div>
+                </div>
+            </div>
+            <div id="cmb-footer">
+                <div id="cmb-write">
+                    <input type="text" class="form-control" id="comment-writing" rows="1" placeholder="댓글 남기기">
+                </div>
+                <div id="cmb-write-btn"><input onclick="leaveComment();" id="comment-leave" type="button" value="남기기"></div>
+            </div>
         </div>
     </div>
 </div>
