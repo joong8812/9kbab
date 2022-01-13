@@ -16,11 +16,6 @@
     <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}">
 
     <script>
-        /*
-        $(document).ready(function () {
-            postComment();
-        });
-*/
         function goWrite() {
             window.location.href = "/writepost"
         }
@@ -32,51 +27,6 @@
         function reRoad() {
             window.location.reload()
         }
-
-        function timeForToday(value) {
-
-            const date = value.previousElementSibling.innerText
-
-            const today = new Date();
-            {#console.log(today);#}
-            const timeValue = new Date(date);
-            {#console.log(timeValue);#}
-
-            const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-            const betweenTimeHour = Math.floor(betweenTime / 60);
-            const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-
-            if (betweenTime < 1) return '방금전';
-
-            else if (betweenTime < 60) {
-                console.log(`${betweenTime}분전`);
-                return `${betweenTime}분전`;
-            }
-
-            else if (betweenTime < 60*24) {
-                console.log(`${betweenTimeHour}시간전`);
-                return `${betweenTimeHour}시간전`;
-
-            }
-
-            else if (betweenTime < 60*24*365) {
-                console.log(`${betweenTimeDay}일전`);
-                return `${betweenTimeDay}일전`;
-            }
-            else {
-                console.log(`${Math.floor(betweenTimeDay / 365)}년전`);
-                return `${Math.floor(betweenTimeDay / 365)}년전`;
-            }
-
-
-            const cal_date = '123';
-            value.parent.innerText = cal_date;
-        }
-
-
-
-
-
     </script>
 
 </head>
@@ -114,8 +64,8 @@
                         <div class="post-icons-wrapper">
                             <div class="left-wrapper">
                                 <!-- 아이콘 크기가 달라서 부득이 하게 이렇게 만들었으나, 클래스 없이 img로 처리하는게 맞습니다! -->
-                                <img class="post-icon" src="../static/images/like.png">
-                                <img class="post-icon-2" src="../static/images/comment.png">
+                                <img class="post-icon" src="../static/images/heart_empty.png">
+                                <img class="post-icon-2" src="../static/images/comment1.png">
 
                             </div>
 
@@ -143,7 +93,6 @@
                                     {% set count.value = count.value + 1 %}
                                 {% endif %}
                             {% endfor %}
-                            {#                            {{ commentzip[count.value - 1] }}#}
                             {% for key, value in commentzip.items() %}
                                 {% if loop.index == loop.length %}
                                     <li>{{ value["id"] }} - {{ value["msg"] }}</li>
@@ -152,14 +101,6 @@
                         </div>
                         <p class="post-time" >
                         <p id="post_date">{{ post.elapsed_time }}</p>
-{#                            <script>#}
-{#                                 timeForToday(document.currentScript);#}
-{#                            </script>#}
-
-{#                                                        1시간 전#}
-
-
-                        </p>
                     </div>
                 </div>
             {% endfor %}
@@ -169,7 +110,6 @@
     <div id="footer">
         <div id="icon-wrapper">
             <img src="../static/images/home.png" onclick="reRoad()">
-{#             <img src="../static/images/search.png">#}
             <img src="../static/images/trending.png" onclick="goWrite()">
         </div>
     </div>
