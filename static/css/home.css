@@ -184,3 +184,112 @@ body {
   margin-right : 15%;
 }
 
+
+/* 댓글 모달 */
+#comment-modal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  display: none;
+  height:100%;
+}
+
+#comment-modal #comment-modal-body{
+  width:80%; height:80%;
+  background:#fff;
+  border-radius:10px;
+  position:relative;
+  box-sizing:border-box;
+  margin: 5% auto;
+}
+
+#comment-modal-body #cmb-header {
+  margin-left: 2vw;
+}
+#comment-modal-body #cmb-header > img {
+  width: 10%;
+  margin-top: 2vw;
+  cursor: pointer;
+}
+
+#comment-modal-body #cmb-content {
+  width: 100%;
+  padding: 0 3vw;
+  margin-bottom: 2vw;
+}
+#comment-modal-body #cmb-content #cmb-comment #comment-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#comment-wrapper .comment-body {
+  width: 100%;
+  display: flex;
+  margin: 1vh 0;
+}
+
+#comment-wrapper .comment-body .comment-left{
+  margin-right: 1vw;
+  font-weight: bold;
+}
+
+#comment-modal-body #cmb-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: 0 1vw;
+}
+#cmb-footer #cmb-write{
+  width: 100%;
+  margin-right: 3vw;
+}
+#cmb-footer #cmb-write-btn{
+  width: 20%;
+}
+#cmb-footer #cmb-write-btn #comment-leave {
+    width: 100%;
+    padding: 5% 0;
+    background-color: #F9C428;
+    border: solid 0;
+    font-size: 15px;
+    border-radius: 50px;
+    font-weight: bold;
+    color: white;
+    transition-duration: .2s;
+}
+
+@media (max-width: 768px) {
+  body {
+    max-width: 768px;
+  }
+  #header {
+    max-width: 768px;
+  }
+  #footer {
+    max-width: 768px;
+  }
+  #comment-modal #comment-modal-body{
+    min-height: 620px;
+  }
+  #comment-wrapper .comment-body {
+    font-size: 12px;
+  }
+  #cmb-footer #cmb-write{
+    margin-left: 2vw;
+  }
+  #cmb-footer #cmb-write-btn{
+    margin-right: 2vw;
+  }
+  #cmb-footer #cmb-write #comment-writing{
+    font-size: 12px;
+  }
+  #cmb-footer #cmb-write-btn #comment-leave{
+    font-size: 12px;
+  }
+}
