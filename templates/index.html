@@ -6,9 +6,12 @@
     <meta property="og:description" content="9000원 이하의 가성비 맛집 공유 SNS" />
     <meta property="og:image" content="{{url_for('static', filename='images/logo2.png')}}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/index.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="../static/css/index.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -28,10 +31,7 @@
                 $(`#valid_check_msg_uid`).show()
             } else {
                 $(`#valid_check_msg_uid`).hide()
-
             }
-
-
 
             $.ajax({
                 type: "POST",
@@ -47,19 +47,13 @@
                 }
             })
         }
-
-
     </script>
 
 </head>
-
 <body>
 <div id="main">
-    <div id="header">
-
-    </div>
     <div id="container">
-        <img id="logo" src="../static/images/logo_9kbob.png">
+        <img id="logo" src="../static/images/logo.png">
         <div class="form-floating">
             <input type="email" class="form-control" id="floatingID" placeholder="name@example.com">
             <label for="floatingInput">ID</label>
@@ -68,23 +62,19 @@
             <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Password</label>
         </div>
-        <div class="d-grid gap-2 col-6 mx-auto">
-            <button onclick="login()" class="btn btn-primary" type="button">Log in</button>
+        <div class="d-grid">
+            <button onclick="login()" id="btn_login" class="btn btn-primary" type="button">L O G I N</button>
             <p class="warning-sign" id="valid_check_msg_uid" style="display:none">로그인 정보를 입력해주세요.</p>
         </div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li>Not registred yet?&nbsp</li>
-                <li class="breadcrumb-item"><a href="/signup">Sign up</a></li>
+                <li>Not registered yet?&nbsp</li>
+                <li class="breadcrumb-item"><a href="/signup">SIGN UP</a></li>
             </ol>
         </nav>
         <div>
             <p id="firmname">9velopment</p>
         </div>
-
-    </div>
-    <div id="footer">
-
     </div>
 </div>
 </body>

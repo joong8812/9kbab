@@ -3,6 +3,7 @@
 }
 body {
     max-width: 720px;
+    margin: 0 auto;
 }
 
 #main {
@@ -48,6 +49,7 @@ body {
 #header #header-left > p{
     font-size: 14px;
     margin: auto 0;
+    color: #757058;
 }
 #header #header-right {
     width:40%;
@@ -63,6 +65,7 @@ body {
     width: 70%;
     margin-top: 15%;
     z-index: 1;
+    font-size: 12px;
 }
 
 #photo-preview {
@@ -74,4 +77,12 @@ body {
 #photo-preview > img {
     width:100%;
     border: 3px solid rgb(199, 206, 212);
+}
+
+#post-writing {
+    font-size: 12px;
+}
+
+.form-control{
+    font-size: 12px;
 }

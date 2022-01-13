@@ -1,81 +1,79 @@
-* {
-            font-family: 'Gowun Dodum', sans-serif;
-        }
+*{
+    font-family: 'Gowun Dodum', sans-serif;
+}
 
 body {
     max-width: 720px;
     margin: 0 auto;
 }
-/* 헤더 */
-#header {
-  display: flex;
-  justify-content: space-between;
-  background-color: white;
-  align-items: center;
-  width: 100%;
-  position: fixed;
-  max-width: 720px;
-  border-bottom: 1px solid lightgray;
+#main {
+    width: 100%;
+    margin: 0 auto;
 }
-
 
 /* 컨테이너 */
 #container {
-
-  background-color: lightgoldenrodyellow;
-  padding-top: 12%;
-  padding-bottom: 12%;
-
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
-#container #logo {
-  padding-top: 20%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5%;
-
-  width: 10%;
-
-
+#logo {
+    width: 25%;
+    max-width: 360px;
+    margin-bottom: 5%;
 }
 
 .form-floating {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-
-  margin : 1% auto 0 auto;
-  width: 60%;
+    width: 60%;
+    max-width: 360px;
+    margin-top: 1%;
+    border: 0;
+}
+.form-control{
+    font-size: 14px;
 }
 
 .d-grid{
-  margin-top: 7%;
+    margin-top: 5%;
+    width: 60%;
+    max-width: 360px;
+}
 
+#btn_login{
+    background-color: #F9C428;
+    padding: 5% 0;
+    border: solid 0;
+    font-size: 14px;
+    border-radius: 50px;
+    font-weight: bold;
+    color: white;
+    transition-duration: .2s;
+    box-shadow: 2px 3px 5px lightgray;
 }
 
 .breadcrumb{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  margin-top: 1%;
+    width: 100%;
+    max-width: 360px;
+    margin-top: 7%;
+}
+.breadcrumb a{
+    color: #67B9B1;
+    font-weight: bold;
 }
 
 .warning-sign {
-
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-
     color: #F7741E;
     font-weight: 300;
     font-size: 0.875rem;
@@ -84,13 +82,7 @@ body {
 }
 
 #firmname {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  margin-top: 20%;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 35%;
 }
-
-
-/* 푸터 */

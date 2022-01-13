@@ -49,15 +49,41 @@ function doCancel() {
 
 function setThumbnail(event) {
     let reader = new FileReader();
+
+    const form = $('#file_form')[0];
+    let formData = new FormData(form);
+    const post_photo = $('#post-photo')[0].files[0];
+
     reader.onload = function (event) {
         let img = document.createElement("img");
         img.setAttribute("src", event.target.result);
         img.setAttribute("class", "preview");
 
+
         if (document.querySelector("div#photo-preview img") != null) {
             $(".preview").remove();
         }
-        document.querySelector("div#photo-preview").appendChild(img);
+        document.querySelector("div#photo-preview").appendChild(img)
+        console.log('test1'); //이부분에 태그를 출력?
+
     };
     reader.readAsDataURL(event.target.files[0]);
+
+    formData.append('file_give', post_photo);
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/autotag',
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function (response) {
+            if (response['result'] == 'success') {
+                $('#post-tag').val(response['tag'])
+                console.log('성공')
+            } else {
+                console.log('실패')
+            }
+        }
+    });
 }
