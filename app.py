@@ -24,13 +24,13 @@ import datetime
 import hashlib
 
 import os
-from util import allowed_file, get_file_extension, elapsedTime, foodImage_modelPredict
+from util import allowed_file, get_file_extension, elapsedTime
+# foodImage_modelTest
 UPLOAD_FOLDER = 'static/uploads'
 profile_save_path = 'static/profile'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-print('현재 위치: ' + os.getcwd())
-import tensorflow as tf
-model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
+# import tensorflow as tf
+# model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
 ##############################
 ##          TEST            ##
 ##############################
@@ -99,7 +99,7 @@ def main():
 
             post['elapsed_time'] = elapsed_time
             posts.append(post)
-        return render_template('home.html', posts=posts, comments=comments, profiles=profiles)
+        return render_template('home.html', posts=posts, comments=comments, profiles=profiles, my_id=payload['userid'])
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -118,6 +118,32 @@ def writepost():
     except jwt.exceptions.DecodeError:
     # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+@app.route('/comment', methods=['POST'])
+def comment():
+    post_id_receive = request.form['post_id_give']
+    token_receive = request.cookies.get('mytoken')
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+
+        comments = list(db.comments.find({'post_id': post_id_receive}))
+        for comment in comments :
+            comment['_id']= str(comment['_id'])
+
+        return jsonify({'result': 'success', 'comments': comments, 'nickname': user_info['nickname']})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+    except Exception as e:
+        print(e)
+        return jsonify({'result': 'fail'})
+
+
+
 
 @app.route('/mypage')
 def mypage():
@@ -404,6 +430,74 @@ def api_writepost():
 
     return jsonify({'result': result, 'msg': msg})
 
+###############################
+##      자동태그추천       ##
+###############################
+
+@app.route('/api/autotag', methods=['POST'])
+def api_autotag():
+    file_receive = request.form['file_give']
+
+    result = 'success'
+    tag = ''
+    return jsonify({'return':result, 'tag':tag})
+
+###############################
+##      댓글작성       ##
+###############################
+@app.route('/api/comment', methods=['POST'])
+def api_comment():
+    msg = "글 작성 성공"
+    result = "fail"
+    try:
+        token_receive = request.cookies.get('mytoken')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        # user_info 의 id, pw 값을 변수에 저장
+        id = user_info['userid']
+        nick = user_info['nickname']
+        now = datetime.datetime.now()
+        comment_receive = request.form['comment_give']
+        post_id_receive = request.form['post_id_give']
+        cmd_date = now
+
+
+
+        db.comments.insert_one({
+            'post_id': post_id_receive,
+            'nickname': nick,
+            'comment': comment_receive,
+            'userid': id,
+            'cmd_date': cmd_date
+        })
+
+
+        comments = list(db.comments.find({'post_id': post_id_receive}))
+        for comment in comments:
+            comment['_id'] = str(comment['_id'])
+            # db.comments.update_one({'post_id': post_id_receive, 'cmd_date':cmd_date}, {'$set': {'comment_id': comment_id}})
+
+
+
+        result = 'success'
+
+        return jsonify({'result': result, 'msg': msg, 'nickname': nick})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
+#########################
+##      댓글 삭제      ##
+#########################
+@app.route('/api/comment/delete', methods=['POST'])
+def delete_mycomment():
+    comment_id = ObjectId(request.form['comment_id_give'])
+    result = 'success' if db.comments.delete_one({'_id': comment_id}).deleted_count == 1 else "fail"
+    msg = "삭제 성공" if result == 'success' else "삭제 실패"
+
+    return jsonify({'result': result, 'msg': msg})
+
 
 #########################
 ##      게시글 삭제       ##
@@ -415,6 +509,7 @@ def delete_myfeed():
     msg = "삭제 성공" if result == 'success' else "삭제 실패"
 
     return jsonify({'result': result, 'msg': msg})
+
 
 ###############################
 ##      프로필 편집 API       ##
@@ -499,6 +594,52 @@ def api_mypostedit():
         print(e)
 
     return jsonify({'result': result, 'msg': msg})
+
+#########################
+##      좋아요 수정       ##
+#########################
+@app.route('/api/like', methods=['POST'])
+def process_heart():
+    msg = "좋아요 수정 실패"
+    result = "fail"
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        # jwt토큰으로부터 사용자 id 얻음
+        user_id = payload['userid']
+
+        # 클라이언트로부터 좋아요 유/무, post id 얻음
+        like_receive = request.form['like_give'] # 1:좋아요, 0:좋아요 해제
+        post_id_receive = ObjectId(request.form['post_id_give'])
+
+        # 해당 포스트의 '좋아요 유저'를 db로부터 받아 리스트에 담음
+        post = list(db.posts.find({'_id': post_id_receive}))
+        like_list = post[0]['like_cnt']
+
+        # '좋아요 유/무'에 따라 '좋아요 유저리스트'에서 '좋아요 누른 유저'를 추가 or 삭제
+        like_list.append(user_id) if like_receive == '1' else like_list.remove(user_id)
+        doc = {
+            'like_cnt': like_list
+        }
+
+        # 변경된 '좋아요 유저 리스트'를 해당 포스트에 db 업데이트 한다
+        update_result = db.posts.update_one({'_id': post_id_receive}, {'$set': doc})
+
+        # 업데이트가 잘 완료되면 응답해 줄 값들을 정함
+        if update_result.modified_count == 1:
+            result = "success"
+            msg = "좋아요 수정 성공"
+
+        # 클라이언트로 응답
+        return jsonify({'result':result, 'msg':msg})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+    except Exception as e:
+        print(e)
+        return jsonify({'result':result, 'msg':msg})
 
 
 if __name__ == '__main__':

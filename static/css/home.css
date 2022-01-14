@@ -252,12 +252,31 @@ body {
 #comment-wrapper .comment-body {
   width: 100%;
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
   margin: 1vh 0;
 }
 
-#comment-wrapper .comment-body .comment-left{
+#comment-wrapper .comment-body .body-wrapper {
+  width: 100%
+}
+#comment-wrapper .comment-body .body-wrapper .comment-left{
   margin-right: 1vw;
   font-weight: bold;
+  width: 10%;
+}
+
+#comment-wrapper .comment-body .delete-wrapper {
+  width: 100%;
+  text-align: right;
+}
+#comment-wrapper .comment-body .delete-wrapper .comment-delete.hide{
+  display: none;
+}
+#comment-wrapper .comment-body .delete-wrapper .comment-delete > img{
+  width: 18px;
+  cursor: pointer;
 }
 
 #comment-modal-body #cmb-footer {
