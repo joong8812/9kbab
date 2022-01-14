@@ -23,14 +23,20 @@ import datetime
 # 그렇지 않으면, 개발자(=나)가 회원들의 비밀번호를 볼 수 있으니까요.^^;
 import hashlib
 
+#reload를 위해 module을 사용합니다.
+from importlib import reload
+
 import os
-from util import allowed_file, get_file_extension, elapsedTime
-# foodImage_modelTest
+from util import allowed_file, get_file_extension, elapsedTime, foodImage_modelTest
 UPLOAD_FOLDER = 'static/uploads'
 profile_save_path = 'static/profile'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# import tensorflow as tf
-# model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
+
+import tensorflow as tf
+print('현재 위치: ' + os.getcwd())
+model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
+
+
 ##############################
 ##          TEST            ##
 ##############################
@@ -63,6 +69,7 @@ def home():
     except jwt.exceptions.DecodeError:
 # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
 
 
 @app.route('/login')
@@ -105,11 +112,16 @@ def main():
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
-@app.route('/writepost')
+
+
+
+
+@app.route('/writepost', methods=['POST'])
 def writepost():
     try:
         token_receive = request.cookies.get('mytoken')
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
         return render_template('writepost.html')  # 회원가입 html 파일 생성시 주소 추가
 
     except jwt.ExpiredSignatureError:
@@ -118,6 +130,10 @@ def writepost():
     except jwt.exceptions.DecodeError:
     # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+
+
 
 
 @app.route('/comment', methods=['POST'])
@@ -134,7 +150,6 @@ def comment():
 
         comments = list(db.comments.find({'post_id': post_id_receive}))
         for comment in comments :
-            print(type(str(comment['_id'])))
             comment['_id']= str(comment['_id'])
 
         return jsonify({'result': 'success', 'comments': comments, 'nickname': user_info['nickname']})
@@ -188,6 +203,7 @@ def mypage():
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
 
 @app.route('/myfeed')
 def myfeed():
@@ -440,11 +456,21 @@ def api_writepost():
 
 @app.route('/api/autotag', methods=['POST'])
 def api_autotag():
-    file_receive = request.form['file_give']
-
+    file = request.form['file_give']
+    # 해당 파일에서 확장자명만 추출
+    extension = file.filename.split('.')[-1]
+    # 파일 이름이 중복되면 안되므로, 지금 시간을 해당 파일 이름으로 만들어서 중복이 되지 않게 함!
+    today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+    filename = f'{mytime}'
+    # 파일 저장 경로 설정 (파일은 서버 컴퓨터 자체에 저장됨)
+    save_to = f'static/model_food_img/food/{filename}.{extension}'
+    # 파일 저장!
+    file.save(save_to)
+    tag = foodImage_modelTest(model_food)  # 여기서 이미지 검증 함수 호출!!
+    os.remove(save_to)
     result = 'success'
-    tag = ''
-    return jsonify({'return':result, 'tag':tag})
+    return jsonify({'result':result, 'tag':tag})
 
 ###############################
 ##      댓글작성       ##
@@ -484,6 +510,7 @@ def api_comment():
 
 
         result = 'success'
+
 
         return jsonify({'result': result, 'msg': msg, 'nickname': nick})
     except jwt.ExpiredSignatureError:
