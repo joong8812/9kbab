@@ -24,10 +24,11 @@ import datetime
 import hashlib
 
 import os
-from util import allowed_file, get_file_extension, elapsedTime, foodImage_modelTest
+from util import allowed_file, get_file_extension, elapsedTime, foodImage_modelPredict
 UPLOAD_FOLDER = 'static/uploads'
 profile_save_path = 'static/profile'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+print('현재 위치: ' + os.getcwd())
 import tensorflow as tf
 model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
 ##############################
