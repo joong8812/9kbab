@@ -10,6 +10,35 @@ function reRoad() {
     window.location.reload()
 }
 
+// 댓글 html 요소 생성
+function getCommentElement(nickname, comment, commentId) {
+    let commentEl = "<div class='comment-body' data-nick='"+nickname+"'><div class='body-wrapper'><span class='comment-left'>" + nickname + "</span>";
+    commentEl += "<span class='comment-right'>" + comment + "</span></div>";
+    commentEl += "<div class='delete-wrapper'><span class='comment-delete hide' data-ci='"+commentId+"'><img src='../static/images/close.png'/></span></div></div>";
+    return commentEl;
+}
+
+// 작성한 댓글 html 요소 생성
+function getNewCommentElement(nickname, comment) {
+    let commentEl = "<div class='comment-body' data-nick='"+nickname+"'><div class='body-wrapper'><span class='comment-left'>" + nickname + "</span>";
+    commentEl += "<span class='comment-right'>" + comment + "</span></div>";
+    commentEl += "<div class='delete-wrapper'><span class='comment-delete hide'><img src='../static/images/close.png'/></span></div></div>";
+    return commentEl;
+}
+
+// 댓글 삭제 버튼 show/hide
+function removeButtonSwitch(selectEl, myNick) {
+    const commentNick = selectEl.data('nick');
+    if (myNick == commentNick) {
+        selectEl.find('.comment-delete').toggleClass('hide'); // 삭제 버튼 hide클래스 추가/삭제
+    }
+}
+
+// 각 포스트 하위 태그들의 html 가져온다. (클래스로만 접근가능)
+function getMyHtml(postId, myClass) {
+    return $('#' + postId).find('.'+myClass).clone().wrapAll("<div/>").parent().html();
+}
+
 $(function () {
     // 각 포스트의 댓글 버튼을 누른다면...
     $('.post-icon-2').click(function () {
@@ -22,26 +51,21 @@ $(function () {
             data: {'post_id_give': postId},
             success: function (response) {
                 if (response['result'] == 'success') {
-                    // 댓글 div 생성 및 추가
+                    // 각 댓글 생성 및 추가
                     const myNick = response['nickname'];
                     const commentList = response['comments'];
                     for (let i = 0; i < commentList.length; i++) {
                         const nickname = commentList[i].nickname;
                         const comment = commentList[i].comment;
                         const commentId = commentList[i]._id;
-
-                        // 각 코멘트 생성 및 추가
-                        let addSoon = "<div class='comment-body' data-nick='"+nickname+"'><div class='body-wrapper'><span class='comment-left'>" + nickname + "</span>";
-                        addSoon += "<span class='comment-right'>" + comment + "</span></div>";
-                        addSoon += "<div class='delete-wrapper'><span class='comment-delete hide' data-ci='"+commentId+"'><img src='../static/images/close.png'/></span></div></div>";
-                        $('#comment-wrapper').append(addSoon)
+                        $('#comment-wrapper').append(getCommentElement(nickname, comment, commentId));
                     }
                     $('#comment-modal').data('post', postId);
 
                     // 해당 포스트의 글쓴이 정보 및 포스트 내용 태그 생성 및 추가
-                    const writerImg = $('#' + postId).find('.profile-img').clone().wrapAll("<div/>").parent().html();
-                    const writerNick = $('#' + postId).find('.profile-txt').clone().wrapAll("<div/>").parent().html();
-                    const writerContent = $('#' + postId).find('.post-content').clone().wrapAll("<div/>").parent().html();
+                    const writerImg = getMyHtml(postId, "profile-img");
+                    const writerNick = getMyHtml(postId, "profile-txt");
+                    const writerContent = getMyHtml(postId, "post-content");
                     $('#cmb-post').append("<div class='post-header'><div class='left-wrapper'>"+writerImg+"</div></div>");
                     $('#cmb-post .post-header .left-wrapper').append(writerNick);
                     $('#cmb-post').append(writerContent);
@@ -49,16 +73,10 @@ $(function () {
                     // 각 댓글을 마우스오버/마우스아웃 한다면..
                     $('.comment-body')
                         .mouseover(function() {
-                            const commentNick = $(this).data('nick');
-                            if (myNick == commentNick) {
-                                $(this).find('.comment-delete').toggleClass('hide'); // 삭제 버튼 보임
-                            }
+                            removeButtonSwitch($(this), myNick)
                         })
                         .mouseout(function(){
-                            const commentNick = $(this).data('nick');
-                            if (myNick == commentNick) {
-                                $(this).find('.comment-delete').toggleClass('hide'); // 삭제 버튼 사라짐
-                            }
+                            removeButtonSwitch($(this), myNick)
                         });
 
                     // 각 댓글 삭제 버튼을 누른다면...
@@ -125,9 +143,7 @@ function leaveComment() {
                 const nickname = response['nickname']
 
                 // 작성한 댓글을 태그 생성 후 추가
-                let addSoon = "<div class='comment-body'><div class='body-wrapper'><span class='comment-left'>" + nickname + "</span>";
-                addSoon += "<span class='comment-right'>" + commentWrite + "</span></div>";
-                $('#comment-wrapper').append(addSoon)
+                $('#comment-wrapper').append(getNewCommentElement(nickname, commentWrite))
                 $('#comment-writing').val("");
             } else {
                 alert(response['msg'])
