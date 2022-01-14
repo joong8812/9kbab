@@ -106,7 +106,7 @@ def main():
 
             post['elapsed_time'] = elapsed_time
             posts.append(post)
-        return render_template('home.html', posts=posts, comments=comments, profiles=profiles)
+        return render_template('home.html', posts=posts, comments=comments, profiles=profiles, my_id=payload['userid'])
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -141,12 +141,9 @@ def comment():
     post_id_receive = request.form['post_id_give']
     token_receive = request.cookies.get('mytoken')
 
-
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'userid': payload['userid']})
-
-        # post_comment = []
 
         comments = list(db.comments.find({'post_id': post_id_receive}))
         for comment in comments :
@@ -625,6 +622,52 @@ def api_mypostedit():
         print(e)
 
     return jsonify({'result': result, 'msg': msg})
+
+#########################
+##      좋아요 수정       ##
+#########################
+@app.route('/api/like', methods=['POST'])
+def process_heart():
+    msg = "좋아요 수정 실패"
+    result = "fail"
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        # jwt토큰으로부터 사용자 id 얻음
+        user_id = payload['userid']
+
+        # 클라이언트로부터 좋아요 유/무, post id 얻음
+        like_receive = request.form['like_give'] # 1:좋아요, 0:좋아요 해제
+        post_id_receive = ObjectId(request.form['post_id_give'])
+
+        # 해당 포스트의 '좋아요 유저'를 db로부터 받아 리스트에 담음
+        post = list(db.posts.find({'_id': post_id_receive}))
+        like_list = post[0]['like_cnt']
+
+        # '좋아요 유/무'에 따라 '좋아요 유저리스트'에서 '좋아요 누른 유저'를 추가 or 삭제
+        like_list.append(user_id) if like_receive == '1' else like_list.remove(user_id)
+        doc = {
+            'like_cnt': like_list
+        }
+
+        # 변경된 '좋아요 유저 리스트'를 해당 포스트에 db 업데이트 한다
+        update_result = db.posts.update_one({'_id': post_id_receive}, {'$set': doc})
+
+        # 업데이트가 잘 완료되면 응답해 줄 값들을 정함
+        if update_result.modified_count == 1:
+            result = "success"
+            msg = "좋아요 수정 성공"
+
+        # 클라이언트로 응답
+        return jsonify({'result':result, 'msg':msg})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+    except Exception as e:
+        print(e)
+        return jsonify({'result':result, 'msg':msg})
 
 
 if __name__ == '__main__':

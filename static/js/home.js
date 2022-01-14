@@ -119,6 +119,54 @@ $(function () {
             }
         })
     })
+
+    // 좋아요 버튼을 누른다면 ...
+     $('.post-icon').click(function(){
+        const heartIcon = $(this); // 선택한 포스트의 좋아요 element
+        const postId = heartIcon.data('id'); // 선택한 포스트의 id를 담음
+        const likeId = "#" + postId + "-like-cnt"; // [좋아요 카운트] element
+        const reqHeartStatus = heartIcon.data('heart') == '0' ? 1 : 0; // 기존 [좋아요 상태]를 보고 요청 할 [좋아요 상태] 설정
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/like',
+            data: {'like_give': reqHeartStatus, 'post_id_give': postId},
+            success: function (response) {
+                if (response['result'] == 'success') {
+                    if (reqHeartStatus) { // 요청한 [좋아요 상태]가 1(좋아요!) 이면 ...
+                        heartIcon.data('heart', '1'); // [좋아요 상태] 1로 설정
+                        heartIcon.attr('src', '../static/images/heart_full.png'); // 빨간 하트로 이미지 설정
+
+                        if ($(likeId).text().trim() == '') { // [좋아요 카운트]가 없다면
+                            $(likeId).text('1'); // [좋아요 카운트] 1로
+                            $(likeId).next().text('명이 좋아합니다😍'); // 그 뒤에 문구
+                        } else {
+                            const changeHeartCnt = parseInt($(likeId).text()) + 1; // [좋아요 카운트] 1 더함
+                            $(likeId).text(changeHeartCnt); // [좋아요 카운트] element에 수정한 값 표시
+                        }
+
+                    } else { // 요청한 [좋아요 상태]가 0(좋아요 해제!) 이면 ...
+                        heartIcon.data('heart', '0'); // [좋아요 상태] 0으로 설정
+                        heartIcon.attr('src', '../static/images/heart_empty.png'); // 빈 하트로 이미지 설정
+                        const changeHeartCnt = parseInt($(likeId).text()) -1 ; // [좋아요 카운트] 1 뺌
+
+                        if (!changeHeartCnt) { // [좋아요 카운트]가 0 이라면 ..
+                            $(likeId).text(''); // [좋아요 카운트] 없애고
+                            $(likeId).next().text('No one likes me😭️'); // 그 뒤에 새로운 문구
+                        } else {
+                            $(likeId).text(changeHeartCnt) // [좋아요 카운트] element에 수정한 값 표시
+                        }
+
+                    }
+                } else {
+                    console.log(response['msg'])
+                }
+            },
+            error: function (err) {
+                console.log('error:' + err)
+            }
+        })
+    })
 })
 
 // 댓글 닫기 버튼을 누르면 ...
