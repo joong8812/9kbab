@@ -117,6 +117,36 @@ def writepost():
     # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+
+@app.route('/comment', methods=['POST'])
+def comment():
+    post_id_receive = request.form['post_id_give']
+    token_receive = request.cookies.get('mytoken')
+
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+
+        # post_comment = []
+
+        comments = list(db.comments.find({'post_id': post_id_receive}))
+        for comment in comments :
+            print(type(str(comment['_id'])))
+            comment['_id']= str(comment['_id'])
+
+        return jsonify({'result': 'success', 'comments': comments, 'nickname': user_info['nickname']})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+    except Exception as e:
+        print(e)
+        return jsonify({'result': 'fail'})
+
+
+
+
 @app.route('/mypage')
 def mypage():
     token_receive = request.cookies.get('mytoken')
@@ -402,6 +432,74 @@ def api_writepost():
 
     return jsonify({'result': result, 'msg': msg})
 
+###############################
+##      자동태그추천       ##
+###############################
+
+@app.route('/api/autotag', methods=['POST'])
+def api_autotag():
+    file_receive = request.form['file_give']
+
+    result = 'success'
+    tag = ''
+    return jsonify({'return':result, 'tag':tag})
+
+###############################
+##      댓글작성       ##
+###############################
+@app.route('/api/comment', methods=['POST'])
+def api_comment():
+    msg = "글 작성 성공"
+    result = "fail"
+    try:
+        token_receive = request.cookies.get('mytoken')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        # user_info 의 id, pw 값을 변수에 저장
+        id = user_info['userid']
+        nick = user_info['nickname']
+        now = datetime.datetime.now()
+        comment_receive = request.form['comment_give']
+        post_id_receive = request.form['post_id_give']
+        cmd_date = now
+
+
+
+        db.comments.insert_one({
+            'post_id': post_id_receive,
+            'nickname': nick,
+            'comment': comment_receive,
+            'userid': id,
+            'cmd_date': cmd_date
+        })
+
+
+        comments = list(db.comments.find({'post_id': post_id_receive}))
+        for comment in comments:
+            comment['_id'] = str(comment['_id'])
+            # db.comments.update_one({'post_id': post_id_receive, 'cmd_date':cmd_date}, {'$set': {'comment_id': comment_id}})
+
+
+
+        result = 'success'
+
+        return jsonify({'result': result, 'msg': msg, 'nickname': nick})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
+#########################
+##      댓글 삭제      ##
+#########################
+@app.route('/api/comment/delete', methods=['POST'])
+def delete_myfeed():
+    comment_id = ObjectId(request.form['comment_id'])
+    result = 'success' if db.comments.delete_one({'_id': comment_id}).deleted_count == 1 else "fail"
+    msg = "삭제 성공" if result == 'success' else "삭제 실패"
+
+    return jsonify({'result': result, 'msg': msg})
+
 
 #########################
 ##      게시글 삭제       ##
@@ -413,6 +511,7 @@ def delete_myfeed():
     msg = "삭제 성공" if result == 'success' else "삭제 실패"
 
     return jsonify({'result': result, 'msg': msg})
+
 
 ###############################
 ##      프로필 편집 API       ##
