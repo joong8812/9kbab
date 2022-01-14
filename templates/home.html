@@ -35,9 +35,8 @@
                                 {% endif %}
                             {% endfor %}
                             <div class="profile-txt">
-                                {{ post.nickname }}
-                                <br>
-                                {{ post.location }}
+                                <span class="profile-nick">{{ post.nickname }}</span>
+                                <span class="post-location">{{ post.location }}</span>
                             </div>
                         </div>
                         <div class="right-wrapper">
@@ -45,19 +44,27 @@
                         </div>
                     </div>
                     <div class="post-body">
-
                         <img src="/static/uploads/{{ post.photo }}">
                         <div class="post-icons-wrapper">
                             <div class="left-wrapper">
-                                <!-- 아이콘 크기가 달라서 부득이 하게 이렇게 만들었으나, 클래스 없이 img로 처리하는게 맞습니다! -->
-                                <img class="post-icon" src="../static/images/heart_empty.png">
+                                <!-- 각 포스트에 좋아요 여부에 따라 다르게 표시(하트이미지) -->
+                                {% if my_id not in post.like_cnt %}
+                                    <img class="post-icon" src="../static/images/heart_empty.png" data-heart="0" data-id="{{post._id}}">
+                                {% else %}
+                                    <img class="post-icon" src="../static/images/heart_full.png" data-heart="1" data-id="{{post._id}}">
+                                {% endif %}
                                 <img class="post-icon-2" src="../static/images/comment1.png" data-post="{{post._id}}">
                             </div>
                         </div>
                     </div>
                     <div class="post-footer">
                         <div class="post-like-wrapper">
-                            <p><strong>쿠키</strong>님 <strong>외 1,234명</strong>이 좋아합니다</p>
+                            <p><span id="{{post._id}}-like-cnt">
+                            {% if post.like_cnt|length == 0 %}
+                            </span><span>No one likes me😭️</span></p>
+                            {% else %}
+                            {{post.like_cnt|length}}</span><span>명이 좋아합니다😍</span></p>
+                            {% endif %}
                         </div>
                         <div class="post-content-wrapper">
                             <p class="post-author">{{ post.userid }}</p>
@@ -102,9 +109,13 @@
                 <img src="{{url_for('static', filename='images/back(y).png')}}" onclick="closeModal()">
             </div>
             <div id="cmb-content">
-                <div id="cmb-post"></div>
-                <div id="cmb-comment">
-                    <div id="comment-wrapper"></div>
+                <div id="cmb-content-top-wrapper">
+                    <div id="cmb-post"></div>
+                </div>
+                <div id="cmb-content-bottom-wrapper">
+                    <div id="cmb-comment">
+                        <div id="comment-wrapper"></div>
+                    </div>
                 </div>
             </div>
             <div id="cmb-footer">
