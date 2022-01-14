@@ -59,7 +59,12 @@
                     </div>
                     <div class="post-footer">
                         <div class="post-like-wrapper">
-                            <p><span id="{{post._id}}-like-cnt">{{post.like_cnt|length}}</span>명이 좋아합니다</p>
+                            <p><span id="{{post._id}}-like-cnt">
+                            {% if post.like_cnt|length == 0 %}
+                            </span><span>No one likes me😭️</span></p>
+                            {% else %}
+                            {{post.like_cnt|length}}</span><span>명이 좋아합니다😍</span></p>
+                            {% endif %}
                         </div>
                         <div class="post-content-wrapper">
                             <p class="post-author">{{ post.userid }}</p>
