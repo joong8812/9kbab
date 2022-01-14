@@ -1,4 +1,9 @@
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import numpy as np
+import csv
 import datetime
+
+
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'jfif'])
 
@@ -34,3 +39,27 @@ def elapsedTime(post_time):
         elapsed_time = f'방금 전'
 
     return elapsed_time
+
+
+def foodImage_modelTest(model):
+    mydict = {}
+    with open('muchinLearning1.csv', mode='r', encoding='utf8') as inp:
+        reader = csv.reader(inp)
+        mydict = {rows[0]: rows[1] for rows in reader}
+    test_datagen = ImageDataGenerator(rescale=1. / 255)
+    test_dir = 'static/model_food_img/'
+    test_generator = test_datagen.flow_from_directory(
+        test_dir,
+        target_size=(224, 224),
+        color_mode="rgb",
+        shuffle=False,
+        class_mode=None,
+        batch_size=1)
+    pred = model.predict(test_generator)
+    # 마지막으로 업로드한 사진에 대한 판별결과를 보여줌
+    # 이 부분은 어떤 서비스를 만들고자 하는지에 따라서 얼마든지 달라질 수 있음
+    classes = dict((v, k) for k, v in mydict.items())
+    result = classes[str(np.argmax(
+        pred))]  # 결과를 onHotIncoding으로 변경 / int64 type / 해당 타입과 매칭되는 자료가 코랩에 있기 때문에 str으로 변환하여 데이서셋 좌표에서 찾기
+    print(result)
+    return result
