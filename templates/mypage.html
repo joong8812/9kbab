@@ -74,21 +74,23 @@
                         {% if loop.index % 3 == 1 %}
                             <div class="one-row">
                         {% endif %}
-                                <div class="post-img-wrapper">
-                                    <img src='static/uploads/{{post.photo}}' id="{{post._id}}" onclick="goMyfeed()">
-                                </div>
-                        {% if loop.last %}
-                            {% set cnt_need_div = 3- (loop.index % 3) %}
-                            {% if cnt_need_div != 3 %}
-                                {% for _ in range(cnt_need_div) %}
-                                    <div class="post-img-wrapper">
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
+                    <div class="post-img-wrapper">
+                        <img src='static/uploads/{{post.photo}}' id="{{post._id}}" onclick="goMyfeed()">
+                    </div>
+                    {% if loop.index % 3 == 0 %}
+                        </div>
+                    {% endif %}
+                    {% if loop.last %}
+                        {% set cnt_need_div = 3- (loop.index % 3) %}
+                        {% if cnt_need_div != 3 %}
+                            {% for _ in range(cnt_need_div) %}
+                                <div class="post-img-wrapper"></div>
+                            {% endfor %}
                         {% endif %}
-                        {% if loop.index % 3 == 0 %}
+                        {% if loop.index % 3 != 0 %}
                             </div>
                         {% endif %}
+                    {% endif %}
                     {% endfor %}
                 {% endif %}
             </div>
