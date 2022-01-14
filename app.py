@@ -24,12 +24,13 @@ import datetime
 import hashlib
 
 import os
-from util import allowed_file, get_file_extension, elapsedTime, foodImage_modelTest
+from util import allowed_file, get_file_extension, elapsedTime
+# foodImage_modelTest
 UPLOAD_FOLDER = 'static/uploads'
 profile_save_path = 'static/profile'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-import tensorflow as tf
-model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
+# import tensorflow as tf
+# model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
 ##############################
 ##          TEST            ##
 ##############################
@@ -494,8 +495,8 @@ def api_comment():
 ##      댓글 삭제      ##
 #########################
 @app.route('/api/comment/delete', methods=['POST'])
-def delete_myfeed():
-    comment_id = ObjectId(request.form['comment_id'])
+def delete_mycomment():
+    comment_id = ObjectId(request.form['comment_id_give'])
     result = 'success' if db.comments.delete_one({'_id': comment_id}).deleted_count == 1 else "fail"
     msg = "삭제 성공" if result == 'success' else "삭제 실패"
 
