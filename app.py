@@ -24,7 +24,7 @@ import datetime
 import hashlib
 
 import os
-from util import allowed_file, get_file_extension, elapsedTime
+from util import allowed_file, get_file_extension, elapsedTime, foodImage_modelTest
 UPLOAD_FOLDER = 'static/uploads'
 profile_save_path = 'static/profile'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
