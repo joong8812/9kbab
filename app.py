@@ -24,8 +24,8 @@ import datetime
 import hashlib
 
 import os
-from util import allowed_file, get_file_extension, elapsedTime
-# foodImage_modelTest
+from util import allowed_file, get_file_extension, elapsedTime, numberImage_modelPredict, foodImage_modelPredict, \
+    guess_what_digit_it_is
 UPLOAD_FOLDER = 'static/uploads'
 profile_save_path = 'static/profile'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -640,6 +640,27 @@ def process_heart():
     except Exception as e:
         print(e)
         return jsonify({'result':result, 'msg':msg})
+
+
+#######################################################
+##      제시한 이미지와 모델이 예측한 수가 일치하는지 판별       ##
+#######################################################
+@app.route('/api/digit', methods=['POST'])
+def check_digit():
+    result = 'fail' # 결과 기본값 설정
+    try:
+        answer = int(request.form['answer_digit_give']) # 이미지 정답
+        user_image_base64 = request.form['user_digit_give'].rsplit(',')[1] # 사용자가 그린 이미지의 base64 string만 남긴다
+
+        max_acc, predict_num = guess_what_digit_it_is(user_image_base64) # 모델이 추측한 숫자와 정확도를 리턴
+        print(max_acc, predict_num)
+
+        if predict_num == answer: # 제시한 수와 모델 예측 수가 일치한다면
+            result = 'success'
+        return jsonify({'result': result, 'acc': max_acc})
+    except Exception as e:
+        print(e)
+        return jsonify({'result':'error'})
 
 
 if __name__ == '__main__':
