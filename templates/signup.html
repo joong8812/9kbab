@@ -67,8 +67,25 @@
                 <span>개인정보 수집 및 이용 동의</span>
             </label>
         </div>
+        <div id="captcha-area">
+            <div id="captcha-area-top">
+                {% set answer = range(10) | random %}
+                {% set pick_num = range(10) | random %}
+                {% set digit_img = answer ~ "_0100" ~ pick_num ~ ".jpg" %}
+                <div id="digit-img-wrapper">
+                    <img id="digit-img" data-answer="{{answer}}" src="../static/images/digits/{{digit_img}}">
+                </div>
+                <div id="canvas-wrapper"></div>
+            </div>
+            <div id="box-wrapper"><div class="box"><p class="help">위에 보이는 숫자를 우측에 그려주세요.</p></div></div>
+            <div id="captcha-area-bottom">
+                <input onclick="canvasToBase64()" class="check_btn" id='check_digit' data-count='0' type="button" value="숫자확인">
+            </div>
+        </div>
         <div class="btn"><input onclick="signup();" id="btn" type="button" value="S I G N U P"></div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script>
 </body>
 </html>
