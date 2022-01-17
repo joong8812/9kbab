@@ -28,7 +28,7 @@ from importlib import reload
 
 import os
 
-from util import allowed_file, get_file_extension, elapsedTime, numberImage_modelPredict, foodImage_modelPredict, \
+from util import allowed_file, get_file_extension, elapsedTime, foodImage_modelPredict, \
     guess_what_digit_it_is
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -37,7 +37,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 import tensorflow as tf
 print('현재 위치: ' + os.getcwd())
-# model_food = tf.keras.models.load_model('static/model/foodImagePredict_InceptionV3Model_82C82%57.h5') # 모델 로딩시간 있음
+model_food = tf.keras.models.load_model('static/model/foodImagePredict_InceptionV3Model_82C82%57.h5') # 모델 로딩시간 있음
 
 
 ##############################
@@ -564,7 +564,7 @@ def api_autotag():
 ###############################
 @app.route('/api/comment', methods=['POST'])
 def api_comment():
-    msg = "글 작성 성공"
+    msg = "댓글 작성 실패"
     result = "fail"
     try:
         token_receive = request.cookies.get('mytoken')
@@ -578,28 +578,23 @@ def api_comment():
         post_id_receive = request.form['post_id_give']
         cmd_date = now
 
-
-
-        db.comments.insert_one({
+        new_comment = db.comments.insert_one({
             'post_id': post_id_receive,
             'nickname': nick,
             'comment': comment_receive,
             'userid': id,
             'cmd_date': cmd_date
         })
+        info = {}
+        if new_comment.acknowledged:
+            info = {
+                'nickname': nick,
+                'comment_id': str(new_comment.inserted_id)
+            }
+            msg = "댓글 작성 성공"
+            result = 'success'
 
-
-        comments = list(db.comments.find({'post_id': post_id_receive}))
-        for comment in comments:
-            comment['_id'] = str(comment['_id'])
-            # db.comments.update_one({'post_id': post_id_receive, 'cmd_date':cmd_date}, {'$set': {'comment_id': comment_id}})
-
-
-
-        result = 'success'
-
-
-        return jsonify({'result': result, 'msg': msg, 'nickname': nick})
+        return jsonify({'result': result, 'msg': msg, 'info': info})
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:

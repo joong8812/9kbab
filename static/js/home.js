@@ -12,15 +12,15 @@ function reRoad() {
 
 // 댓글 html 요소 생성
 function getCommentElement(nickname, comment, commentId) {
-    let commentEl = "<div class='comment-body' data-nick='"+nickname+"'><div class='body-wrapper'><span class='comment-left'>" + nickname + "</span>";
+    let commentEl = "<div class='comment-body' data-nick='" + nickname + "'><div class='body-wrapper'><span class='comment-left'>" + nickname + "</span>";
     commentEl += "<span class='comment-right'>" + comment + "</span></div>";
-    commentEl += "<div class='delete-wrapper'><span class='comment-delete hide' data-ci='"+commentId+"'><img src='../static/images/close.png'/></span></div></div>";
+    commentEl += "<div class='delete-wrapper'><span class='comment-delete hide' data-ci='" + commentId + "'><img src='../static/images/close.png'/></span></div></div>";
     return commentEl;
 }
 
 // 작성한 댓글 html 요소 생성
 function getNewCommentElement(nickname, comment) {
-    let commentEl = "<div class='comment-body' data-nick='"+nickname+"'><div class='body-wrapper'><span class='comment-left'>" + nickname + "</span>";
+    let commentEl = "<div class='comment-body' data-nick='" + nickname + "'><div class='body-wrapper'><span class='comment-left'>" + nickname + "</span>";
     commentEl += "<span class='comment-right'>" + comment + "</span></div>";
     commentEl += "<div class='delete-wrapper'><span class='comment-delete hide'><img src='../static/images/close.png'/></span></div></div>";
     return commentEl;
@@ -36,7 +36,42 @@ function removeButtonSwitch(selectEl, myNick) {
 
 // 각 포스트 하위 태그들의 html 가져온다. (클래스로만 접근가능)
 function getMyHtml(postId, myClass) {
-    return $('#' + postId).find('.'+myClass).clone().wrapAll("<div/>").parent().html();
+    return $('#' + postId).find('.' + myClass).clone().wrapAll("<div/>").parent().html();
+}
+
+function setDeletebutton(myNick) {
+    // 각 댓글을 마우스오버/마우스아웃 한다면..
+    $('.comment-body')
+        .mouseover(function () {
+            removeButtonSwitch($(this), myNick)
+        })
+        .mouseout(function () {
+            removeButtonSwitch($(this), myNick)
+        });
+
+    // 각 댓글 삭제 버튼을 누른다면...
+    $('.comment-delete').click(function () {
+        const commentId = $(this).data('ci');
+        const commentDiv = $(this).parent().parent();
+        const is_delete = confirm("정말 이 댓글을 삭제하시겠습니까?");
+        if (is_delete) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/comment/delete',
+                data: {comment_id_give: commentId},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        commentDiv.remove(); // 댓글 삭제
+                    } else {
+                        alert(response['msg'])
+                    }
+                },
+                error: function (err) {
+                    console.log('error:' + err)
+                }
+            })
+        }
+    })
 }
 
 $(function () {
@@ -66,42 +101,44 @@ $(function () {
                     const writerImg = getMyHtml(postId, "profile-img");
                     const writerNick = getMyHtml(postId, "profile-txt");
                     const writerContent = getMyHtml(postId, "post-content");
-                    $('#cmb-post').append("<div class='post-header'><div class='left-wrapper'>"+writerImg+"</div></div>");
+                    $('#cmb-post').append("<div class='post-header'><div class='left-wrapper'>" + writerImg + "</div></div>");
                     $('#cmb-post .post-header .left-wrapper').append(writerNick);
                     $('#cmb-post').append(writerContent);
 
-                    // 각 댓글을 마우스오버/마우스아웃 한다면..
-                    $('.comment-body')
-                        .mouseover(function() {
-                            removeButtonSwitch($(this), myNick)
-                        })
-                        .mouseout(function(){
-                            removeButtonSwitch($(this), myNick)
-                        });
-
-                    // 각 댓글 삭제 버튼을 누른다면...
-                    $('.comment-delete').click(function (){
-                        const commentId = $(this).data('ci');
-                        const commentDiv = $(this).parent().parent();
-                        const is_delete = confirm("정말 이 댓글을 삭제하시겠습니까?");
-                        if (is_delete) {
-                            $.ajax({
-                                type: 'POST',
-                                url: '/api/comment/delete',
-                                data: {comment_id_give: commentId},
-                                success: function (response) {
-                                    if (response['result'] == 'success') {
-                                        commentDiv.remove(); // 댓글 삭제
-                                    } else {
-                                        alert(response['msg'])
-                                    }
-                                },
-                                error: function (err) {
-                                    console.log('error:' + err)
-                                }
-                            })
-                        }
-                    })
+                    // 각 댓글 삭제 버튼 세팅
+                    setDeletebutton(myNick);
+                    // // 각 댓글을 마우스오버/마우스아웃 한다면..
+                    // $('.comment-body')
+                    //     .mouseover(function() {
+                    //         removeButtonSwitch($(this), myNick)
+                    //     })
+                    //     .mouseout(function(){
+                    //         removeButtonSwitch($(this), myNick)
+                    //     });
+                    //
+                    // // 각 댓글 삭제 버튼을 누른다면...
+                    // $('.comment-delete').click(function (){
+                    //     const commentId = $(this).data('ci');
+                    //     const commentDiv = $(this).parent().parent();
+                    //     const is_delete = confirm("정말 이 댓글을 삭제하시겠습니까?");
+                    //     if (is_delete) {
+                    //         $.ajax({
+                    //             type: 'POST',
+                    //             url: '/api/comment/delete',
+                    //             data: {comment_id_give: commentId},
+                    //             success: function (response) {
+                    //                 if (response['result'] == 'success') {
+                    //                     commentDiv.remove(); // 댓글 삭제
+                    //                 } else {
+                    //                     alert(response['msg'])
+                    //                 }
+                    //             },
+                    //             error: function (err) {
+                    //                 console.log('error:' + err)
+                    //             }
+                    //         })
+                    //     }
+                    // })
 
                     //팝업창을 가운데로 띄우기 위해 현재 화면의 가운데 값과 스크롤 값을 계산하여 팝업창 CSS 설정
                     $("#comment-modal").css({
@@ -121,7 +158,7 @@ $(function () {
     })
 
     // 좋아요 버튼을 누른다면 ...
-     $('.post-icon').click(function(){
+    $('.post-icon').click(function () {
         const heartIcon = $(this); // 선택한 포스트의 좋아요 element
         const postId = heartIcon.data('id'); // 선택한 포스트의 id를 담음
         const likeId = "#" + postId + "-like-cnt"; // [좋아요 카운트] element
@@ -148,7 +185,7 @@ $(function () {
                     } else { // 요청한 [좋아요 상태]가 0(좋아요 해제!) 이면 ...
                         heartIcon.data('heart', '0'); // [좋아요 상태] 0으로 설정
                         heartIcon.attr('src', '../static/images/heart_empty.png'); // 빈 하트로 이미지 설정
-                        const changeHeartCnt = parseInt($(likeId).text()) -1 ; // [좋아요 카운트] 1 뺌
+                        const changeHeartCnt = parseInt($(likeId).text()) - 1; // [좋아요 카운트] 1 뺌
 
                         if (!changeHeartCnt) { // [좋아요 카운트]가 0 이라면 ..
                             $(likeId).text(''); // [좋아요 카운트] 없애고
@@ -156,7 +193,6 @@ $(function () {
                         } else {
                             $(likeId).text(changeHeartCnt) // [좋아요 카운트] element에 수정한 값 표시
                         }
-
                     }
                 } else {
                     console.log(response['msg'])
@@ -188,10 +224,13 @@ function leaveComment() {
         data: {'post_id_give': postId, 'comment_give': commentWrite},
         success: function (response) {
             if (response['result'] == 'success') {
-                const nickname = response['nickname']
+                const myNick = response['info']['nickname'];
+                const commentId = response['info']['comment_id']
 
                 // 작성한 댓글을 태그 생성 후 추가
-                $('#comment-wrapper').append(getNewCommentElement(nickname, commentWrite))
+                $('#comment-wrapper').append(getCommentElement(myNick, commentWrite, commentId));
+                // 댓글 삭제 버튼 세팅
+                setDeletebutton(myNick);
                 $('#comment-writing').val("");
             } else {
                 alert(response['msg'])
