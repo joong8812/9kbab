@@ -37,7 +37,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 import tensorflow as tf
 print('현재 위치: ' + os.getcwd())
-model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
+# model_food = tf.keras.models.load_model('static/model/foodImagePredict_InceptionV3Model54C84%9.h5') # 모델 로딩시간 있음
 
 
 ##############################
@@ -153,7 +153,7 @@ def scrap_home():
 
 
 
-@app.route('/writepost', methods=['POST'])
+@app.route('/writepost')
 def writepost():
     try:
         token_receive = request.cookies.get('mytoken')
@@ -223,14 +223,23 @@ def mypage():
             p['elapsed_time'] = elapsed_time
             post.append(p)
 
-        scrap_posts = list(db.scraps.find({'user_id': id}))
-        scrap_postid = scrap_posts['post_id']
-        #for문으로 하나씩 넣어주고 append하기
-        scrap_post_zip = []
-        for scrappost in scrap_postid :
-            scrapposts = list(db.posts.find({'post_id': scrappost}))
-            scrap_post_zip.append(scrapposts)
 
+        scrap_posts = list(db.scraps.find({'user_id': id}))
+
+        scrap_post_zip = []
+
+        if len(scrap_posts) == 0:
+            pass
+        else:
+            scrap_postid = scrap_posts[0]['post_id']
+            #for문으로 하나씩 넣어주고 append하기
+
+            for scrappost in scrap_postid :
+                scrappost = ObjectId(scrappost)
+                scrapposts = list(db.posts.find({'_id': scrappost}))
+                scrap_post_zip.append(scrapposts)
+
+        scrap_post_cnt = len(scrap_post_zip)
 
         mypage_info = [{
             'userid': id,
@@ -241,7 +250,7 @@ def mypage():
             'post_cnt': post_cnt
         }]
 
-        return render_template('mypage.html', mypage_info=mypage_info, scrap_post_zip=scrap_post_zip)
+        return render_template('mypage.html', mypage_info=mypage_info, scrap_post_zip=scrap_post_zip, scrap_post_cnt=scrap_post_cnt)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -515,18 +524,18 @@ def api_writepost():
 
 @app.route('/api/autotag', methods=['POST'])
 def api_autotag():
-    file = request.form['file_give']
+    file = request.files['file_give']
     # 해당 파일에서 확장자명만 추출
     extension = file.filename.split('.')[-1]
     # 파일 이름이 중복되면 안되므로, 지금 시간을 해당 파일 이름으로 만들어서 중복이 되지 않게 함!
-    today = datetime.now()
+    today = datetime.datetime.now()
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
     filename = f'{mytime}'
     # 파일 저장 경로 설정 (파일은 서버 컴퓨터 자체에 저장됨)
     save_to = f'static/model_food_img/food/{filename}.{extension}'
     # 파일 저장!
     file.save(save_to)
-    tag = foodImage_modelTest(model_food)  # 여기서 이미지 검증 함수 호출!!
+    tag = foodImage_modelPredict(model_food)  # 여기서 이미지 검증 함수 호출!!
     os.remove(save_to)
     result = 'success'
     return jsonify({'result':result, 'tag':tag})

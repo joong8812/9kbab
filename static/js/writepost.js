@@ -79,7 +79,7 @@ function setThumbnail(event) {
         data: formData,
         success: function (response) {
             if (response['result'] == 'success') {
-                $('#post-tag').val(response['tag'])
+                $('#post-tag').val('#' + response['tag'])
                 console.log('성공')
             } else {
                 console.log('실패')
