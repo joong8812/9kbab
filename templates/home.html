@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
@@ -20,8 +20,8 @@
 <body>
 <div id="main">
     <div id="header">
-        <img id="logo" src="../static/images/9kbob_v01.png"/>
-        <img id="header-icon" src="../static/images/1_rice.png" onclick="goMypage()"/>
+        <img id="logo" src="../static/images/logo2.png"/>
+        <img id="header-icon" src="../static/images/spoon.png" onclick="goMypage()"/>
     </div>
     <div id="container">
         <div id="post-container">
@@ -30,8 +30,8 @@
                     <div class="post-header">
                         <div class="left-wrapper">
                             {% for profile in profiles %}
-                                {% if profile.userid == post.userid%}
-                                <img class="profile-img" src="../static/profile/{{profile.pf_image}}"/>
+                                {% if profile.userid == post.userid %}
+                                <img class="profile-img" src="../static/profile/{{ profile.pf_image }}"/>
                                 {% endif %}
                             {% endfor %}
                             <div class="profile-txt">
@@ -54,6 +54,15 @@
                                     <img class="post-icon" src="../static/images/heart_full.png" data-heart="1" data-id="{{post._id}}">
                                 {% endif %}
                                 <img class="post-icon-2" src="../static/images/comment1.png" data-post="{{post._id}}">
+                            </div>
+                            <!--스크랩 클릭시-->
+                            <div class="right-icon">
+
+                                {% if post._id not in scrap_post_id %}
+                                    <img class="post-icon-3" src="../static/images/scrap_empty.png" data-scrap="0" data-id="{{post._id}}">
+                                {% else %}
+                                    <img class="post-icon-3" src="../static/images/scrap_full.png" data-scrap="1" data-id="{{post._id}}">
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -99,8 +108,8 @@
     </div>
     <div id="footer">
         <div id="icon-wrapper">
-            <img src="{{url_for('static', filename='images/home.png')}}" onclick="reRoad()">
-            <img src="{{url_for('static', filename='images/trending.png')}}" onclick="goWrite()">
+            <img src="{{url_for('static', filename='images/home1.png')}}" onclick="reRoad()">
+            <img src="{{url_for('static', filename='images/post.png')}}" onclick="goWrite()">
         </div>
     </div>
     <div id="comment-modal">
