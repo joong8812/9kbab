@@ -28,7 +28,7 @@ from importlib import reload
 
 import os
 
-from util import allowed_file, get_file_extension, elapsedTime, numberImage_modelPredict, foodImage_modelPredict, \
+from util import allowed_file, get_file_extension, elapsedTime, foodImage_modelPredict, \
     guess_what_digit_it_is
 
 UPLOAD_FOLDER = 'static/uploads'
