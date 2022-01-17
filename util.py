@@ -45,7 +45,7 @@ def elapsedTime(post_time):
 
 def foodImage_modelPredict(model):
     mydict = {}
-    with open('muchinLearning1.csv', mode='r', encoding='utf8') as inp:
+    with open('static/model/foodimage_location_54C.csv', mode='r', encoding='utf8') as inp:
         reader = csv.reader(inp)
         mydict = {rows[0]: rows[1] for rows in reader}
     test_datagen = ImageDataGenerator(rescale=1. / 255)
@@ -62,7 +62,7 @@ def foodImage_modelPredict(model):
     # 이 부분은 어떤 서비스를 만들고자 하는지에 따라서 얼마든지 달라질 수 있음
     classes = dict((v, k) for k, v in mydict.items())
     result = classes[str(np.argmax(
-        pred))]  # 결과를 onHotIncoding으로 변경 / int64 type / 해당 타입과 매칭되는 자료가 코랩에 있기 때문에 str으로 변환하여 데이서셋 좌표에서 찾기
+        pred[-1]))]  # 결과를 onHotIncoding으로 변경 / int64 type / 해당 타입과 매칭되는 자료가 코랩에 있기 때문에 str으로 변환하여 데이서셋 좌표에서 찾기
     print(result)
     return result
 

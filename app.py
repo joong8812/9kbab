@@ -37,7 +37,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 import tensorflow as tf
 print('현재 위치: ' + os.getcwd())
-model_food = tf.keras.models.load_model('static/model/sample_ResNet50_model.h5') # 모델 로딩시간 있음
+model_food = tf.keras.models.load_model('static/model/foodImagePredict_InceptionV3Model54C84%9.h5') # 모델 로딩시간 있음
 
 
 ##############################
@@ -153,7 +153,7 @@ def scrap_home():
 
 
 
-@app.route('/writepost', methods=['POST'])
+@app.route('/writepost')
 def writepost():
     try:
         token_receive = request.cookies.get('mytoken')
@@ -520,18 +520,18 @@ def api_writepost():
 
 @app.route('/api/autotag', methods=['POST'])
 def api_autotag():
-    file = request.form['file_give']
+    file = request.files['file_give']
     # 해당 파일에서 확장자명만 추출
     extension = file.filename.split('.')[-1]
     # 파일 이름이 중복되면 안되므로, 지금 시간을 해당 파일 이름으로 만들어서 중복이 되지 않게 함!
-    today = datetime.now()
+    today = datetime.datetime.now()
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
     filename = f'{mytime}'
     # 파일 저장 경로 설정 (파일은 서버 컴퓨터 자체에 저장됨)
     save_to = f'static/model_food_img/food/{filename}.{extension}'
     # 파일 저장!
     file.save(save_to)
-    tag = foodImage_modelTest(model_food)  # 여기서 이미지 검증 함수 호출!!
+    tag = foodImage_modelPredict(model_food)  # 여기서 이미지 검증 함수 호출!!
     os.remove(save_to)
     result = 'success'
     return jsonify({'result':result, 'tag':tag})
