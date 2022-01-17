@@ -268,7 +268,7 @@ body {
 }
 
 #comment-wrapper .comment-body .delete-wrapper {
-  width: 100%;
+  width: 10%;
   text-align: right;
 }
 #comment-wrapper .comment-body .delete-wrapper .comment-delete.hide{
