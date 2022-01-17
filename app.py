@@ -37,7 +37,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 import tensorflow as tf
 print('현재 위치: ' + os.getcwd())
-model_food = tf.keras.models.load_model('static/model/foodImagePredict_InceptionV3Model54C84%9.h5') # 모델 로딩시간 있음
+# model_food = tf.keras.models.load_model('static/model/foodImagePredict_InceptionV3Model54C84%9.h5') # 모델 로딩시간 있음
 
 
 ##############################
@@ -223,15 +223,21 @@ def mypage():
             p['elapsed_time'] = elapsed_time
             post.append(p)
 
+
         scrap_posts = list(db.scraps.find({'user_id': id}))
-        print(scrap_posts)
-        scrap_postid = scrap_posts[0]['post_id']
-        #for문으로 하나씩 넣어주고 append하기
+
         scrap_post_zip = []
-        for scrappost in scrap_postid :
-            scrappost = ObjectId(scrappost)
-            scrapposts = list(db.posts.find({'_id': scrappost}))
-            scrap_post_zip.append(scrapposts)
+
+        if len(scrap_posts) == 0:
+            pass
+        else:
+            scrap_postid = scrap_posts[0]['post_id']
+            #for문으로 하나씩 넣어주고 append하기
+
+            for scrappost in scrap_postid :
+                scrappost = ObjectId(scrappost)
+                scrapposts = list(db.posts.find({'_id': scrappost}))
+                scrap_post_zip.append(scrapposts)
 
         scrap_post_cnt = len(scrap_post_zip)
 
