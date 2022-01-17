@@ -223,13 +223,18 @@ def mypage():
             p['elapsed_time'] = elapsed_time
             post.append(p)
 
+
         scrap_posts = list(db.scraps.find({'user_id': id}))
-        scrap_postid = scrap_posts['post_id']
-        #for문으로 하나씩 넣어주고 append하기
-        scrap_post_zip = []
-        for scrappost in scrap_postid :
-            scrapposts = list(db.posts.find({'post_id': scrappost}))
-            scrap_post_zip.append(scrapposts)
+
+        if scrap_posts.length == 0:
+            pass
+        else :
+            scrap_postid = scrap_posts['post_id']
+            #for문으로 하나씩 넣어주고 append하기
+            scrap_post_zip = []
+            for scrappost in scrap_postid :
+                scrapposts = list(db.posts.find({'post_id': scrappost}))
+                scrap_post_zip.append(scrapposts)
 
 
         mypage_info = [{
