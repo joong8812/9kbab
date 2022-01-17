@@ -44,7 +44,6 @@
                         </div>
                     </div>
                     <div class="post-body">
-                        <button onclick="scrap('{{ post._id }}')"></button>
                         <img src="/static/uploads/{{ post.photo }}">
                         <div class="post-icons-wrapper">
                             <div class="left-wrapper">
@@ -58,6 +57,7 @@
                             </div>
 
                             <!--스크랩 클릭시-->
+                            {{ scrap_post_id }}
                             <div class="right-icon">
                                 {% if post._id not in scrap_post_id %}
                                     <img class="post-icon-3" src="../static/images/scrap_empty.png" data-scrap="0" data-id="{{post._id}}">
