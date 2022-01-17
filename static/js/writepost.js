@@ -53,41 +53,45 @@ function setThumbnail(event) {
     const form = $('#file_form')[0];
     let formData = new FormData(form);
     const post_photo = $('#post-photo')[0].files[0];
-    console.log(post_photo)
-    if ($('#post-photo')[0].files.length != 0) {
-        $('#none').toggleClass('lololo')
-        formData.append('file_give', post_photo);
+    const post_photo_split = post_photo.name.split('.')
+    const exe = post_photo_split[post_photo_split.length - 1]
+    console.log(exe)
+    if (exe == 'jpg' || exe == 'png' || exe == 'jpeg') {
+        if ($('#post-photo')[0].files.length != 0) {
+            $('#none').toggleClass('lololo')
+            formData.append('file_give', post_photo);
 
-        $.ajax({
-            type: 'POST',
-            url: '/api/autotag',
-            processData: false,
-            contentType: false,
-            data: formData,
-            success: function (response) {
-                if (response['result'] == 'success') {
-                    $('#post-tag').val('#' + response['tag'])
-                    console.log('성공')
-                } else {
-                    console.log('실패')
-                }
-                $('#none').toggleClass('lololo')
-                reader.onload = function (event) {
-                    let img = document.createElement("img");
-                    img.setAttribute("src", event.target.result);
-                    img.setAttribute("class", "preview");
-
-
-                    if (document.querySelector("div#photo-preview img") != null) {
-                        $(".preview").remove();
+            $.ajax({
+                type: 'POST',
+                url: '/api/autotag',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $('#post-tag').val('#' + response['tag'])
+                        console.log('성공')
+                    } else {
+                        console.log('실패')
                     }
-                    document.querySelector("div#photo-preview").appendChild(img)
-                    console.log('test1'); //이부분에 태그를 출력?
+                    $('#none').toggleClass('lololo')
+                    reader.onload = function (event) {
+                        let img = document.createElement("img");
+                        img.setAttribute("src", event.target.result);
+                        img.setAttribute("class", "preview");
 
-                };
-                reader.readAsDataURL(event.target.files[0]);
-            }
-        });
 
+                        if (document.querySelector("div#photo-preview img") != null) {
+                            $(".preview").remove();
+                        }
+                        document.querySelector("div#photo-preview").appendChild(img)
+                        console.log('test1'); //이부분에 태그를 출력?
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            });
+        }
+    } else {
+        alert('jpg, png, jpeg 확장자를 이용해 주세요 :)')
     }
 }
