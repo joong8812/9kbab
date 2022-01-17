@@ -112,7 +112,41 @@ def main():
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/home/scrap', methods=['POST'])
+def scrap_home():
+    result = 'success'
+    try:
+        token_receive = request.cookies.get('mytoken')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        # jwt토큰으로부터 사용자 id 얻음
+        user_id = payload['userid']
+
+        # 클라이언트로부터 스크랩 유/무, post id 얻음
+        scrap_receive = request.form['scrap_give'] # 1: 좋아요 0: 좋아요 해제
+        post_id_receive = ObjectId(request.form['post_id_give'])
+        user_info = db.users.find_one({'userid': user_id})
+        # user_info 는 db users 에서 userid를 조회한 값
+
+        #scrap이 1로 바뀌면 DB에 값을 저장한다
+        user_id = user_info['userid']
+        if scrap_receive == 1:
+            doc = {
+                'userid': user_id,
+                'post_id': post_id_receive,
+            }
+            db.scraps.insert_one(doc)
+
+        return jsonify({'result': 'success'})
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+    # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+    except Exception as e:
+        print(e)
+        return jsonify({'result': 'fail'})
 
 
 
@@ -186,6 +220,15 @@ def mypage():
             p['elapsed_time'] = elapsed_time
             post.append(p)
 
+        scrap_posts = list(db.scraps.find({'user_id': id}))
+        scrap_postid = scrap_posts['post_id']
+        #for문으로 하나씩 넣어주고 append하기
+        scrap_post_zip = []
+        for scrappost in scrap_postid :
+            scrapposts = list(db.posts.find({'post_id': scrappost}))
+            scrap_post_zip.append(scrapposts)
+
+
         mypage_info = [{
             'userid': id,
             'nickname': nick,
@@ -195,7 +238,7 @@ def mypage():
             'post_cnt': post_cnt
         }]
 
-        return render_template('mypage.html', mypage_info=mypage_info)
+        return render_template('mypage.html', mypage_info=mypage_info, scrap_post_zip=scrap_post_zip)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -368,6 +411,22 @@ def api_signup():
         msg = '회원가입 성공! 로그인을 해주세요!'
 
     return jsonify({'result': result, 'msg': msg})
+
+####################################
+##       회원가입 사람/봇           ##
+####################################
+
+# @app.route('/api/captcha', methods=['POST'])
+# def api_signup():
+#     user_digit_receive = request.form['user_digit_give']
+#     if user_digit_receive != sth:
+#         result = 'fail'
+#
+#     else :
+#         result = 'success'
+#
+#     return jsonify({'result': result})
+
 
 ###############################
 ##      아이디 중복 체크       ##
@@ -622,6 +681,8 @@ def api_mypostedit():
         print(e)
 
     return jsonify({'result': result, 'msg': msg})
+
+
 
 #########################
 ##      좋아요 수정       ##
