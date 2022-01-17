@@ -1,17 +1,61 @@
-*{
-    font-family: 'Gowun Dodum', sans-serif;
-}
-
-body {
-    max-width: 720px;
+*{font-family: 'Gowun Dodum', sans-serif;}
+body{
     margin: 0 auto;
 }
-#main {
+/*---로딩페이지---*/
+.loading{
     width: 100%;
-    margin: 0 auto;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: #F9C428;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* 컨테이너 */
+@media screen and (max-width: 480px) {
+    .loading #loading_logo {
+        width: 35%;
+    }
+    .loading #loading_png {
+        margin-top: 2%;
+        width: 15%;
+    }
+    #logo {
+        width: 35%;
+        margin-bottom: 8%;
+    }
+    .form-floating {
+        width: 60%;
+        border: 0;
+        margin-top: 2%;
+    }
+}
+
+@media screen and (min-width: 481px){
+    .loading #loading_logo{
+        width: 200px;
+    }
+    .loading #loading_png{
+        margin-top: 2%;
+        width: 80px;
+    }
+    #logo {
+        width: 25%;
+        max-width: 720;
+        margin-bottom: 5%;
+    }
+    .form-floating {
+        width: 50%;
+        border: 0;
+        margin-top: 1.5%;
+    }
+}
+/*---컨테이너---*/
 #container {
     width: 100%;
     max-width: 720px;
@@ -24,29 +68,11 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
 }
-
-#logo {
-    width: 25%;
-    max-width: 360px;
-    margin-bottom: 5%;
-}
-
-.form-floating {
-    width: 60%;
-    max-width: 360px;
-    margin-top: 1%;
-    border: 0;
-}
-.form-control{
-    font-size: 14px;
-}
-
 .d-grid{
     margin-top: 5%;
     width: 60%;
     max-width: 360px;
 }
-
 #btn_login{
     background-color: #F9C428;
     padding: 5% 0;
@@ -58,7 +84,6 @@ body {
     transition-duration: .2s;
     box-shadow: 2px 3px 5px lightgray;
 }
-
 .breadcrumb{
     width: 100%;
     max-width: 360px;
@@ -68,7 +93,6 @@ body {
     color: #67B9B1;
     font-weight: bold;
 }
-
 .warning-sign {
     display: flex;
     flex-direction: row;
@@ -80,7 +104,6 @@ body {
     margin-top: 5px;
     margin-bottom: 10px;
 }
-
 #firmname {
     font-weight: bold;
     font-size: 16px;
