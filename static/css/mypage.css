@@ -1,72 +1,115 @@
-* {
-    font-family: 'Gowun Dodum', sans-serif;
-}
+* {font-family: 'Gowun Dodum', sans-serif;}
 
 body {
     max-width: 720px;
     margin: 0 auto;
 }
-
-#main {
-    display: flex;
-    justify-content: center;
+@media screen and (max-width: 480px) {
+/*--- header ---*/
+    #header {
+        background-color: white;
+        width: 100%;
+        max-width: 720px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        border-bottom: 1px solid #F8C328;
+    }
+    #header #header-userid {
+        width: 20%;
+        font-size: 20px;
+        font-weight: bold;
+        color: #757058;
+        margin-left: 4%;
+    }
+    /*--- 헤더 사이즈 조정용 ---*/
+    #header #logo {
+        margin: 2% 0;
+        width: 25%;
+        opacity: 0;
+    }
+    #header .dropdown{
+        width: 50%;
+        text-align: right;
+        margin: 2%;
+    }
+    #header .dropdown .dropdown-img img{
+        width: 20%;
+    }
+/*--- Footer ---*/
+    #footer #icon-wrapper {
+        margin: 2% 15%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #footer #icon-wrapper img {
+        width: 10%;
+        cursor: pointer;
+    }
 }
 
-/* 헤더 */
-#header {
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    position: fixed;
-    max-width: 720px;
-    border-bottom: 1px solid #F8C328;
-}
-#header #header-userid {
-    margin: 1% 20px;
-    width: 20%;
-    font-size: 20px;
-    font-weight: bold;
-    color: #757058;
-}
-
-#header #logo {
-    margin: 1% 3%;
-    width: 19%;
-    opacity: 0.0;
-}
-
-#header .dropdown {
-    text-align: right;
-}
-
-#header .dropdown .dropdown-img {
-    margin-right: 10px;
-    width: 70%;
-}
-
-#header .dropdown .dropdown-img > img{
-    width: 30%;
+@media screen and (min-width: 481px) {
+    #header {
+        background-color: white;
+        width: 100%;
+        max-width: 720px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        border-bottom: 1px solid #F8C328;
+    }
+    #header #header-userid {
+        width: 20%;
+        font-size: 20px;
+        font-weight: bold;
+        color: #757058;
+        margin-left: 4%;
+    }
+    /*--- 헤더 사이즈 조정용 ---*/
+    #header #logo {
+        margin: 2% 0;
+        width: 15%;
+        opacity: 0;
+    }
+    #header .dropdown{
+        width: 50%;
+        text-align: right;
+        margin: 2%;
+    }
+    #header .dropdown .dropdown-img img{
+        width: 10%;
+    }
+    /*--- Footer ---*/
+    #footer #icon-wrapper {
+        margin: 2% 15%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #footer #icon-wrapper img {
+        width: 8%;
+        cursor: pointer;
+    }
 }
 
 /* 컨테이너 */
 #container {
-    padding-top: 12%;
+    padding-top: 18%;
     padding-bottom: 12%;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
-
 #container-header {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
 }
-
 #container-header #ch-left-wrapper{
     display: flex;
     flex-direction: column;
@@ -74,7 +117,6 @@ body {
     align-items: center;
     width: 30%;
 }
-
 #container-header #ch-left-wrapper #pf-image {
     text-align: center;
     border: 1px solid lightgray;
@@ -84,71 +126,105 @@ body {
     border-radius: 50%;
     margin: 0 2%;
 }
-
 #container-header #ch-right-wrapper{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 70%;
+    width: 67%;
+    font-size: 14px;
 }
-
-#container-content {
+/*--- 탭 안에 콘텐츠 레이아웃 ---*/
+.tab_content {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     width: 100%;
 }
-
-#container-content #notice-wrapper {
+.tab_content .notice-wrapper {
     margin-top: 100px;
     text-align: center;
 }
-
-#container-content .one-row{
+.tab_content .one-row{
     display: flex;
     flex-direction: row;
     justify-content: left;
     width: 100%;
     padding: 3px 10px;
 }
-
-#container-content .one-row .post-img-wrapper{
+.tab_content .one-row .post-img-wrapper{
     margin: 3px;
     width: 100%;
     cursor: pointer;
 }
-
-#container-content .one-row .post-img-wrapper > img {
+.tab_content .one-row .post-img-wrapper > img {
     width: 100%;
     height: 133px;
     object-fit: cover;
 }
 
-/* 푸터 */
-#footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  max-width: 720px;
-  border-top: 0.5px solid #F8C328 ;
-  opacity: 80%;
-  background-color: white;
+/*--- Tab ---*/
+.tabs {
+    width: 100%;
+    background-color: #ffffff;
+    margin: 10px auto 0 auto;
 }
-#footer #icon-wrapper {
-  margin: 2% 6%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* 탭 스타일 */
+.tab_item {
+    width: calc(100%/2);
+    height: 35px;
+    border-bottom: 3px solid #F8C328;
+    background-color: #f8f8f8;
+    line-height: 30px;
+    font-size: 14px;
+    text-align: center;
+    color: lightgray;
+    display: block;
+    float: left;
+    font-weight: bold;
+    transition: all 0.2s ease;
 }
-#footer #icon-wrapper img {
-  width: 6%;
-  max-width: 360px;
-  cursor: pointer;
-  margin-left : 10%;
-  margin-right : 10%;
+/*--- radio버튼 UI삭제 ---*/
+input[name="tab_item"] {
+  display: none;
+}
+/*--- 탭 컨텐츠 스타일 ---*/
+#tab1_content {
+  display: none;
+  padding-top: 10px;
+  clear: both;
+  overflow: hidden;
+}
+#tab2_content {
+  display: none;
+  padding-top: 10px;
+  clear: both;
+  overflow: hidden;
+}
+/*--- 선택 된 탭 콘텐츠 표시 ---*/
+#tab1:checked ~ #tab1_content {
+    display: block;
+}
+#tab2:checked ~ #tab2_content {
+    display: block;
+}
+/*--- 선택된 탭 스타일 ---*/
+.tabs input:checked + label.tab_item {
+    background-color: #F8C328;
+    color: white;
 }
 
-@media (min-width: 576px) {
+/*--- Footer ---*/
+#footer {
+  background-color: white;
+  opacity: 85%;
+  width: 100%;
+  max-width: 720px;
+  position: fixed;
+  bottom: 0;
+  border-top: 1px solid #F9C428;
+}
+
+/*@media (min-width: 576px) {
     #container-content .one-row{
         display: flex;
         flex-direction: row;
@@ -158,7 +234,7 @@ body {
 
     #container-content .one-row .post-img-wrapper{
         /*margin: 20px;*/
-        width: 100%;
+/*        width: 100%;
         max-width:230px;
         cursor: pointer;
     }
