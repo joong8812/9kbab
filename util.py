@@ -45,7 +45,7 @@ def elapsedTime(post_time):
 
 def foodImage_modelPredict(model):
     mydict = {}
-    with open('static/model/foodimage_location_54C.csv', mode='r', encoding='utf8') as inp:
+    with open('static/model/foodimage_location_82C.csv', mode='r', encoding='utf8') as inp:
         reader = csv.reader(inp)
         mydict = {rows[0]: rows[1] for rows in reader}
     test_datagen = ImageDataGenerator(rescale=1. / 255)
