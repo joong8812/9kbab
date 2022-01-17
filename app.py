@@ -224,13 +224,16 @@ def mypage():
             post.append(p)
 
         scrap_posts = list(db.scraps.find({'user_id': id}))
-        scrap_postid = scrap_posts['post_id']
+        print(scrap_posts)
+        scrap_postid = scrap_posts[0]['post_id']
         #for문으로 하나씩 넣어주고 append하기
         scrap_post_zip = []
         for scrappost in scrap_postid :
-            scrapposts = list(db.posts.find({'post_id': scrappost}))
+            scrappost = ObjectId(scrappost)
+            scrapposts = list(db.posts.find({'_id': scrappost}))
             scrap_post_zip.append(scrapposts)
 
+        scrap_post_cnt = len(scrap_post_zip)
 
         mypage_info = [{
             'userid': id,
@@ -241,7 +244,7 @@ def mypage():
             'post_cnt': post_cnt
         }]
 
-        return render_template('mypage.html', mypage_info=mypage_info, scrap_post_zip=scrap_post_zip)
+        return render_template('mypage.html', mypage_info=mypage_info, scrap_post_zip=scrap_post_zip, scrap_post_cnt=scrap_post_cnt)
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
