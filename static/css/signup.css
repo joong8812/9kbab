@@ -1,7 +1,7 @@
 *{
     font-family: 'Gowun Dodum', sans-serif;
 }
-@media(max-width: 720px;){
+@media(max-width: 720px){
     #container{
         width: auto;
     }
@@ -132,3 +132,45 @@ label {
 }
 
 
+/* captcha */
+#captcha-area {
+    width: 100%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border: solid 1px lightgray;
+    padding: 5%;
+}
+#captcha-area #captcha-area-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+#captcha-area-top #digit-img-wrapper #digit-img {
+    width: 100px;
+    height: 100px;
+}
+#captcha-area-top #canvas-wrapper {
+    width: 100px;
+    height: 100px;
+}
+
+#captcha-area #captcha-area-bottom {
+    width: 100%;
+}
+
+#captcha-area #captcha-area-bottom > input{
+    width: 100%;
+}
+
+.disabled-captcha {
+    pointer-events: none;
+    background-color: #67BAB2;
+    opacity: 0.6;
+}
+
+@media (min-width: 720px) {
+    #captcha-area #captcha-area-top {
+        justify-content: space-around;
+    }
+}

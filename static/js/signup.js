@@ -127,6 +127,7 @@ function signup(){
   let email = $('#useremail').val()
   let pw1 = $('#pw').val()
   let pw2 = $('#pw-check').val()
+  const isHuman = $('#check_digit').val();
   console.log(userid, email, nickname, pw1)
 
 
@@ -188,6 +189,13 @@ function signup(){
     return false;
   }
 
+  if (isHuman.indexOf('사람') == -1) {
+    $('#captcha-area').css(
+        'border', 'solid 2px #F9C428'
+    );
+    return;
+  }
+
   $.ajax({
     type: "POST",
     url: "/api/signup",
@@ -207,4 +215,84 @@ function signup(){
       }
     }
   })
+}
+
+// 전역 캔버스 object 생성(캔버스 설정 세팅)
+const canvas = function (p) {
+    p.setup = function () {
+        p.createCanvas(100, 100); // 100x100 캔버스
+        p.background(0); // 배경은 검은색
+    }
+    p.draw = function () {
+    }
+
+    p.mouseDragged = function () {
+        p.fill(253, 253, 253); // 하얀색
+        p.noStroke(); // 테두리 없앤다
+        if (p.mouseButton == p.LEFT) { // 왼쪽 버튼을 누른다면
+            p.circle(p.mouseX, p.mouseY, 9); // 9 크기의 원을 그린
+        }
+    }
+};
+
+$(document).ready(function () {
+    new p5(canvas, 'canvas-wrapper'); // div에 캔버스 생성
+})
+
+
+function canvasToBase64() {
+    const c = $('#canvas-wrapper').find('canvas'); // 캔버스 element
+    const imageData = c[0].toDataURL('image/jpg'); // 캔버스를 base64 image string 으로
+    const answer = $('#digit-img').data('answer'); // 제시 한 이미지의 정답
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/digit',
+        data: {'user_digit_give': imageData, 'answer_digit_give': answer},
+        success: function (response) {
+            if (response['result'] == 'success') {  // 제시 그림과 사용자 그림 일치
+                $('#box-wrapper').children().children().text('');
+                $('#check_digit').val('당신은 사람이군요!').css({
+                    'color': 'white',
+                    'border': 'solid 1px #67BAB2',
+                    'background-color': '#67BAB2'});
+                $('#captcha-area').css('border', 'solid 2px #67BAB2');
+                $('#captcha-area').addClass('disabled-captcha');
+            } else { // 그림 불일치
+                let errCnt = parseInt($('#check_digit').data('count'));
+                errCnt += 1;
+
+                if (errCnt == 3) { // 3번 불일치 시
+                    alert('3번 불일치하여 회원가입을 진행할 수 없습니다')
+                    window.location.href = '/';
+                } else {
+                    $('#check_digit').data('count', errCnt);
+                    if (errCnt == 1) { // 1번 불일치 시
+                        $('#check_digit').val('이쁘게 다시 한번!')
+                        $('#captcha-area').css(
+                            'border', 'solid 2px #67BAB2'
+                        );
+                    } else { // 2번 불일치 시
+                        $('#check_digit').val('혹시 로..봇.. 아니죠?').css({
+                            'color': '#FF2800',
+                            'border': 'solid 1px #FF2800'
+                        });
+                        $('.check_btn.active').css({
+                            'background-color': '#FF2800',
+                            'color': 'white'
+                        })
+                        $('#captcha-area').css(
+                            'border', 'solid 2px #FF2800'
+                        );
+                    }
+                    $('#canvas-wrapper').empty(); // 기존 캔버스 지우기
+                    new p5(canvas, 'canvas-wrapper'); // 새로운 캔버스 생성
+                    window.location.hash = '#box-wrapper';
+                }
+            }
+        },
+        error: function (err) {
+            console.log('error:' + err)
+        }
+    })
 }
