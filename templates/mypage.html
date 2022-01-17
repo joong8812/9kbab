@@ -112,13 +112,13 @@
                         <div class="notice-wrapper"><p>스크랩한 글이 없습니다</p></div>
                     {% else %}
                         {% for post in scrap_post_zip |sort(reverse=true, attribute="post_date") %}
-                            {{ post.photo }}
                             {% if loop.index % 3 == 1 %}
                                 <div class="one-row">
                             {% endif %}
                         <div class="post-img-wrapper">
-                            <img src='static/uploads/{{post.photo}}' id="scrap_{{post._id}}" onclick="goMyfeed()">
+                            <img src='static/uploads/{{ post[0].photo }}' id="scrap_{{ post[0]._id }}">
                         </div>
+
                         {% if loop.index % 3 == 0 %}
                             </div>
                         {% endif %}
