@@ -37,7 +37,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 import tensorflow as tf
 print('현재 위치: ' + os.getcwd())
-# model_food = tf.keras.models.load_model('static/model/foodImagePredict_InceptionV3Model_82C82%57.h5') # 모델 로딩시간 있음
+model_food = tf.keras.models.load_model('static/model/foodImagePredict_InceptionV3Model_82C82%57.h5') # 모델 로딩시간 있음
 
 
 ##############################
