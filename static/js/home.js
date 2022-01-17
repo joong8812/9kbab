@@ -203,6 +203,36 @@ $(function () {
             }
         })
     })
+
+    // 스크랩 버튼을 누른다면 ...
+     $('.post-icon-3').click(function(){
+        const scrapIcon = $(this); // 선택한 포스트의 scrap element
+        const postId = scrapIcon.data('id'); // 선택한 포스트의 id를 담음
+         console.log(scrapIcon)
+        /*const scrapId = "#" + postId + "-like-cnt"; // [스크랩 카운트] element*/
+        const reqscrapStatus = scrapIcon.data('scrap') == '0' ? 1 : 0; // 기존 [좋아요 상태]를 보고 요청 할 [좋아요 상태] 설정
+
+        $.ajax({
+            type: 'POST',
+            url: '/home/scrap',
+            data: {'scrap_give': reqscrapStatus, 'post_id_give': postId},
+            success: function (response) {
+                if (response['result'] == 'success') {
+                    if (reqscrapStatus) { // 요청한 [스크랩 상태]가 1(스크랩) 이면 ...
+                        scrapIcon.data('scrap', '1'); // [스크랩 상태] 1로 설정
+                        scrapIcon.attr('src', '../static/images/scrap_full.png'); // scrap컬러로 이미지 설정
+                    } else { // 요청한 [스크랩 상태]가 0(스크랩 해제) 이면 ...
+                        scrapIcon.data('scrap', '0'); // [좋아요 상태] 0으로 설정
+                        scrapIcon.attr('src', '../static/images/scrap_empty.png'); // 빈 스크랩으로 이미지 설정
+                    }
+                }
+            },
+            error: function (err) {
+                console.log('error:' + err)
+            }
+        })
+    })
+
 })
 
 // 댓글 닫기 버튼을 누르면 ...
