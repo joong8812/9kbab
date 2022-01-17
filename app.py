@@ -125,20 +125,39 @@ def scrap_home():
         # jwt토큰으로부터 사용자 id 얻음
         user_id = payload['userid']
 
+
+
         # 클라이언트로부터 스크랩 유/무, post id 얻음
-        scrap_receive = request.form['scrap_give'] # 1: 좋아요 0: 좋아요 해제
-        post_id_receive = ObjectId(request.form['post_id_give'])
+        scrap_receive = request.form['scrap_give'] # 1: 스크랩 0: 스크랩 해제
+        post_id_receive = request.form['post_id_give']
         user_info = db.users.find_one({'userid': user_id})
         # user_info 는 db users 에서 userid를 조회한 값
 
+        post_id_list = []
+
         #scrap이 1로 바뀌면 DB에 값을 저장한다
         user_id = user_info['userid']
-        if scrap_receive == 1:
-            doc = {
-                'userid': user_id,
-                'post_id': post_id_receive,
-            }
-            db.scraps.insert_one(doc)
+
+
+        if db.scraps.find_one({'userid':user_id}) == None :
+            post_id_list.append(post_id_receive)
+            if scrap_receive == '1':
+                doc = {
+                    'userid': user_id,
+                    'post_id': post_id_list,
+                }
+                db.scraps.insert_one(doc)
+
+        else :
+            # 해당 포스트의 '스크랩 유저'를 db로부터 받아 리스트에 담음
+            post = list(db.scraps.find({'userid': user_id}))
+            scrap_list = post[0]['post_id']
+
+            # '스크랩 유/무'에 따라 '스크랩 유저리스트'에서 '스크랩 누른 유저'를 추가 or 삭제
+            scrap_list.append(post_id_receive) if scrap_receive == '1' else scrap_list.remove(post_id_receive)
+
+            db.scraps.update_one({'userid': user_id}, {'$set': {'post_id': scrap_list}})
+
 
         return jsonify({'result': 'success'})
 
