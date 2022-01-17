@@ -103,9 +103,11 @@ def main():
         profiles = list(db.profiles.find())
         scraps = db.scraps.find_one({'userid': payload['userid']})
         scrap_list = []
-
-        for scrap in scraps['post_id']:
-            scrap_list.append(ObjectId(scrap))
+        if scraps == None:
+            pass
+        else:
+            for scrap in scraps['post_id']:
+                scrap_list.append(ObjectId(scrap))
 
 
         posts = []
