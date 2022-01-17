@@ -259,28 +259,22 @@ function canvasToBase64() {
                 $('#captcha-area').css('border', 'solid 2px #67BAB2');
                 $('#captcha-area').addClass('disabled-captcha');
             } else { // 그림 불일치
-                let errCnt = parseInt($('#check_digit').data('count'));
+                let errCnt = parseInt($('#check_digit').data('count')); // 현재 에러카운트를 얻는다
                 errCnt += 1;
 
                 if (errCnt == 3) { // 3번 불일치 시
-                    alert('3번 불일치하여 회원가입을 진행할 수 없습니다')
+                    alert('3번 불일치하여 회원가입을 진행할 수 없습니다');
                     window.location.href = '/';
                 } else {
                     $('#check_digit').data('count', errCnt);
                     if (errCnt == 1) { // 1번 불일치 시
-                        $('#check_digit').val('이쁘게 다시 한번!')
+                        $('#check_digit').val('이쁘게 다시 한번!') // 버튼 텍스트 변경
                         $('#captcha-area').css(
                             'border', 'solid 2px #67BAB2'
                         );
                     } else { // 2번 불일치 시
-                        $('#check_digit').val('혹시 로..봇.. 아니죠?').css({
-                            'color': '#FF2800',
-                            'border': 'solid 1px #FF2800'
-                        });
-                        $('.check_btn.active').css({
-                            'background-color': '#FF2800',
-                            'color': 'white'
-                        })
+                        $('#check_digit').val('혹시 로..봇.. 아니죠?'); // 버튼 텍스트 변경
+                        $('.check_btn').toggleClass('last-notice'); // 버튼 및 active시 미리 정한 css적용
                         $('#captcha-area').css(
                             'border', 'solid 2px #FF2800'
                         );
