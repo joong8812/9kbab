@@ -71,6 +71,16 @@
     background-color: #67BAB2;
     color: white;
 }
+
+.check_btn.last-notice {
+    color: #FF2800;
+    border: solid 1px #FF2800;
+}
+.check_btn.last-notice:active {
+    background-color: #FF2800;
+    color: white;
+}
+
 .input_box{
     width: 100%;
     background-color: transparent;
