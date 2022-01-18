@@ -1,13 +1,17 @@
 function goWrite() {
-    window.location.href = "/writepost"
+    window.location.href = "/writepost";
 }
 
 function goMypage() {
-    window.location.href = "/mypage"
+    window.location.href = "/mypage";
 }
 
 function reRoad() {
-    window.location.reload()
+    window.location.reload();
+}
+
+function goHome() {
+    window.location.href = "/";
 }
 
 // 댓글 html 요소 생성

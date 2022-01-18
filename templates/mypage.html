@@ -26,6 +26,9 @@
         function goMyfeed(){
             window.location.href = "/myfeed"
         }
+        function goMyScrap(){
+            window.location.href = "/myscrap"
+        }
         function doLogout(){
             $.removeCookie('mytoken', {path: '/'});
             window.location.href = '/';
@@ -116,7 +119,7 @@
                                 <div class="one-row">
                             {% endif %}
                         <div class="post-img-wrapper">
-                            <img src='static/uploads/{{ post[0].photo }}' id="scrap_{{ post[0]._id }}">
+                            <img src='static/uploads/{{ post[0].photo }}' id="scrap_{{ post[0]._id }}" onclick="goMyScrap()">
                         </div>
 
                         {% if loop.index % 3 == 0 %}
