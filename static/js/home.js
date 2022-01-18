@@ -111,38 +111,6 @@ $(function () {
 
                     // 각 댓글 삭제 버튼 세팅
                     setDeletebutton(myNick);
-                    // // 각 댓글을 마우스오버/마우스아웃 한다면..
-                    // $('.comment-body')
-                    //     .mouseover(function() {
-                    //         removeButtonSwitch($(this), myNick)
-                    //     })
-                    //     .mouseout(function(){
-                    //         removeButtonSwitch($(this), myNick)
-                    //     });
-                    //
-                    // // 각 댓글 삭제 버튼을 누른다면...
-                    // $('.comment-delete').click(function (){
-                    //     const commentId = $(this).data('ci');
-                    //     const commentDiv = $(this).parent().parent();
-                    //     const is_delete = confirm("정말 이 댓글을 삭제하시겠습니까?");
-                    //     if (is_delete) {
-                    //         $.ajax({
-                    //             type: 'POST',
-                    //             url: '/api/comment/delete',
-                    //             data: {comment_id_give: commentId},
-                    //             success: function (response) {
-                    //                 if (response['result'] == 'success') {
-                    //                     commentDiv.remove(); // 댓글 삭제
-                    //                 } else {
-                    //                     alert(response['msg'])
-                    //                 }
-                    //             },
-                    //             error: function (err) {
-                    //                 console.log('error:' + err)
-                    //             }
-                    //         })
-                    //     }
-                    // })
 
                     //팝업창을 가운데로 띄우기 위해 현재 화면의 가운데 값과 스크롤 값을 계산하여 팝업창 CSS 설정
                     $("#comment-modal").css({
@@ -241,7 +209,10 @@ $(function () {
 
 // 댓글 닫기 버튼을 누르면 ...
 function closeModal() {
-    window.location.href = '/home'
+    $('#comment-modal').css({
+        'display': 'none'
+    });
+    window.location.reload();
 }
 
 // 댓글 남기기 버튼을 누르면 ...

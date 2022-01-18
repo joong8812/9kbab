@@ -364,7 +364,6 @@ def myscrap():
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
 
-
 # 프로필 변경 페이지
 @app.route('/profile')
 def profile():
