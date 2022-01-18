@@ -297,6 +297,7 @@ def myfeed():
         # user_info 의 id, pw 값을 변수에 저장
         id = user_info['userid']
         nick = user_info['nickname']
+        profiles = list(db.profiles.find())
         # posts 콜렉션 에서 토큰 id 값으로 검색한 결과 변수에 저장
         posts = list(db.posts.find({'userid': id}))
         post_comment = []
@@ -362,7 +363,6 @@ def myscrap():
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
-
 
 
 # 프로필 변경 페이지
