@@ -119,7 +119,6 @@ def main():
             for scrap in scraps['post_id']:
                 scrap_list.append(ObjectId(scrap))
 
-
         posts = []
         for post in dbposts:
             post_time = post['post_date']
@@ -331,6 +330,39 @@ def myfeed():
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
+
+# 나의 스크랩 페이지
+@app.route('/myscrap')
+def myscrap():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_id = payload['userid']
+        dbposts = []
+        comments = list(db.comments.find())
+        profiles = list(db.profiles.find())
+        scraps = db.scraps.find_one({'userid': user_id})
+        scrap_list = []
+        if scraps is not None:
+            for scrap_id in scraps['post_id']:
+                obj_scrap_id = ObjectId(scrap_id)
+                scrap_list.append(obj_scrap_id)
+                dbposts.append(db.posts.find_one({'_id': ObjectId(obj_scrap_id)}))
+
+        posts = []
+        for post in dbposts:
+            post_time = post['post_date']
+            elapsed_time = elapsedTime(post_time)
+
+            post['elapsed_time'] = elapsed_time
+            posts.append(post)
+        return render_template('myscrap.html', posts=posts, comments=comments, profiles=profiles, my_id=payload['userid'])
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
+
 
 
 # 프로필 변경 페이지
