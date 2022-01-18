@@ -146,7 +146,7 @@ label {
 #captcha-area {
     width: 100%;
     margin-top: 5%;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
     border: solid 1px lightgray;
     padding: 5%;
 }
@@ -177,6 +177,10 @@ label {
     pointer-events: none;
     background-color: #67BAB2;
     opacity: 0.6;
+}
+
+#captcha-introduce > p {
+    color: black;
 }
 
 @media (min-width: 720px) {
