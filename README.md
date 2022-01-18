@@ -4,7 +4,8 @@
 9천원 이하의 가성비 맛집 정보를 공유하는 SNS (모바일 최적화)   
 http://beloved-coder.shop/
 
-시연영상: https://youtu.be/sanaSKuFWZI
+시연영상v2.0: https://youtu.be/cJlJKmzKxPs
+시연영상v1.0: https://youtu.be/sanaSKuFWZI
 ___
 # Version 2.0
 ## 기간
@@ -14,7 +15,7 @@ ___
 * 정유진: 프론트엔드, 디자인 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/Augustj88)
 * 박다희: 백엔드, API설계 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/DaheePark-00)
 * 고희석: 데이터 분석, AI 모델 개발 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/GoHeeSeok00)
-* 최중재: 팀장 [<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/joong8812)
+* 최중재: 팀장, 배포[<img src="https://img.shields.io/badge/Github-181717?style=flat-square&logo=Github&logoColor=white"/></a>](https://github.com/joong8812)
 
 ## 기능
 * [포스트(글쓰기)] 자동 태그 추천
