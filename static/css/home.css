@@ -38,14 +38,17 @@ body {
   .post-body .post-icons-wrapper .left-wrapper .post-icon {
     margin: 1% 1%;
     width: 8%;
+    cursor: pointer;
   }
   .post-body .post-icons-wrapper .left-wrapper .post-icon-2 {
     margin: 1% 2%;
     width: 8%;
+    cursor: pointer;
   }
   .post-body .post-icons-wrapper .right-icon{
     width: 8%;
     margin-right: 3%;
+    cursor: pointer;
   }
   #footer #icon-wrapper {
     margin: 2% 15%;
@@ -94,14 +97,17 @@ body {
   .post-body .post-icons-wrapper .left-wrapper .post-icon {
     margin: 1% 1%;
     width: 5%;
+    cursor: pointer;
   }
   .post-body .post-icons-wrapper .left-wrapper .post-icon-2 {
     margin: 1% 2%;
     width: 5%;
+    cursor: pointer;
   }
   .post-body .post-icons-wrapper .right-icon{
     width: 5%;
     margin-right: 3%;
+    cursor: pointer;
   }
   #footer #icon-wrapper {
     margin: 2% 15%;
