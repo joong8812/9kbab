@@ -777,7 +777,7 @@ def process_heart():
 #######################################################
 ##      제시한 이미지와 모델이 예측한 수가 일치하는지 판별       ##
 #######################################################
-@app.route('/api/digit', methods=['POST'])
+@app.route('/api/captcha', methods=['POST'])
 def check_digit():
     result = 'fail' # 결과 기본값 설정
     try:
