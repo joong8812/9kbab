@@ -247,7 +247,7 @@ function canvasToBase64() {
 
     $.ajax({
         type: 'POST',
-        url: '/api/digit',
+        url: '/api/captcha',
         data: {'user_digit_give': imageData, 'answer_digit_give': answer},
         success: function (response) {
             if (response['result'] == 'success') {  // 제시 그림과 사용자 그림 일치

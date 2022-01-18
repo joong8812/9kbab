@@ -59,40 +59,50 @@ model_food = tf.keras.models.load_model('static/model/foodImagePredict_Inception
 ################################
 @app.route('/')
 def home():
-# 현재 이용자의 컴퓨터에 저장된 cookie 에서 mytoken 을 가져옵니다.
+    # 현재 이용자의 컴퓨터에 저장된 cookie 에서 mytoken 을 가져옵니다.
     token_receive = request.cookies.get('mytoken')
     try:
-# 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
+        # 암호화되어있는 token의 값을 우리가 사용할 수 있도록 디코딩(암호화 풀기)해줍니다!
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'userid': payload['userid']})
         return redirect(url_for('main'))
-# 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
+    # 만약 해당 token의 로그인 시간이 만료되었다면, 아래와 같은 코드를 실행합니다.
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
-# 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+        # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
 
-
+# 로그인 페이지
 @app.route('/login')
 def login():
-    msg = request.args.get("msg")
-    return render_template('index.html', msg=msg)
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({'userid': payload['userid']})
+        return redirect(url_for('home', msg='메인페이지로 이동합니다.'))
+    except jwt.ExpiredSignatureError:
+        return render_template('index.html')
+    except jwt.exceptions.DecodeError:
+        return render_template('index.html')
 
 
+# 회원가입 페이지
 @app.route('/signup')
 def signup():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'userid': payload['userid']})
-        return redirect(url_for('mypage', msg='마이페이지로 이동합니다.'))
+        return redirect(url_for('home', msg='메인페이지로 이동합니다.'))
     except jwt.ExpiredSignatureError:
         return redirect(url_for('login', msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return render_template('signup.html')
 
+
+# 메인 페이지
 @app.route('/home')
 def main():
     token_receive = request.cookies.get('mytoken')
@@ -124,6 +134,8 @@ def main():
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
+
+# 스크랩 요청/해제 API
 @app.route('/home/scrap', methods=['POST'])
 def scrap_home():
     result = 'success'
@@ -134,8 +146,6 @@ def scrap_home():
         # jwt토큰으로부터 사용자 id 얻음
         user_id = payload['userid']
 
-
-
         # 클라이언트로부터 스크랩 유/무, post id 얻음
         scrap_receive = request.form['scrap_give'] # 1: 스크랩 0: 스크랩 해제
         post_id_receive = request.form['post_id_give']
@@ -145,11 +155,10 @@ def scrap_home():
 
         post_id_list = []
 
-        #scrap이 1로 바뀌면 DB에 값을 저장한다
+        # scrap이 1로 바뀌면 DB에 값을 저장한다
         user_id = user_info['userid']
 
-
-        if db.scraps.find_one({'userid':user_id}) == None :
+        if db.scraps.find_one({'userid':user_id}) == None:
             post_id_list.append(post_id_receive)
             if scrap_receive == '1':
                 doc = {
@@ -157,8 +166,7 @@ def scrap_home():
                     'post_id': post_id_list,
                 }
                 db.scraps.insert_one(doc)
-
-        else :
+        else:
             # 해당 포스트의 '스크랩 유저'를 db로부터 받아 리스트에 담음
             post = list(db.scraps.find({'userid': user_id}))
             scrap_list = post[0]['post_id']
@@ -168,20 +176,19 @@ def scrap_home():
 
             db.scraps.update_one({'userid': user_id}, {'$set': {'post_id': scrap_list}})
 
-
         return jsonify({'result': 'success'})
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
-    # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+        # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
     except Exception as e:
         print(e)
         return jsonify({'result': 'fail'})
 
 
-
+# 글쓰기 페이지
 @app.route('/writepost')
 def writepost():
     try:
@@ -194,14 +201,11 @@ def writepost():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
 
     except jwt.exceptions.DecodeError:
-    # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+        # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-
-
-
-
+# 댓글 페이지
 @app.route('/comment', methods=['POST'])
 def comment():
     post_id_receive = request.form['post_id_give']
@@ -225,8 +229,7 @@ def comment():
         return jsonify({'result': 'fail'})
 
 
-
-
+# 마이 페이지
 @app.route('/mypage')
 def mypage():
     token_receive = request.cookies.get('mytoken')
@@ -252,7 +255,6 @@ def mypage():
             p['elapsed_time'] = elapsed_time
             post.append(p)
 
-
         scrap_posts = list(db.scraps.find({'userid': id}))
 
         scrap_post_zip = []
@@ -261,8 +263,8 @@ def mypage():
             pass
         else:
             scrap_postid = scrap_posts[0]['post_id']
-            #for문으로 하나씩 넣어주고 append하기
 
+            # for문으로 하나씩 넣어주고 append하기
             for scrappost in scrap_postid :
                 scrappost = ObjectId(scrappost)
                 scrapposts = list(db.posts.find({'_id': scrappost}))
@@ -286,6 +288,7 @@ def mypage():
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
 
+# 나의 피드
 @app.route('/myfeed')
 def myfeed():
     token_receive = request.cookies.get('mytoken')
@@ -329,6 +332,8 @@ def myfeed():
     except jwt.exceptions.DecodeError:
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
+
+# 프로필 변경 페이지
 @app.route('/profile')
 def profile():
     token_receive = request.cookies.get('mytoken')
@@ -359,6 +364,7 @@ def profile():
         return redirect(url_for('login', msg="로그인 정보가 존재하지 않습니다."))
 
 
+# 글 변경 페이지
 @app.route('/mypostedit')
 def mypostedit_page():
     token_receive = request.cookies.get('mytoken')
@@ -452,21 +458,6 @@ def api_signup():
         msg = '회원가입 성공! 로그인을 해주세요!'
 
     return jsonify({'result': result, 'msg': msg})
-
-####################################
-##       회원가입 사람/봇           ##
-####################################
-
-# @app.route('/api/captcha', methods=['POST'])
-# def api_signup():
-#     user_digit_receive = request.form['user_digit_give']
-#     if user_digit_receive != sth:
-#         result = 'fail'
-#
-#     else :
-#         result = 'success'
-#
-#     return jsonify({'result': result})
 
 
 ###############################
@@ -767,10 +758,10 @@ def process_heart():
         return jsonify({'result':result, 'msg':msg})
 
 
-#######################################################
-##      제시한 이미지와 모델이 예측한 수가 일치하는지 판별       ##
-#######################################################
-@app.route('/api/digit', methods=['POST'])
+##################################
+##       회원가입 사람/봇           ##
+##################################
+@app.route('/api/captcha', methods=['POST'])
 def check_digit():
     result = 'fail' # 결과 기본값 설정
     try:

@@ -119,7 +119,6 @@ body {
 }
 #container-header #ch-left-wrapper #pf-image {
     text-align: center;
-    border: 1px solid lightgray;
 }
 #container-header #ch-left-wrapper #pf-image > img {
     width: 45%;
