@@ -4,7 +4,7 @@
 9천원 이하의 가성비 맛집 정보를 공유하는 SNS (모바일 최적화)   
 http://beloved-coder.shop/
 
-시연영상v2.0: https://youtu.be/cJlJKmzKxPs
+시연영상v2.0: https://youtu.be/cJlJKmzKxPs   
 시연영상v1.0: https://youtu.be/sanaSKuFWZI
 ___
 # Version 2.0
