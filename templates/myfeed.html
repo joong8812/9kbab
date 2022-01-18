@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/home.js')}}"></script>
 
     <title>9k밥</title>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
@@ -19,11 +20,13 @@
         function goHome() {
             window.location.href = "/"
         }
+
         function goWrite() {
             window.location.href = "/writepost"
         }
-        function goMypage(){
-            window.location.href="/mypage"
+
+        function goMypage() {
+            window.location.href = "/mypage"
         }
 
         function doDelete(post_id) {
@@ -35,7 +38,7 @@
                     data: {post_id: post_id},
                     success: function (response) {
                         if (response['result'] == 'success') {
-                            window.location.href="/mypage";
+                            window.location.href = "/mypage";
                         } else {
                             alert(response['msg'])
                             window.location.reload()
@@ -53,8 +56,8 @@
 <body>
 <div id="main">
     <div id="header">
-        <img id="logo" src="../static/images/9kbob_v01.png"/>
-        <img id="header-icon" src="../static/images/1_rice.png" onclick="goMypage()"/>
+        <img id="logo" src="../static/images/logo2.png"/>
+        <img id="header-icon" src="../static/images/spoon.png" onclick="goMypage()"/>
     </div>
     <div id="container">
         <div id="post-container">
@@ -62,11 +65,10 @@
                 <div id="{{ post._id }}" class="post-wrapper">
                     <div class="post-header">
                         <div class="left-wrapper">
-                            <img class="profile-img" src="../static/profile/{{myfeed_info[0].pf_image}}"/>
+                                <img class="profile-img" src="../static/profile/{{ myfeed_info[0].pf_image }}"/>
                             <div class="profile-txt">
-                                {{ post.userid }}
-                                <br>
-                                {{ post.location }}
+                                <span class="profile-nick">{{ post.nickname }}</span>
+                                <span class="post-location">{{ post.location }}</span>
                             </div>
                         </div>
                         <div class="right-wrapper">
@@ -77,7 +79,8 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <li><a class="dropdown-item" href="/mypostedit?pi={{post._id}}">수정</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="doDelete('{{post._id}}'); return;">삭제</a></li>
+                                    <li><a class="dropdown-item" href="#"
+                                           onclick="doDelete('{{post._id}}'); return;">삭제</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -86,15 +89,31 @@
                         <img src="/static/uploads/{{ post.photo }}">
                         <div class="post-icons-wrapper">
                             <div class="left-wrapper">
-                                <!-- 아이콘 크기가 달라서 부득이 하게 이렇게 만들었으나, 클래스 없이 img로 처리하는게 맞습니다! -->
-                                <img class="post-icon" src="../static/images/like.png">
-                                <img class="post-icon-2" src="../static/images/comment.png">
+                                <!-- 각 포스트에 좋아요 여부에 따라 다르게 표시(하트이미지) -->
+                                {% if myfeed_info[0].userid not in post.like_cnt %}
+                                <img class="post-icon" src="../static/images/heart_empty.png" data-heart="0"
+                                     data-id="{{post._id}}">
+                                {% else %}
+                                <img class="post-icon" src="../static/images/heart_full.png" data-heart="1"
+                                     data-id="{{post._id}}">
+                                {% endif %}
+                                <img class="post-icon-2" src="../static/images/comment1.png" data-post="{{post._id}}">
+                            </div>
+
+                            <!--스크랩 클릭시-->
+                            <div class="right-icon">
+                                <img class="post-icon-3" src="../static/images/scrap_empty.png" style="opacity: 0.3">
                             </div>
                         </div>
                     </div>
                     <div class="post-footer">
                         <div class="post-like-wrapper">
-                            <p><strong>쿠키</strong>님 <strong>외 1,234명</strong>이 좋아합니다</p>
+                            <p><span id="{{post._id}}-like-cnt">
+                            {% if post.like_cnt|length == 0 %}
+                                </span><span>No one likes me😭️</span></p>
+                            {% else %}
+                                {{post.like_cnt|length}}</span><span>명이 좋아합니다😍</span></p>
+                            {% endif %}
                         </div>
                         <div class="post-content-wrapper">
                             <p class="post-author">{{ post.userid }}</p>
@@ -110,31 +129,50 @@
                                 {% set var1 = post._id|string %}
                                 {% set var2 = comment.post_id %}
                                 {% if var1 == var2 %}
-                                    {% set x=commentzip.__setitem__(count.value, {'id': comment.userid, 'msg': comment.comment}) %}
+                                    {% set x=commentzip.__setitem__(count.value, {'nick': comment.nickname, 'msg': comment.comment}) %}
                                     {% set count.value = count.value + 1 %}
                                 {% endif %}
                             {% endfor %}
-
                             {% for key, value in commentzip.items() %}
                                 {% if loop.index == loop.length %}
-                                <li>{{ value["id"] }} - {{ value["msg"] }}</li>
+                                    <li>{{ value["nick"] }} - {{ value["msg"] }}</li>
                                 {% endif %}
                             {% endfor %}
-
                         </div>
                         <p class="post-time">
-                            1시간 전
-                        </p>
+                        <p id="post_date">{{ post.elapsed_time }}</p>
                     </div>
                 </div>
             {% endfor %}
-
         </div>
     </div>
     <div id="footer">
         <div id="icon-wrapper">
-            <img src="../static/images/home.png" onclick="goHome()">
-            <img src="../static/images/trending.png" onclick="goWrite()">
+            <img src="{{url_for('static', filename='images/home1.png')}}" onclick="goHome()">
+            <img src="{{url_for('static', filename='images/post.png')}}" onclick="goWrite()">
+        </div>
+    </div>
+    <div id="comment-modal">
+        <div id="comment-modal-body">
+            <div id="cmb-header">
+                <img src="{{url_for('static', filename='images/back(y).png')}}" onclick="closeModal()">
+            </div>
+            <div id="cmb-content">
+                <div id="cmb-content-top-wrapper">
+                    <div id="cmb-post"></div>
+                </div>
+                <div id="cmb-content-bottom-wrapper">
+                    <div id="cmb-comment">
+                        <div id="comment-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="cmb-footer">
+                <div id="cmb-write">
+                    <input type="text" class="form-control" id="comment-writing" rows="1" placeholder="댓글 남기기">
+                </div>
+                <div id="cmb-write-btn"><input onclick="leaveComment();" id="comment-leave" type="button" value="남기기"></div>
+            </div>
         </div>
     </div>
 </div>
