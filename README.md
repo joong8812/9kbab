@@ -43,7 +43,7 @@ Figma link: https://www.figma.com/file/q3kTzFXhGVlEhR0g0sIMCe/Wireframing-in-Fig
 ## DB 구성 
 <img src="./attached/9kbab-ERD-v2.PNG" alt="wireframe">
 
-## API 설계
+## API 설계 및 머신러닝 모델 학습 결과
 https://docs.google.com/spreadsheets/d/1Go6Q0_a_tThV-mW5M_AYbllUghzKKsB13raXD7XKKk4/edit#gid=0
 
 ## 개발 일정
